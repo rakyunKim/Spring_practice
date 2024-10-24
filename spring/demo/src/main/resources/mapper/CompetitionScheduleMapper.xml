@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.ccfc.mapper.CompetitionScheduleMapper">
+  <resultMap id="BaseResultMap" type="kr.ccfc.domain.CompetitionSchedule">
+    <!--@mbg.generated-->
+    <!--@Table competition_schedule-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="date_time" jdbcType="TIMESTAMP" property="dateTime" />
+    <result column="place" jdbcType="VARCHAR" property="place" />
+    <result column="season" jdbcType="VARCHAR" property="season" />
+    <result column="season_img_url" jdbcType="VARCHAR" property="seasonImgUrl" />
+    <result column="home_team" jdbcType="VARCHAR" property="homeTeam" />
+    <result column="visit_team" jdbcType="VARCHAR" property="visitTeam" />
+    <result column="home_team_img_url" jdbcType="VARCHAR" property="homeTeamImgUrl" />
+    <result column="visit_team_img_url" jdbcType="VARCHAR" property="visitTeamImgUrl" />
+    <result column="home_scope" jdbcType="INTEGER" property="homeScope" />
+    <result column="visit_scope" jdbcType="INTEGER" property="visitScope" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, date_time, place, season, season_img_url, home_team, visit_team, home_team_img_url, 
+    visit_team_img_url, home_scope, visit_scope, created, last_update_time
+  </sql>
+</mapper>

@@ -1,0 +1,405 @@
+<div id="wrapper">
+    <div style="height:40px;"></div>
+
+    <div id="container" class="">
+        <head th:replace="admin/include/header::admin_header"></head>
+        <div class="container_wr" id="menu3_1">
+            <h1 id="container_title">
+                <p style="font-size:14px;color:#333333;"><i class="fa fa-home" aria-hidden="true"></i> > 경기정보관리 > 경기정보
+                    입력</p>
+                경기정보관리
+            </h1>
+            <!--            <div class="btn_fixed_top">-->
+            <!--                <input type="submit" value="엑셀 받기" class="btn btn_02">-->
+            <!--                <input type="submit" value="엑셀 업로드" class="btn btn_02">-->
+            <!--            </div>-->
+            <section style="margin-top:40px;">
+                <h2>경기 정보입력</h2>
+                <div class="tbl_head01 tbl_wrap">
+                    <table>
+                        <caption>경기정보입력</caption>
+                        <thead>
+                        <tr>
+                            <th>날짜</th>
+                            <th>장소</th>
+                            <th>리그</th>
+                            <th>홈팀</th>
+                            <th>어웨이팀</th>
+                            <th>홈팀 점수</th>
+                            <th>어웨이팀 점수</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <el-date-picker
+                                        v-model="competition.dateTime"
+                                        type="datetime"
+                                        value-format="yyyy-MM-dd HH:mm:ss"
+                                >
+                                </el-date-picker>
+                            </td>
+                            <td>
+                                <input type="text" class="frm_input readonly"
+                                       v-model="competition.place"
+                                       maxlength="20">
+                            </td>
+                            <td>
+                                <input type="text" class="frm_input readonly"
+                                       v-model="competition.season"
+                                       maxlength="20">
+                                <el-upload
+                                        action="/portal/article/upload"
+                                        :on-remove="handleRemove"
+                                        :before-remove="beforeRemove"
+                                        :on-success="handleSeasonImgSuccess"
+                                        multiple
+                                        :limit="1"
+                                        :on-exceed="handleExceed"
+                                        list-type="picture"
+                                        :file-list="seasonFileList">
+                                    <a class="btn btn_03" style="margin-top:7px;">리그logo 업로드</a>
+                                    <div slot="tip" class="el-upload__tip">이미지 파일은 jpg/png만 업로드 됩니다</div>
+                                </el-upload>
+                            </td>
+                            <td>
+                                <input type="text" class="frm_input readonly"
+                                       maxlength="20"
+                                       v-model="competition.homeTeam"
+                                >
+                                <el-upload
+                                        action="/portal/article/upload"
+                                        :on-remove="handleRemove"
+                                        :before-remove="beforeRemove"
+                                        :on-success="handleHomeImgSuccess"
+                                        multiple
+                                        :limit="1"
+                                        :on-exceed="handleExceed"
+                                        :file-list="homeTeamFileList"
+                                        list-type="picture"
+                                >
+                                    <a class="btn btn_03" style="margin-top:7px;">홈팀logo 업로드</a>
+                                    <div slot="tip" class="el-upload__tip">이미지 파일은 jpg/png만 업로드 됩니다</div>
+                                </el-upload>
+                            </td>
+                            <td>
+                                <input type="text" value="팀명" class="frm_input readonly"
+                                       v-model="competition.visitTeam"
+                                       maxlength="20">
+                                <el-upload
+                                        action="/portal/article/upload"
+                                        :on-remove="handleRemove"
+                                        :before-remove="beforeRemove"
+                                        :on-success="handleVisitImgSuccess"
+                                        multiple
+                                        :limit="1"
+                                        list-type="picture"
+                                        :on-exceed="handleExceed"
+                                        :file-list="visitingTeamFileList">
+                                    <a class="btn btn_03" style="margin-top:7px;">어웨이팀logo 업로드</a>
+                                    <div slot="tip" class="el-upload__tip">이미지 파일은 jpg/png만 업로드 됩니다</div>
+                                </el-upload>
+                            </td>
+                            <td>
+                                <input type="number" value="홈팀 점수입력" class="frm_input readonly"
+                                       v-model="competition.homeScope"
+                                       maxlength="20">
+                            </td>
+                            <td>
+                                <input type="number" value="어웨이팀 점수입력" class="frm_input readonly"
+                                       v-model="competition.visitScope"
+                                       maxlength="20">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <span class="page_text01">* 로고 이미지 업로드 크기는 600px*600px로 업로드 가능합니다.</span>
+                    <div class="btn_ok">
+                        <a class="btn btn_01" @click="save">저장</a>
+                    </div>
+                    <div style="height:80px;"></div>
+                    <div class="play_date_list">
+                        <input type="button" value="엑셀 받기" class="btn btn_02" @click="exportExcel">
+                        <input type="button" value="선택삭제" class="btn btn_02" @click="delById">
+                        <el-date-picker
+                                v-model="date"
+                                type="daterange"
+                                align="left"
+                                unlink-panels
+                                range-separator="~"
+                                start-placeholder="시작일"
+                                end-placeholder="마지막일"
+                                :picker-options="pickerOptions"
+                                value-format="yyyy-MM-dd"
+                                @change="dateChange"
+                        >
+                        </el-date-picker>
+                    </div>
+                    <h2 style="padding-top:20px;">경기 리스트</h2>
+                    <table ref="resTable">
+                        <caption>경기 리스트</caption>
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" id="chkall" @change="triggle"/></th>
+                            <th>날짜</th>
+                            <th>시간</th>
+                            <th>장소</th>
+                            <th>리그</th>
+                            <th>홈팀</th>
+                            <th>어웨이팀</th>
+                            <th>홈팀 점수</th>
+                            <th>어웨이팀 점수</th>
+                            <th>관리</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="(item,index) in schedules">
+                            <td><input type="checkbox" name="checkbox" :value="item.id"></td>
+                            <td>{{item.day}}</td>
+                            <td>{{item.time}}</td>
+                            <td>{{item.place}}</td>
+                            <td><img width="50" height="50" :src="item.seasonImgUrl">{{item.season}}</td>
+                            <td><img width="100" height="100" :src="item.homeTeamImgUrl"><br/>{{item.homeTeam}}</td>
+                            <td><img width="100" height="100" :src="item.visitTeamImgUrl"><br>{{item.visitTeam}}</td>
+                            <td>{{item.homeScope}}</td>
+                            <td>{{item.visitScope}}</td>
+                            <td>
+                                <a @click="toEdit(item)" class="btn btn_03">수정</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+
+        </div>
+        <div th:replace="admin/include/footer::footer"></div>
+        <script>
+            new Vue({
+                el: "#menu3_1",
+                data: {
+                    pickerOptions: {
+                        shortcuts: [{
+                            text: '최근 일주일',
+                            onClick(picker) {
+                                const end = new Date();
+                                const start = new Date();
+                                start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                                picker.$emit('pick', [start, end]);
+                            }
+                        }, {
+                            text: '최근 한달',
+                            onClick(picker) {
+                                const end = new Date();
+                                const start = new Date();
+                                start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                                picker.$emit('pick', [start, end]);
+                            }
+                        }, {
+                            text: '최근 삼개월',
+                            onClick(picker) {
+                                const end = new Date();
+                                const start = new Date();
+                                start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                                picker.$emit('pick', [start, end]);
+                            }
+                        }]
+                    },
+                    date: '',
+                    schedules: [],
+                    token: '',
+                    seasonFileList: [],
+                    homeTeamFileList: [],
+                    visitingTeamFileList: [],
+                    competition: {
+                        id: null,
+                        dateTime: '',
+                        place: '',
+                        season: '',
+                        seasonImgUrl: '',
+                        homeTeam: '',
+                        visitTeam: '',
+                        homeTeamImgUrl: '',
+                        visitTeamImgUrl: '',
+                        homeScope: '',
+                        visitScope: '',
+                    }
+                },
+                methods: {
+                    exportExcel() {
+                        let inputs = document.getElementsByName("checkbox");
+                        let ids = []
+                        for (let i = 0; i < inputs.length; i++) {
+                            if (inputs[i].checked) {
+                                ids.push(inputs[i].value)
+                            }
+                        }
+                        axios.post("/competition/downloadExcel", ids, {
+                            responseType: 'blob'
+                        }).then(function (res) {
+                            var blob = res.data;
+                            // FileReader主要用于将文件内容读入内存
+                            var reader = new FileReader();
+                            reader.readAsDataURL(blob);
+                            // onload当读取操作成功完成时调用
+                            reader.onload = function (e) {
+                                var a = document.createElement('a');
+                                // 获取文件名fileName
+                                var fileName = res.headers["content-disposition"].split("=");
+                                fileName = fileName[fileName.length - 1];
+                                fileName = fileName.replace(/"/g, "");
+                                a.download = fileName;
+                                a.href = e.target.result;
+                                document.body.appendChild(a);
+                                a.click();
+                                document.body.removeChild(a);
+                            }
+                        });
+                    },
+                    dateChange(date) {
+                        this.list(date[0], date[1])
+                    },
+                    triggle() {
+                        let allcheck = document.getElementById("chkall")
+                        let inputs = document.getElementsByName("checkbox");
+                        for (let i = 0; i < inputs.length; i++) {
+                            inputs[i].checked = allcheck.checked;
+                        }
+                    },
+                    delById() {
+                        let inputs = document.getElementsByName("checkbox");
+                        let ids = []
+                        for (let i = 0; i < inputs.length; i++) {
+                            if (inputs[i].checked) {
+                                ids.push(inputs[i].value)
+                            }
+                        }
+                        let idsJoin = ids.join(",")
+                        if (!idsJoin) {
+                            this.$notify({
+                                title: '알림',
+                                message: '삭제할 내용을 선택하세요',
+                                type: 'warning'
+                            });
+                            return
+                        }
+                        axios.delete('/competition', {
+                            params: {
+                                ids: idsJoin
+                            }, headers: {
+                                'Authorization': this.token
+                            }
+                        }).then(res => {
+                            this.$notify({
+                                title: '알림',
+                                message: '삭제 성공',
+                                type: 'success'
+                            });
+                            this.list()
+                            window.location.reload()
+                        })
+                    },
+                    toEdit(item) {
+                        // {name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}
+                        this.competition = item
+                        let seasonFileList = []
+                        let seasonFile = {}
+                        seasonFile.name = ''
+                        seasonFile.url = item.seasonImgUrl
+                        seasonFileList.push(seasonFile)
+                        this.seasonFileList = seasonFileList
+
+                        let homeTeamFileList = []
+                        let homeTeamFile = {}
+                        homeTeamFile.name = ''
+                        homeTeamFile.url = item.homeTeamImgUrl
+                        homeTeamFileList.push(homeTeamFile)
+                        this.homeTeamFileList = homeTeamFileList
+
+                        let visitingTeamFileList = []
+                        let visitingTeamFile = {}
+                        visitingTeamFile.name = ''
+                        visitingTeamFile.url = item.visitTeamImgUrl
+                        visitingTeamFileList.push(visitingTeamFile)
+                        this.visitingTeamFileList = visitingTeamFileList
+
+                        window.scrollTo(0,0);
+                    },
+                    list(start, end) {
+                        axios.get('/competition/list', {
+                            params: {
+                                current: 1,
+                                size: 100,
+                                start: start,
+                                end: end
+                            },
+                            headers: {
+                                'Authorization': this.token
+                            }
+                        }).then(res => {
+                            let results = res.data.data
+                            this.schedules = results.records
+                        })
+                    },
+                    save() {
+                        let data = this.competition
+                        axios.post('/competition', data, {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': this.token
+                            }
+                        }).then(res => {
+                            this.$notify({
+                                title: '알림',
+                                message: '저장 성공',
+                                type: 'success'
+                            });
+                            window.location.reload()
+                        })
+                    },
+                    handleSeasonImgSuccess(res, file) {
+                        console.log('success', res)
+                        this.competition.seasonImgUrl = res.data[0].url
+                    },
+                    handleHomeImgSuccess(res, file) {
+                        console.log('success', res)
+                        this.competition.homeTeamImgUrl = res.data[0].url
+                    },
+                    handleVisitImgSuccess(res, file) {
+                        console.log('success', res)
+                        this.competition.visitTeamImgUrl = res.data[0].url
+                    },
+                    handleRemove(file, fileList) {
+                        console.log(file, fileList);
+                    },
+                    handleExceed(files, fileList) {
+                        this.$message.warning(`파일 하나만 선택할 수 있습니다， ${files.length} 개 파일을 선택했는데， ${files.length + fileList.length} 개 파일을 선택했습니다.`);
+                    },
+                    beforeRemove(file, fileList) {
+                        return this.$confirm(`${file.name} 파일 삭제 하시겠습니까？`);
+                    }
+                },
+                mounted() {
+                    this.list()
+                }, created() {
+                    let loginAdminStr = localStorage.getItem('login_user')
+                    if (loginAdminStr) {
+                        let loginAdmin = JSON.parse(loginAdminStr)
+                        this.token = loginAdmin.data.token || ''
+                    } else {
+                        window.location = "/front/admin/login"
+                    }
+                }, watch: {}
+            })
+        </script>
+    </div>
+</div>
+
+<script>
+    $(".scroll_top").click(function () {
+        $("body,html").animate({scrollTop: 0}, 400);
+    })
+</script>
+</body>
+</html>

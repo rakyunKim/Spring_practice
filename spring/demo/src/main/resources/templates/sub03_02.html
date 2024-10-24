@@ -1,0 +1,135 @@
+<body>
+	<div class="wrapper">
+		<!-- :: header s :: -->
+		<head th:replace="include/header :: common_head(~{::title},~{::link},~{})">
+	</div>
+	<section class="container">
+		<div class="sub-top bg3">
+			<div class="sub-top-con">
+				<h2>선수단</h2>
+			</div>
+		</div>
+		<nav class="breadcrumb">
+			<div class="breadcrumb-container">
+				<ul class="breadcrumb-list">
+					<li class="home"><span class="screen-out">홈</span></li>
+					<li>
+						<div class="breadcrumb-box js-dropdown">
+							<button type="button" class="breadcrumb-btn js-dropdown-btn" data-dropdown="breadcrumb-dep1">
+								<span>선수단</span>
+							</button>
+							<div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep1">
+								<ul class="breadcrumb-cont-list">
+									<li><a href="/front/portal/sub01_01">구단소개</a></li>
+									<li><a href="/front/portal/sub02_01_list">구단소식</a></li>
+									<li><a href="/front/portal/sub03_01">선수단</a></li>
+									<li><a href="/front/portal/sub04_01">경기정보</a></li>
+									<li><a href="/front/portal/sub05_01_list">팬</a></li>
+									<li><a href="/front/portal/sub06_01">유소년</a></li>
+									<li><a href="/front/portal/sub07_01">사회적협동조합</a></li>
+								</ul>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="breadcrumb-box js-dropdown">
+							<button type="button" class="breadcrumb-btn js-dropdown-btn" data-dropdown="breadcrumb-dep2">
+								<span>선수</span>
+							</button>
+							<div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep2">
+								<ul class="breadcrumb-cont-list">
+									<li><a href="/front/portal/sub03_01">코칭스탭</a></li>
+									<li><a href="/front/portal/sub03_02">선수</a></li>
+									<li><a href="/front/portal/sub03_03">등번호</a></li>
+								</ul>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</nav>
+	</section>
+	<div id="sub_contents">
+		<div class="wrap">
+			<div id="contents_area">
+				<h2 class="container_title">선수</h2>
+				<div id="ctt_con" class="sub01_01">
+					<!-- <p class="under_con">현재 준비중입니다.</p> -->
+
+					<div class="player">
+						<div class="tab-basic">
+							<ul>
+								<li class="active"><a href="/front/portal/sub03_02">GK</a></li>
+								<li><a href="/front/portal/sub03_02_01">FW</a></li>
+								<li><a href="/front/portal/sub03_02_02">MF</a></li>
+								<li><a href="/front/portal/sub03_02_03">DF</a></li>
+							</ul>
+						</div>
+						<div class="player-list">
+							<div class="p_item">
+								<p class="thumbnail"><img src="/front/portal/img/sub/2024_squad/GK_01.png" alt="노승준" /></p>
+								<dl class="profile">
+									<dt>
+										<i>1</i>
+										노승준
+									</dt>
+									<dd>
+										<strong>포지션 : </strong>GK
+									</dd>
+	                                <dd>
+	                                    <strong>등번호 : </strong>1
+	                                </dd>
+	                                <dd>
+	                                    <strong>전소속팀 : </strong>춘천시민구단
+                                    </dd>
+								</dl>
+							</div>
+							<div class="p_item">
+								<p class="thumbnail"><img src="/front/portal/img/sub/2024_squad/GK_21.png" alt="박희근" /></p>
+								<dl class="profile">
+									<dt>
+										<i>21</i>
+										박희근
+									</dt>
+									<dd>
+										<strong>포지션 : </strong>GK
+									</dd>
+	                                <dd>
+	                                    <strong>등번호 : </strong>21
+	                                </dd>
+	                                <dd>
+	                                    <strong>전소속팀 : </strong>춘천시민구단
+                                    </dd>
+								</dl>
+							</div>
+							<div class="p_item">
+								<p class="thumbnail"><img src="/front/portal/img/sub/2024_squad/GK_31.png" alt="김용범" /></p>
+								<dl class="profile">
+									<dt>
+										<i>31</i>
+										김용범
+									</dt>
+									<dd>
+										<strong>포지션 : </strong>GK
+									</dd>
+	                                <dd>
+	                                    <strong>등번호 : </strong>31
+	                                </dd>
+	                                <dd>
+	                                    <strong>전소속팀 : </strong>한남대학교
+                                    </dd>
+								</dl>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+				<!-- :: sub contents e :: -->
+			</div>
+		</div>
+	</div>
+	</div>
+
+		<div th:replace="include/footer::footer"></div>
+
+</body>

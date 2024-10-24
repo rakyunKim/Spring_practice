@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ko" th:fragment="common_head(title,links,styles)">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="viewport"
+          content="width=device-width, height=device-height, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <meta name="title" content="춘천시민축구단">
+    <meta name="description" content="춘천,춘천시민축구단,춘천프로축구">
+    <meta name="keywords" content="춘천,춘천시민축구단,춘천프로축구">
+    <meta name="naver-site-verification" content="e446ed57727441c2d6b04b6f62a23593648cb19c"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/front/portal/img/common/fc_favicon.ico"/>
+    <link rel="icon" type="image/x-icon" href="/front/portal/img/common/fc_favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/earlyaccess/nanumpenscript.css"/>
+
+
+    <title>춘천시민축구단</title>
+
+    <script src="/front/portal/js/jquery-3.3.1.min.js"></script>
+    <script src="/front/portal/js/jquery.touchswipe.min.js"></script>
+    <script src="/front/portal/js/TweenMax.min.js"></script>
+    <script src="/front/portal/js/common.lib.js"></script>
+    <script src="/front/portal/js/bsSlider.libs.js"></script>
+    <script src="/front/portal/js/opSlider.libs.js"></script>
+    <script src="/front/portal/js/NeoVirtualKeyboard.min.js"></script>
+    <script src="/front/portal/js/slick.min.custom.1.6.0.7.js"></script>
+    <script src="/front/portal/js/slick.extensions.min.js"></script>
+    <script src="/front/portal/js/main.js"></script>
+    <script src="/front/portal/js/owl.carousel.min.js"></script>
+    <script type="text/javascript" src="/front/portal/js/owl.carousel.js"></script>
+
+    <link rel="stylesheet" href="/front/portal/css/slide.css"/>
+    <link rel="stylesheet" href="/front/portal/css/gnb.css"/>
+    <link rel="stylesheet" href="/front/portal/css/visual.css?v=20230224"/>
+    <link rel="stylesheet" href="/front/portal/css/sub.css?v=20230227"/>
+    <link rel="stylesheet" href="/front/portal/css/jquery.notebook.css"/>
+    <link rel="stylesheet" href="/front/portal/css/board.common.css"/>
+    <link rel="stylesheet" href="/front/portal/js/font-awesome/css/font-awesome.min.css?ver=191202">
+    <link rel="stylesheet" href="/front/portal/css/calendar.css"/>
+
+
+    <link rel="stylesheet" href="/front/portal/css/flatly.css"/>
+    <link rel="stylesheet" href="/front/portal/css/owl.carousel.css"/>
+    <link rel="stylesheet" href="/front/portal/css/score.css"/>
+    <link rel="stylesheet" href="/front/portal/css/element.css">
+
+    <script src="/front/portal/js/jquery1.js"></script>
+    <script src="/front/portal/js/jquery2.js"></script>
+    <script src=" /front/common/vue.js"></script>
+    <script src="/front/portal/js/jquery.notebook.js"></script>
+    <script src="/front/portal/js/webEdit.js"></script>
+    <script src="/front/portal/js/request/axios.min.js"></script>
+    <script src="/front/portal/js/element.js"></script>
+
+    <!--    多语言配置-->
+    <script src="/front/common/element.ko.js"></script>
+
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+    <script>
+        console.log(ELEMENT)
+        ELEMENT.locale(ELEMENT.lang.ko)
+    </script>
+
+</head>
+<div id="top">
+    <div>
+        <div id="top_area">
+            <div class="area_wrap">
+                <div class="left">
+                    <ul>
+                        <li><a href="https://www.facebook.com/chuncheonfootballclub/" target="_blank"><img
+                                src="/front/portal/img/common/sns_bt01.png"></a></li>
+                        <li><a href="https://www.youtube.com/channel/UClR3HgIg3TgnCHxgdg-PSLA" target="_blank"><img
+                                src="/front/portal/img/common/sns_bt02.png"></a></li>
+                        <li><a href="https://www.instagram.com/chuncheoncitizen_fc/" target="_blank"><img
+                                src="/front/portal/img/common/sns_bt03.png"></a></li>
+                        <li><a href="https://blog.naver.com/chuncheonmedia" target="_blank"><img
+                                src="/front/portal/img/common/sns_bt04.png"></a>
+                        </li>
+                    </ul>
+                </div>
+                <h1>
+                    <a href="/"><img src="/front/portal/img/common/top_logo.png" alt="FC CHUNCHEON"></a>
+                </h1>
+                <div class="right">
+                    <ul>
+                        <li>
+                            <i class="fa fa-external-link" aria-hidden="true"></i>
+                            <a href="/front/portal/login" v-if="!token">로그인</a>
+                            <a v-if="token" href="javascript:return false" @click="logout">로그아웃</a>
+                        </li>
+                        <li v-if="!token">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <a href="/front/portal/register">회원가입</a>
+                        </li>
+                        <li v-if="token">
+                            <i class="fa fa-cog" aria-hidden="true"></i>
+                            <a href="/front/portal/member_register_form">정보수정</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <header class="header">
+            <div class="header-container">
+                <div class="header-box">
+                    <!-- :: gnb s :: -->
+                    <button type="button" class="mob-gnb-btn">
+                        <span class="ico"></span>
+                    </button>
+                    <div class="sns_icon">
+                        <ul>
+                            <li><a href="https://www.facebook.com/chuncheonfootballclub/" target="_blank"><img
+                                    src="/front/portal/img/common/footer_sns_icon01.png" alt=""/></a></li>
+                            <li><a href="https://www.youtube.com/channel/UClR3HgIg3TgnCHxgdg-PSLA" target="_blank"><img
+                                    src="/front/portal/img/common/footer_sns_icon02.png" alt=""/></a></li>
+                            <li><a href="https://www.instagram.com/chuncheoncitizen_fc/" target="_blank"><img
+                                    src="/front/portal/img/common/footer_sns_icon03.png" alt=""/></a></li>
+                            <li><a href="https://blog.naver.com/chuncheonmedia" target="_blank"><img
+                                    src="/front/portal/img/common/footer_sns_icon04.png" alt=""/></a></li>
+                        </ul>
+                    </div>
+                    <div class="gnb" style="background: #323131">
+                        <ul class="gnb-etc">
+                            <li v-if="!token"><a href="/front/portal/login">LOG IN</a></li>
+                            <li v-if="token"><a href="javascript:return false" @click="logout">LOG OUT</a></li>
+                            <li v-if="!token"><a href="/front/portal/register">JOIN</a></li>
+                            <li v-if="token"><a href="/front/portal/member_register_form">INFO</a></li>
+                        </ul>
+                        <nav class="gnb-wrap">
+                            <ul class="gnb-list">
+                                <li v-for="(item,index) in menus" :key="item.id" @mouseenter="mouseEnter"
+                                    @mouseleave="mouseLeave">
+                                    <!--权限数据存在div内-->
+                                    <a :href="item.targetUrl" v-text="item.name">
+                                        <span class="ico"></span>
+                                    </a>
+                                    <div v-show="show">
+                                        <ul class="gnb-dep2-list">
+                                            <li v-for="(m,n) in item.subMenus" :key="m.id">
+                                                <a :href="m.targetUrl"
+                                                   v-text="m.name"
+                                                   class="active">
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+</div>
+
+<script type="text/javascript">
+    new Vue({
+        el: "#top",
+        data: {
+            loginUser: {},
+            show: false,
+            token: '',
+            menus: [],
+        },
+        methods: {
+            mouseEnter(event) {
+                this.show = true
+                event.target.setAttribute('class', 'active')
+            }, mouseLeave(event) {
+                this.show = false
+                event.target.removeAttribute('class')
+            },
+            getLoginMenus() {
+                // 获取登录状态下的菜单
+                this.menus = this.loginUser.data.menus
+                this.savePrivileges()
+            },
+            savePrivileges() {
+                let privilegesMap = {}
+                this.menus.forEach((item, index) => {
+                    item.subMenus.forEach((m, n) => {
+                        let targetUrl = m.targetUrl
+                        let privileges = m.privileges
+                        privilegesMap[targetUrl] = privileges
+                    })
+                })
+                localStorage.setItem("privilegesMap", JSON.stringify(privilegesMap))
+            },
+            // 获取未登录菜单
+            getNologinMenus() {
+                axios.get('/menu/nologinMenus').then(res => {
+                    this.menus = res.data.data
+                    console.log('noLoginMenus', this.menus)
+                    this.savePrivileges()
+                }).catch(err => {
+                    console.log(err)
+                });
+            },
+            logout() {
+                let that = this
+                axios.post('/user/logout', {token: that.token}).then(res => {
+                    console.log('lgoutres', res)
+                    localStorage.removeItem('login_user')
+                    window.location = '/front/portal/login'
+                }).catch(err => {
+                    console.log(err)
+                });
+            }, status() {
+                // 判断登录是否失效
+                axios.get('/status', {
+                    headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    console.log('status', res)
+                    if (res.data.code !== 200) {
+                        this.logout()
+                    }
+                }).catch(err => {
+                    this.logout()
+                    console.log(err)
+                });
+            }
+        },
+        mounted() {
+        }, created() {
+            let loginUserStr = localStorage.getItem('login_user')
+            if (loginUserStr) {
+                this.loginUser = JSON.parse(loginUserStr)
+                this.token = this.loginUser.data.token || ''
+                this.status()
+                this.getLoginMenus()
+            } else {
+                this.getNologinMenus()
+            }
+        },
+        watch: {}
+    })
+</script>

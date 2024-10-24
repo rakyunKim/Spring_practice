@@ -1,0 +1,238 @@
+<body>
+<div class="wrapper">
+    <!-- :: header s :: -->
+    <head th:replace="include/header :: common_head(~{::title},~{::link},~{})">
+        <title></title>
+    </head>
+</div>
+<div id="sub04_01">
+    <section class="container">
+        <div class="sub-top bg4">
+            <div class="sub-top-con">
+                <h2>경기정보</h2>
+            </div>
+        </div>
+        <nav class="breadcrumb">
+            <div class="breadcrumb-container">
+                <ul class="breadcrumb-list">
+                    <li class="home"><span class="screen-out">홈</span></li>
+                    <li>
+                        <div class="breadcrumb-box js-dropdown">
+                            <button type="button" class="breadcrumb-btn js-dropdown-btn"
+                                    data-dropdown="breadcrumb-dep1">
+                                <span>경기정보</span>
+                            </button>
+                            <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep1">
+                                <ul class="breadcrumb-cont-list">
+                                    <li><a href="/front/portal/sub01_01">구단소개</a></li>
+                                    <li><a href="/front/portal/sub02_01_list">구단소식</a></li>
+                                    <li><a href="/front/portal/sub03_01">선수단</a></li>
+                                    <li><a href="/front/portal/sub04_01">경기정보</a></li>
+                                    <li><a href="/front/portal/sub05_01_list">팬</a></li>
+                                    <li><a href="/front/portal/sub06_01">유소년</a></li>
+                                    <li><a href="/front/portal/sub07_01">사회적협동조합</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="breadcrumb-box js-dropdown">
+                            <button type="button" class="breadcrumb-btn js-dropdown-btn"
+                                    data-dropdown="breadcrumb-dep2">
+                                <span>경기일정/결과</span>
+                            </button>
+                            <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep2">
+                                <ul class="breadcrumb-cont-list">
+                                    <li><a href="/front/portal/sub04_01">경기일정/결과</a></li>
+                                    <li><a href="/front/portal/sub04_02">리그순위</a></li>
+                                    <li><a href="/front/portal/sub04_03">티켓정보</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </section>
+    <div id="sub_contents">
+        <div class="wrap">
+            <div id="contents_area">
+                <h2 class="container_title">경기일정/결과</h2>
+                <div id="ctt_con" class="sub01_01">
+                    <div class="cal_list">
+                        <ul>
+                            <li class="sel"><a class="btn-cal" href="/front/portal/sub04_01">달력</a></li>
+                            <li><a class="btn01 btn-list" href="/front/portal/sub04_01_01">리스트</a></li>
+                        </ul>
+                    </div>
+
+                    <el-calendar v-model="currentDate" :first-day-of-week="7">
+                        <template
+                                slot="dateCell"
+                                slot-scope="{date, data}">
+                            <div v-for="(item,index) in getItem(date,data)">
+                                <div class="slot-item">
+                                    <span :class="data.isSelected ? 'is-selected' : ''">
+                                        {{ data.day.split('-').slice(1).join('-')}}
+                                    </span>
+                                    <p v-if="item.seasonImgUrl">
+                                        <img width="25" height="25"
+                                             :src="item.seasonImgUrl" alt="">
+                                        {{item.season}}
+                                    </p>
+                                </div>
+                                <div class="slot-item" v-if="item.homeTeamImgUrl">
+                                    <span>
+                                        <div>
+                                            <img :src="item.homeTeamImgUrl">
+                                            {{item.homeScope}}
+                                        </div>
+                                        <div>VS</div>
+                                        <div>
+                                            <img :src="item.visitTeamImgUrl" alt="">
+                                            {{item.visitScope}}
+                                        </div>
+                                    </span>
+                                </div>
+                                <div v-if="item.place" class="slot_place">
+                                    {{item.place}}
+                                </div>
+                            </div>
+                        </template>
+                    </el-calendar>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="include/footer::footer"></div>
+
+<script type="text/javascript">
+    Date.prototype.format = function (fmt) {
+        let o = {
+            "M+": this.getMonth() + 1,
+            "d+": this.getDate(),
+            "h+": this.getHours(),
+            "m+": this.getMinutes(),
+            "s+": this.getSeconds(),
+            "q+": Math.floor((this.getMonth() + 3) / 3),
+            "S": this.getMilliseconds()
+        };
+        if (/(y+)/.test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        }
+        for (var k in o) {
+            if (new RegExp("(" + k + ")").test(fmt)) {
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            }
+        }
+        return fmt;
+    }
+    new Vue({
+        el: "#sub04_01",
+        data: {
+            currentDate: new Date(),
+            competitions: {}
+        },
+        methods: {
+            getQueryString(name) {
+                let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                let r = window.location.search.substr(1).match(reg);
+                if (r != null) {
+                    return unescape(r[2]);
+                }
+                return ""
+            },
+            initDate() {
+                let dateTime = this.getQueryString("dateTime")
+                if (dateTime) {
+                    this.currentDate = new Date(dateTime)
+                } else {
+                    this.currentDate = new Date()
+                }
+                this.getCurrentCompetition(this.currentDate)
+            },
+            getItem(date, data) {
+                let day = data.day
+                let competition = this.competitions[day]
+                let res = []
+                if (competition && competition.length > 0) {
+                    res.push(competition[0])
+                } else {
+                    res.push({})
+                }
+                return res
+            },
+            // 获取当前월份的比赛
+            getCurrentCompetition(val) {
+                let date = val.format('yyyy-MM-dd')
+                axios.get('/competition/calendar', {
+                    params: {
+                        date: date
+                    },
+                    headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    console.log('res', res)
+                    this.competitions = res.data.data
+                    console.log(this.competitions)
+                })
+            }
+        },
+        mounted() {
+
+        }, created() {
+            let loginUserStr = localStorage.getItem('login_user')
+            if (loginUserStr) {
+                let loginUser = JSON.parse(loginUserStr)
+                this.token = loginUser.data.token || ''
+            }
+            this.initDate()
+        }, watch: {
+            'currentDate': function (newVal, oldVal) {
+                this.getCurrentCompetition(newVal)
+            }
+        }
+    })
+</script>
+<style>
+    .is-selected {
+        color: #1989FA;
+    }
+
+    .wrap {
+        width: 85%;
+    }
+
+    .el-calendar-table .el-calendar-day {
+        min-height: 170px;
+        text-align: center;
+        overflow: hidden;
+    }
+
+    .slot-item {
+        white-space: nowrap;
+        margin-bottom: 10px;
+    }
+    .slot-item span > div{
+        width:33.333%;
+        float: left;
+    }
+    .slot-item img{width:40px;height:40px;}
+    .slot_place{padding-top:45px;}
+    @media(max-width: 768px) {
+        .el-calendar-table .el-calendar-day {
+            /*height: 120px;*/
+            min-height:170px;
+            text-align: center;
+            overflow: hidden;}
+        .slot-item {margin-bottom: 10px;}
+        .el-calendar-day > div {font-size:13px;}
+        .slot-item span{font-size:13px;}
+        .slot-item img{width:20px;height:20px;}
+        .slot-item span > div{width:100%;}
+        .slot_place{padding-top:5px;}
+</style>
+</body>

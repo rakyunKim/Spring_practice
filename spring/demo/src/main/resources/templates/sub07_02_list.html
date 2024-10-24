@@ -1,0 +1,502 @@
+<body>
+<div class="wrapper">
+    <!-- :: header s :: -->
+    <head th:replace="include/header :: common_head(~{::title},~{::link},~{})">
+        <title></title>
+    </head>
+</div>
+<div id="sub0702list">
+    <section class="container">
+        <div class="sub-top bg7">
+            <div class="sub-top-con">
+                <h2>사회적협동조합</h2>
+            </div>
+        </div>
+        <nav class="breadcrumb">
+            <div class="breadcrumb-container">
+                <ul class="breadcrumb-list">
+                    <li class="home"><span class="screen-out">홈</span></li>
+                    <li>
+                        <div class="breadcrumb-box js-dropdown">
+                            <button type="button" class="breadcrumb-btn js-dropdown-btn"
+                                    data-dropdown="breadcrumb-dep1">
+                                <span>사회적협동조합</span>
+                            </button>
+                            <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep1">
+                                <ul class="breadcrumb-cont-list">
+                                    <li><a href="/front/portal/sub01_01">구단소개</a></li>
+                                    <li><a href="/front/portal/sub02_01_list">구단소식</a></li>
+                                    <li><a href="/front/portal/sub03_01">선수단</a></li>
+                                    <li><a href="/front/portal/sub04_01">경기정보</a></li>
+                                    <li><a href="/front/portal/sub05_01_list">팬</a></li>
+                                    <li><a href="/front/portal/sub06_01">유소년</a></li>
+                                    <li><a href="/front/portal/sub07_01">사회적협동조합</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="breadcrumb-box js-dropdown">
+                            <button type="button" class="breadcrumb-btn js-dropdown-btn"
+                                    data-dropdown="breadcrumb-dep2">
+                                <span>조합게시판</span>
+                            </button>
+                            <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep2">
+                                <ul class="breadcrumb-cont-list">
+                                    <li><a href="/front/portal/sub07_01">조합/사업소개</a></li>
+                                    <li v-if="hasPrivilege('sub07_02_list_list')"><a href="/front/portal/sub07_05_list">후원금내역</a></li>
+                                    <li v-if="hasPrivilege('sub07_02_list_list')"><a href="/front/portal/sub07_06_list">자료실</a></li>
+                                    <li v-if="hasPrivilege('sub07_02_list_list')"><a href="/front/portal/sub07_07_list">활동사진</a></li>
+                                    <li v-if="hasPrivilege('sub07_02_list_list')"><a href="/front/portal/sub07_08_list">조합공지사항</a></li>
+                                    <!--<li><a href="/front/portal/sub07_02_list">조합게시판</a></li>-->
+                                    <li><a href="/front/portal/sub07_03">조합원/후원신청</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </section>
+
+    <el-dialog title="메뉴 선택하세요" :visible.sync="dialogFormVisible">
+        <el-tree
+                :data="treeData"
+                node-key="id"
+                show-checkbox
+                default-expand-all
+                ref="tree"
+                :props="defaultProps"
+        >
+        </el-tree>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">취 소</el-button>
+            <el-button type="primary" @click="moveConfirm">확 인</el-button>
+        </div>
+    </el-dialog>
+
+
+    <div id="sub_contents">
+        <div class="wrap">
+            <div id="contents_area">
+                <h2 class="container_title">조합게시판</h2>
+                <!-- 게시판 목록 시작 { -->
+                <div id="bo_list" style="padding-bottom:40px;">
+                    <div id="bo_btn_top">
+                        <div id="bo_list_total">
+                            <span><i class="fa fa-file-o" aria-hidden="true"></i> Total {{total}} /</span>
+                            {{params.current}} page
+                        </div>
+
+                        <ul class="btn_bo_user">
+                            <li v-if="hasPrivilege('sub07_02_list_replay')"><a @click="goAdmin" class="btn_admin btn"><i
+                                    class="fa fa-user-circle-o"
+                                    aria-hidden="true"></i> 관리자</a>
+                            </li>
+                            <li v-if="hasPrivilege('sub07_02_list_write')"><a @click="goCreate" class="btn_b02 btn"><i
+                                    class="fa fa-pencil-square-o"
+                                    aria-hidden="true"></i>
+                                글쓰기</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="likeTbl">
+                        <ul>
+                            <li class="likeTblTr likeTblTh">
+                                <div v-if="hasPrivilege('sub07_02_list_upload')" class="td_chk">
+                                    <input type="checkbox" id="chkall" @change="triggle">
+                                </div>
+                                <div>제목</div>
+                                <div class="mvInlineN">작성자</div>
+                                <div class="mvInlineN td_num"><a href="#">조회</a></div>
+                                <div class="mvInlineN td_datetime" style="width: 80px"><a href="#">날짜</a></div>
+                            </li>
+
+                            <li class=" likeTblTr likeTblTd" v-for="(item,index) in pageData.records">
+                                <div v-if="hasPrivilege('sub07_02_list_upload')" class="td_chk">
+                                    <input type="checkbox" name="articleCheckbox" :value="item.id">
+                                </div>
+                                <div class="td_subject" style="padding-left:0px" @click="goDetail(item.id)">
+                                    <div class="bo_tit">
+                                        <a>{{item.title}}<em v-show="item.newArticle"><span
+                                                class="new_icon">N</span></em>
+                                            <em v-show="item.notice"><span
+                                                    class="notice_icon">공지</span></em>
+                                        </a>
+                                    </div>
+                                </div>
+                                <span class="onlyMvV" style="padding-left:0px"></span>
+                                <div class="mvInlinev td_name sv_use"><span
+                                        class="sv_member">{{item.author}}</span>
+                                </div>
+                                <div class="mvInlinev td_num"><i class="fa fa-eye"></i> {{item.count}}</div>
+                                <div class="mvInlinev td_datetime"><i class="fa fa-clock-o" style="width: 80px"></i>
+                                    {{item.created}}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="bo_fx">
+                        <ul class="btn_bo_user">
+                            <li v-if="hasPrivilege('sub07_02_list_replay')">
+                                <button type="button" name="btn_submit" value="선택삭제" class="btn btn_b01"
+                                        @click="delById">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i> 선택삭제
+                                </button>
+                            </li>
+                            <li v-if="hasPrivilege('sub07_02_list_replay')">
+                                <button type="button" name="btn_submit" value="선택복사"
+                                        @click="move('copy')"
+                                        class="btn btn_admin"><i class="fa fa-files-o" aria-hidden="true"></i> 선택복사
+                                </button>
+                            </li>
+                            <li v-if="hasPrivilege('sub07_02_list_replay')">
+                                <button type="button" name="btn_submit" value="선택이동"
+                                        @click="move('move')"
+                                        class="btn btn_admin"><i class="fa fa-arrows" aria-hidden="true"></i> 선택이동
+                                </button>
+                            </li>
+                            <li v-if="hasPrivilege('sub07_02_list_write')">
+                                <a @click="goCreate" class="btn_b02 btn"><i class="fa fa-pencil-square-o"
+                                                                            aria-hidden="true"></i>글쓰기</a>
+                            </li>
+                        </ul>
+                    </div>
+                    </form>
+                    <!-- 게시판 검색 시작 { -->
+                    <fieldset id="bo_sch">
+                        <legend>게시물 검색</legend>
+                        <form name="fsearch" @submit.prevent=''>
+                            <input type="hidden">
+                            <input type="hidden">
+                            <input type="hidden">
+                            <select name="sfl" id="sfl" v-model="selectMode">
+                                <option :value="0">제목+내용</option>
+                                <option :value="1">제목</option>
+                                <option :value="2">내용</option>
+                                <option :value="3">작성자</option>
+                            </select>
+                            <input type="text" name="stx" value=""
+                                   class="sch_input" size="25"
+                                   maxlength="20"
+                                   placeholder="검색어를 입력해주세요"
+                                   v-model="seachParam"
+                                   @keyup.enter="pageSearch"
+                            >
+                            <button type="button" value="검색" class="sch_btn" @click="pageSearch">
+                                <i class="fa fa-search"
+                                   aria-hidden="true"></i><span
+                                    class="sound_only"></span></button>
+                        </form>
+                    </fieldset>
+                    <!-- } 게시판 검색 끝 -->
+                </div>
+                <!-- 페이지 -->
+                <nav class="pg_wrap">
+                    <el-pagination
+                            layout="prev, pager, next"
+                            :total="total"
+                            :current-page="params.current"
+                            :page-size="params.size"
+                            @current-change="changePage"
+                    >
+                    </el-pagination>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="include/footer::footer"></div>
+</body>
+
+<script type="text/javascript">
+    Date.prototype.format = function (fmt) {
+        let o = {
+            "M+": this.getMonth() + 1,
+            "d+": this.getDate(),
+            "h+": this.getHours(),
+            "m+": this.getMinutes(),
+            "s+": this.getSeconds(),
+            "q+": Math.floor((this.getMonth() + 3) / 3),
+            "S": this.getMilliseconds()
+        };
+        if (/(y+)/.test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        }
+        for (const k in o) {
+            if (new RegExp("(" + k + ")").test(fmt)) {
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            }
+        }
+        return fmt;
+    }
+    new Vue({
+        el: "#sub0702list",
+        data: {
+            moveMode: '',
+            articleIds: [],
+            treeData: [],
+            defaultProps: {
+                children: 'subMenus',
+                label: 'name',
+                disabled: 'disabled'
+            },
+            dialogFormVisible: false,
+            currentMenuId: 0,
+            seachParam: '',
+            selectMode: 0,
+            privileges: [],
+            token: '',
+            checkList: [],
+            pageData: [],
+            total: 0,
+            params: {
+                current: 1,
+                size: 15,
+                title: '',
+                content: '',
+                author: '',
+                userId: '',
+                authorId: '',
+                titleOrContent: '',
+                type: '9'
+            }
+        },
+        methods: {
+            moveConfirm() {
+                let keys = this.getCheckedKeys()
+                if (keys.length !== 1) {
+                    alert('메뉴를 선택하세요')
+                    return
+                }
+                console.log('keys', keys)
+                let param = {}
+                param.menuId = keys[0]
+                param.articleIds = this.articleIds
+                param.moveMode = this.moveMode
+                axios.post('/portal/article/move', param, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    window.location.reload()
+                    this.$notify({
+                        title: '알림',
+                        message: '이동 성공',
+                        type: 'success'
+                    });
+                })
+                this.dialogFormVisible = false
+            },
+            getCheckedKeys() {
+                return this.$refs.tree.getCheckedKeys()
+            },
+            move(mode) {
+                this.moveMode = mode
+                let inputs = document.getElementsByName("articleCheckbox");
+                let ids = []
+                for (let i = 0; i < inputs.length; i++) {
+                    if (inputs[i].checked) {
+                        ids.push(inputs[i].value)
+                    }
+                }
+                this.articleIds = ids
+                if (!ids || ids.length === 0) {
+                    this.$notify({
+                        title: '알림',
+                        message: '이동 할 글 선택하세요',
+                        type: 'warning'
+                    });
+                    return
+                }
+                axios.get('/menu/menutrees', {
+                    headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    console.log('menuTrees', res)
+                    this.treeData = res.data.data
+                    this.dialogFormVisible = true
+                })
+            },
+            goAdmin(id) {
+                localStorage.setItem('menu2_1_1', this.currentMenuId)
+                window.location = "/front/admin/menu2_1_1"
+            },
+            getPrivileges() {
+                let uri = window.location.pathname
+                let privilegesData = localStorage.getItem("privilegesMap")
+                let allPrivileges = JSON.parse(privilegesData) || []
+                let privileges = allPrivileges[uri]
+                if (privileges) {
+                    privileges.forEach((item, index) => {
+                        this.privileges.push(item.name)
+                    })
+                }
+                console.log('this.privileges', this.privileges)
+            },
+            hasPrivilege(name) {
+                return this.privileges.indexOf(name) !== -1
+            },
+            goCreate() {
+                localStorage.removeItem('sub07_02_write')
+                window.location = '/front/portal/sub07_02_write'
+            },
+            triggle() {
+                let allcheck = document.getElementById("chkall")
+                let inputs = document.getElementsByName("articleCheckbox");
+                for (let i = 0; i < inputs.length; i++) {
+                    inputs[i].checked = allcheck.checked;
+                }
+            }, copyArticle() {
+                let keys = this.getCheckedKeys()
+                if (keys.length !== 1) {
+                    alert('메뉴를 선택하세요')
+                    return
+                }
+                console.log('keys', keys)
+                let param = {}
+                param.menuId = keys[0]
+                param.articleIds = this.articleIds
+                let inputs = document.getElementsByName("articleCheckbox");
+                let ids = []
+                for (let i = 0; i < inputs.length; i++) {
+                    if (inputs[i].checked) {
+                        ids.push(inputs[i].value)
+                    }
+                }
+                let idsJoin = ids.join(",")
+                axios.get('/portal/article/copy', {
+                    params: {
+                        ids: idsJoin
+                    }, headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    this.$notify({
+                        title: '알림',
+                        message: '복사 성공',
+                        type: 'success'
+                    });
+                })
+            },
+            delById() {
+                let inputs = document.getElementsByName("articleCheckbox");
+                let ids = []
+                for (let i = 0; i < inputs.length; i++) {
+                    if (inputs[i].checked) {
+                        ids.push(inputs[i].value)
+                    }
+                }
+                let idsJoin = ids.join(",")
+                if (!idsJoin) {
+                    this.$notify({
+                        title: '알림',
+                        message: '삭제할 내용을 선택하세요',
+                        type: 'warning'
+                    });
+                    return
+                }
+                axios.delete('/portal/article', {
+                    params: {
+                        ids: idsJoin
+                    }, headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    this.$notify({
+                        title: '알림',
+                        message: '삭제 성공',
+                        type: 'success'
+                    });
+                    window.location.reload()
+                })
+            },
+            goDetail(id) {
+                localStorage.setItem('sub07_02_view', id)
+                window.location = '/front/portal/sub07_02_view'
+            },
+            pageSearch() {
+                this.params.current = 1
+                this.search()
+            },
+            changePage(val) {
+                this.params.current = val
+                this.search()
+            },
+            clearParam() {
+                this.params.title = ''
+                this.params.content = ''
+                this.params.author = ''
+                this.params.titleOrContent = ''
+            },
+            getCurrentMenuId() {
+                let uri = window.location.pathname
+                // 判断登录是否失效
+                axios.get('/menu/getByUri', {
+                    headers: {
+                        'Authorization': this.token
+                    }, params: {
+                        uri: uri
+                    }
+                }).then(res => {
+                    console.log('res', res)
+                    this.currentMenuId = res.data.data.id
+                }).catch(err => {
+                    console.log(err)
+                });
+            },
+            search() {
+                switch (this.selectMode) {
+                    case 0:
+                        this.clearParam()
+                        this.params.titleOrContent = this.seachParam
+                        break
+                    case 1:
+                        this.clearParam()
+                        this.params.title = this.seachParam
+                        break;
+                    case 2:
+                        this.clearParam()
+                        this.params.content = this.seachParam
+                        break;
+                    case 3:
+                        this.clearParam()
+                        this.params.author = this.seachParam
+                        break;
+                }
+                axios.get('/portal/article', {
+                    params: this.params,
+                    headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    this.pageData = res.data.data
+                    this.pageData.records.forEach((item, index) => {
+                        item.created = new Date(item.created).format('yy-MM-dd')
+                    })
+                    this.total = this.pageData.total
+                    console.log(this.pageData)
+                })
+            }
+        },
+        mounted() {
+            this.pageSearch()
+            this.getPrivileges()
+            this.getCurrentMenuId()
+        }, created() {
+            let loginUserStr = localStorage.getItem('login_user')
+            if (loginUserStr) {
+                let loginUser = JSON.parse(loginUserStr)
+                this.token = loginUser.data.token || ''
+            }
+        }, watch: {}
+    })
+</script>
+<style>
+    .el-pager li.active {
+        color: #fd9602;
+    }
+</style>

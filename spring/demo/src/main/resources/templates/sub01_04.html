@@ -1,0 +1,90 @@
+<body>
+<div class="wrapper">
+    <!-- :: header s :: -->
+    <head th:replace="include/header :: common_head(~{::title},~{::link},~{})">
+        <title></title>
+    </head>
+</div>
+<section class="container">
+    <div class="sub-top bg1">
+        <div class="sub-top-con">
+            <h2>구단소개</h2>
+        </div>
+    </div>
+    <nav class="breadcrumb">
+        <div class="breadcrumb-container">
+            <ul class="breadcrumb-list">
+                <li class="home"><span class="screen-out">홈</span></li>
+                <li>
+                    <div class="breadcrumb-box js-dropdown">
+                        <button type="button" class="breadcrumb-btn js-dropdown-btn" data-dropdown="breadcrumb-dep1">
+                            <span>구단소개</span>
+                        </button>
+                        <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep1">
+                            <ul class="breadcrumb-cont-list">
+                                <li><a href="/front/portal/sub01_01">구단소개</a></li>
+                                <li><a href="/front/portal/sub02_01_list">구단소식</a></li>
+                                <li><a href="/front/portal/sub03_01">선수단</a></li>
+                                <li><a href="/front/portal/sub04_01">경기정보</a></li>
+                                <li><a href="/front/portal/sub05_01_list">팬</a></li>
+                                <li><a href="/front/portal/sub06_01">유소년</a></li>
+                                <li><a href="/front/portal/sub07_01">사회적협동조합</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="breadcrumb-box js-dropdown">
+                        <button type="button" class="breadcrumb-btn js-dropdown-btn" data-dropdown="breadcrumb-dep2">
+                            <span>홈경기장</span>
+                        </button>
+                        <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep2">
+                            <ul class="breadcrumb-cont-list">
+                                <li><a href="/front/portal/sub01_01">인사말</a></li>
+                                <li><a href="/front/portal/sub01_02">연혁</a></li>
+                                <li><a href="/front/portal/sub01_06">조직도</a></li>
+                                <li><a href="/front/portal/sub01_03">구단상징</a></li>
+                                <li><a href="/front/portal/sub01_04">홈경기장</a></li>
+                                <li><a href="/front/portal/sub01_05">스폰서</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</section>
+<div id="sub_contents">
+    <div class="wrap">
+        <div id="contents_area">
+            <h2 class="container_title">홈경기장</h2>
+
+            <div id="ctt_con" class="sub01_01">
+                <section class="sec01 paragraph animatedParent" data-sequence="300">
+                    <!--
+                        * 카카오맵 - 약도서비스
+                        * 한 페이지 내에 약도를 2개 이상 넣을 경우에는
+                        * 약도의 수 만큼 소스를 새로 생성, 삽입해야 합니다.
+                    -->
+                    <!-- 1. 약도 노드 -->
+                    <div id="daumRoughmapContainer1644907055400" class="root_daum_roughmap root_daum_roughmap_landing"></div>
+
+                    <!-- 2. 설치 스크립트 -->
+                    <script charset="UTF-8" class="daum_roughmap_loader_script" src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
+
+                    <!-- 3. 실행 스크립트 -->
+                    <script charset="UTF-8">
+                        new daum.roughmap.Lander({
+                            "timestamp" : "1644907055400",
+                            "key" : "295qi",
+                            "mapWidth" : "640",
+                            "mapHeight" : "360"
+                        }).render();
+                    </script>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="include/footer::footer"></div>
+</body>

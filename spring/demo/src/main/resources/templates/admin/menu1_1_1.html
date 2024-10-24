@@ -1,0 +1,279 @@
+<div id="wrapper">
+    <div style="height:40px;"></div>
+
+    <div id="container" class="">
+
+        <head th:replace="admin/include/header::admin_header"></head>
+
+        <div class="container_wr" id="menu1_1_1">
+
+            <h1 id="container_title">
+                <p style="font-size:14px;color:#333333;"><i class="fa fa-home" aria-hidden="true"></i> > 회원관리 > 일반회원관리 >
+                    회원정보수정</p>
+                회원정보수정
+            </h1>
+
+            <div class="btn_fixed_top">
+                <a href="javascript:history.back(-1);"><input type="button" value="회원목록" class="btn btn_02"></a>
+                <a class="btn btn_01" @click="save">저장</a>
+            </div>
+            <section style="margin-top:40px;">
+
+                <h2>회원수정</h2>
+                <div class="tbl_frm01 tbl_wrap">
+                    <table>
+                        <caption>회원 수정</caption>
+                        <colgroup>
+                            <col class="grid_4">
+                            <col>
+                            <col class="grid_4">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th scope="row">아이디</th>
+                            <td>
+                                <input type="text" :readonly="userForm.id!==null" class="frm_input" size="15"
+                                       maxlength="20"
+                                       v-model="userForm.username">
+                            </td>
+                            <th scope="row"><label for="mb_password">비밀번호</label></th>
+                            <td><input type="password" name="mb_password" id="mb_password" class="frm_input " size="15"
+                                       maxlength="20" v-model="userForm.password"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">이름(실명)</th>
+                            <td><input type="text" required class="required frm_input" size="15"
+                                       maxlength="20" v-model="userForm.realName"></td>
+                            <th scope="row">닉네임</th>
+                            <td><input type="text" name="mb_nick" required class="required frm_input"
+                                       size="15" maxlength="20" v-model="userForm.nickName"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><label for="mb_level">회원 권한</label></th>
+                            <td>
+                                <select id="mb_level" name="mb_level" v-model="userForm.roleId">
+                                    <option :value="item.id" :key="item.id"
+                                            v-for="(item,index) in roles">
+                                        {{item.name}}
+                                    </option>
+                                </select>
+                            </td>
+                            <th scope="row">E-mail</th>
+                            <td><input type="text" maxlength="100" required
+                                       class="required frm_input email" size="30" v-model="userForm.email"></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">휴대폰번호</th>
+                            <td><input type="text" class="frm_input" size="15" maxlength="20" v-model="userForm.mobile">
+                            </td>
+                            <th scope="row"><label for="mb_tel">전화번호</label></th>
+                            <td><input type="text" class="frm_input" size="15" maxlength="20"
+                                       v-model="userForm.landline"
+                            ></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">주소</th>
+                            <td colspan="3" class="td_addr_line">
+                                <input type="text" class="frm_input readonly" size="5" maxlength="6"
+                                       v-model="userForm.postCode">
+                                <button type="button" class="btn_frmline" @click="showApi">주소 검색</button>
+                                <br>
+                                <input type="text" class="frm_input readonly" size="60"
+                                       v-model="userForm.baseAddress">
+                                기본주소 <br>
+                                <input type="text" class="frm_input" size="60"
+                                       v-model="userForm.detailAddress">
+                                상세주소
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">메일 수신</th>
+                            <td>
+                                <input type="radio" checked="checked" name="receiveEmail" :value="1"
+                                       v-model="userForm.receiveEmail">예&nbsp;
+                                <input type="radio" name="receiveEmail" :value="0" v-model="userForm.receiveEmail">아니오
+                            </td>
+                            <th scope="row">SMS 수신</th>
+                            <td>
+                                <input type="radio" name="receiveMsg" :value="1" v-model="userForm.receiveMsg">예&nbsp;
+                                <input type="radio" checked="checked" name="receiveMsg" :value="0"
+                                       v-model="userForm.receiveMsg">아니오
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">조합원 신청 유/무</th>
+                            <td>
+                                <input type="radio" name="memberApply" v-model="userForm.memberApply" :value="1">신청함&nbsp;
+                                <input type="radio" checked="checked" name="memberApply" v-model="userForm.memberApply"
+                                       :value="0">미신청
+                            </td>
+                            <th scope="row">후원금 / 출자금</th>
+                            <td>
+                                <input type="text" value="100,000원" class="frm_input" size="15"
+                                       v-model="userForm.praiseGrant">원 /
+                                <input type="text" value="10,000원" class="frm_input" size="15"
+                                       v-model="userForm.stockFund">원
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">회원가입일</th>
+                            <td>{{userForm.created}}</td>
+                            <th scope="row">최근접속일</th>
+                            <td>{{userForm.lastVisitTime}}</td>
+                        </tr>
+                        <tr>
+                            <!--todo 没明白这两个字段是什么意思-->
+                            <th scope="row">탈퇴일자</th>
+                            <td>
+                                <input type="text" class="frm_input" maxlength="8">
+                                <input type="checkbox">
+                                탈퇴일을 오늘로 지정
+                            </td>
+                            <th scope="row">접근차단일자</th>
+                            <td>
+                                <input type="text" class="frm_input" maxlength="8">
+                                <input type="checkbox"> 접근차단일을 오늘로 지정
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="btn_ok">
+                    <a class="btn btn_01" @click="save">저장</a>
+                </div>
+            </section>
+        </div>
+        <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+        <script>
+            new Vue({
+                el: "#menu1_1_1",
+                data: {
+                    userForm: {
+                        id: null,
+                        username: null,
+                        password: null,
+                        realName: null,
+                        nickName: null,
+                        roleId: null,
+                        email: null,
+                        mobile: null,
+                        landline: null,
+                        postCode: null,
+                        baseAddress: null,
+                        detailAddress: null,
+                        receiveMsg: null,
+                        receiveEmail: null,
+                        memberApply: null,
+                        praiseGrant: null,
+                        stockFund: null,
+                        created: null,
+                        lastVisitTime: null,
+                    },
+                    token: '',
+                    users: [],
+                    roles: [],
+                    totalUser: 0,
+                },
+                methods: {
+                    showApi() {
+                        new window.daum.Postcode({
+                            oncomplete: (data) => {
+                                let fullRoadAddr = data.roadAddress;
+                                let extraRoadAddr = '';
+                                if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                                    extraRoadAddr += data.bname;
+                                }
+                                if (data.buildingName !== '' && data.apartment === 'Y') {
+                                    extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                                }
+                                if (extraRoadAddr !== '') {
+                                    extraRoadAddr = ' (' + extraRoadAddr + ')';
+                                }
+                                if (fullRoadAddr !== '') {
+                                    fullRoadAddr += extraRoadAddr;
+                                }
+                                this.userForm.postCode = data.zonecode;
+                                this.userForm.baseAddress = fullRoadAddr;
+                            }
+                        }).open()
+                    },
+                    save() {
+                        let jsonparam = JSON.stringify(this.userForm)
+                        axios.post('/user/save', jsonparam, {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': this.token
+                            }
+                        }).then(res => {
+                            console.log(res)
+                            let data = res.data
+                            if (data.code === 200) {
+                                window.location = '/front/admin/menu1_1'
+                            } else {
+                                this.$notify({
+                                    title: '알림',
+                                    message: data.msg,
+                                    type: 'warning'
+                                });
+                            }
+                        })
+                    },
+                    init() {
+                        let userId = localStorage.getItem('menu1_1_1')
+                        if (userId) {
+                            axios.get('/user/getById', {
+                                params: {
+                                    userId: userId
+                                },
+                                headers: {
+                                    'Authorization': this.token
+                                }
+                            }).then(res => {
+                                console.log(res)
+                                this.userForm = res.data.data
+                            })
+                        }
+                    },
+                    getRoles() {
+                        // 获取所有角色数据
+                        axios.get('/role', {
+                            headers: {
+                                'Authorization': this.token
+                            }
+                        }).then(res => {
+                            this.roles = res.data.data
+                            console.log('roles', this.roles)
+                        })
+                    },
+                },
+                mounted() {
+                    this.getRoles()
+                    this.init()
+                }, created() {
+                    let loginAdminStr = localStorage.getItem('login_user')
+                    if (loginAdminStr) {
+                        let loginAdmin = JSON.parse(loginAdminStr)
+                        this.token = loginAdmin.data.token || ''
+                    } else {
+                        window.location = "/front/admin/login"
+                    }
+                }, watch: {}
+            })
+        </script>
+        <div th:replace="admin/include/footer::footer"></div>
+    </div>
+
+</div>
+
+<script>
+    $(".scroll_top").click(function () {
+        $("body,html").animate({scrollTop: 0}, 400);
+    })
+</script>
+</body>
+</html>

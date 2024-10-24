@@ -1,0 +1,241 @@
+<body>
+<div class="wrapper">
+    <!-- :: header s :: -->
+    <head th:replace="include/header :: common_head(~{::title},~{::link},~{})">
+        <title></title>
+    </head>
+</div>
+<section class="container">
+    <div class="sub-top bg3">
+        <div class="sub-top-con">
+            <h2>선수단</h2>
+        </div>
+    </div>
+    <nav class="breadcrumb">
+        <div class="breadcrumb-container">
+            <ul class="breadcrumb-list">
+                <li class="home"><span class="screen-out">홈</span></li>
+                <li>
+                    <div class="breadcrumb-box js-dropdown">
+                        <button type="button" class="breadcrumb-btn js-dropdown-btn" data-dropdown="breadcrumb-dep1">
+                            <span>구단소개</span>
+                        </button>
+                        <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep1">
+                            <ul class="breadcrumb-cont-list">
+                                <li><a href="/front/portal/sub01_01">구단소개</a></li>
+                                <li><a href="/front/portal/sub02_01_list">구단소식</a></li>
+                                <li><a href="/front/portal/sub03_01">선수단</a></li>
+                                <li><a href="/front/portal/sub04_01">경기정보</a></li>
+                                <li><a href="/front/portal/sub05_01_list">팬</a></li>
+                                <li><a href="/front/portal/sub06_01">유소년</a></li>
+                                <li><a href="/front/portal/sub07_01">사회적협동조합</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="breadcrumb-box js-dropdown">
+                        <button type="button" class="breadcrumb-btn js-dropdown-btn" data-dropdown="breadcrumb-dep2">
+                            <span>선수단</span>
+                        </button>
+                        <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep2">
+                            <ul class="breadcrumb-cont-list">
+                                <li><a href="/front/portal/sub03_01">코칭스탭</a></li>
+                                <li><a href="/front/portal/sub03_02">선수</a></li>
+								<li><a href="/front/portal/sub03_03">등번호</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</section>
+<div id="sub_contents">
+    <div class="wrap">
+        <div id="contents_area">
+            <h2 class="container_title">선수</h2>
+
+            <div id="ctt_con" class="sub01_01">
+                <div class="player">
+                    <div class="tab-basic">
+                        <ul>
+                            <li><a href="/front/portal/sub03_02">GK</a></li>
+                            <li><a href="/front/portal/sub03_02_01">FW</a></li>
+                            <li class="active"><a href="/front/portal/sub03_02_02">MF</a></li>
+                            <li><a href="/front/portal/sub03_02_03">DF</a></li>
+                        </ul>
+                    </div>
+					<div class="player-list">
+						<div class="p_item">
+							<p class="thumbnail"><img src="/front/portal/img/sub/2024_squad/MF_04.png" alt="서보일" /></p>
+							<dl class="profile">
+								<dt>
+									<i>4</i>
+									서보일
+								</dt>
+								<dd>
+									<strong>포지션 : </strong>MF
+								</dd>
+								<dd>
+									<strong>등번호 : </strong>4
+								</dd>
+								<dd>
+									<strong>전소속팀 : </strong>파주시민구단
+								</dd>
+							</dl>
+						</div>
+						<!-- <div class="p_item">
+							<p class="thumbnail"><img src="/front/portal/img/sub/2024_squad/MF_07.png" alt="이풍범" /></p>
+							<dl class="profile">
+								<dt>
+									<i>7</i>
+									이풍범
+								</dt>
+								<dd>
+									<strong>포지션 : </strong>MF
+								</dd>
+								<dd>
+									<strong>등번호 : </strong>7
+								</dd>
+								<dd>
+									<strong>전소속팀 : </strong>춘천시민구단
+								</dd>
+							</dl>
+						</div>-->
+						<div class="p_item">
+							<p class="thumbnail"><img src="/front/portal/img/sub/2024_squad/MF_08.png" alt="박준용" /></p>
+							<dl class="profile">
+								<dt>
+									<i>8</i>
+									박준용
+								</dt>
+								<dd>
+									<strong>포지션 : </strong>MF
+								</dd>
+								<dd>
+									<strong>등번호 : </strong>8
+								</dd>
+								<dd>
+									<strong>전소속팀 : </strong>FK 프르지브람
+								</dd>
+							</dl>
+						</div>
+						<div class="p_item">
+							<p class="thumbnail"><img src="/front/portal/img/sub/2024_squad/MF_14.png" alt="김우진" /></p>
+							<dl class="profile">
+								<dt>
+									<i>14</i>
+									김우진
+								</dt>
+								<dd>
+									<strong>포지션 : </strong>MF
+								</dd>
+								<dd>
+									<strong>등번호 : </strong>14
+								</dd>
+								<dd>
+									<strong>전소속팀 : </strong>한남대학교
+								</dd>
+							</dl>
+						</div>
+						<div class="p_item">
+							<p class="thumbnail"><img src="/front/portal/img/sub/2024_squad/MF_16.png" alt="문준영" /></p>
+							<dl class="profile">
+								<dt>
+									<i>16</i>
+									문준영
+								</dt>
+								<dd>
+									<strong>포지션 : </strong>MF
+								</dd>
+								<dd>
+									<strong>등번호 : </strong>16
+								</dd>
+								<dd>
+									<strong>전소속팀 : </strong>세경대학교
+								</dd>
+							</dl>
+						</div>
+						<div class="p_item">
+							<p class="thumbnail"><img src="/front/portal/img/sub/2024_squad/MF_77.png" alt="정승현" /></p>
+							<dl class="profile">
+								<dt>
+									<i>77</i>
+									정승현
+								</dt>
+								<dd>
+									<strong>포지션 : </strong>MF
+								</dd>
+								<dd>
+									<strong>등번호 : </strong>77
+								</dd>
+								<dd>
+									<strong>전소속팀 : </strong>춘천시민구단
+								</dd>
+							</dl>
+						</div>
+						<div class="p_item">
+							<p class="thumbnail"><img src="/front/portal/img/sub/2024_squad/MF_88.png" alt="오창일" /></p>
+							<dl class="profile">
+								<dt>
+									<i>88</i>
+									오창일
+								</dt>
+								<dd>
+									<strong>포지션 : </strong>MF
+								</dd>
+								<dd>
+									<strong>등번호 : </strong>77
+								</dd>
+								<dd>
+									<strong>전소속팀 : </strong>클루브 데포르티보 레오네스 델 노르테
+								</dd>
+							</dl>
+						</div>
+						<div class="p_item">
+							<p class="thumbnail"><img src="/front/portal/img/sub/2024_squad/MF_93.png" alt="성봉재" /></p>
+							<dl class="profile">
+								<dt>
+									<i>93</i>
+									성봉재
+								</dt>
+								<dd>
+									<strong>포지션 : </strong>MF
+								</dd>
+								<dd>
+									<strong>등번호 : </strong>93
+								</dd>
+								<dd>
+									<strong>전소속팀 : </strong>FC 목포
+								</dd>
+							</dl>
+						</div>
+						<div class="p_item">
+							<p class="thumbnail"><img src="/front/portal/img/sub/2024_squad/MF_99.png" alt="윤동권" /></p>
+							<dl class="profile">
+								<dt>
+									<i>99</i>
+									윤동권
+								</dt>
+								<dd>
+									<strong>포지션 : </strong>MF
+								</dd>
+								<dd>
+									<strong>등번호 : </strong>99
+								</dd>
+								<dd>
+									<strong>전소속팀 : </strong>강릉시민구단
+								</dd>
+							</dl>
+						</div>
+
+					</div>
+				</div>
+            </div>
+            <!-- :: sub contents e :: -->
+        </div>
+    </div>
+</div>
+<div th:replace="include/footer::footer"></div>
+</body>

@@ -1,0 +1,212 @@
+<body>
+<div class="wrapper">
+    <!-- :: header s :: -->
+    <head th:replace="include/header :: common_head(~{::title},~{::link},~{})">
+        <title></title>
+    </head>
+</div>
+<div id="sub04_02">
+    <section class="container">
+        <div class="sub-top bg4">
+            <div class="sub-top-con">
+                <h2>경기정보</h2>
+            </div>
+        </div>
+        <nav class="breadcrumb">
+            <div class="breadcrumb-container">
+                <ul class="breadcrumb-list">
+                    <li class="home"><span class="screen-out">홈</span></li>
+                    <li>
+                        <div class="breadcrumb-box js-dropdown">
+                            <button type="button" class="breadcrumb-btn js-dropdown-btn"
+                                    data-dropdown="breadcrumb-dep1">
+                                <span>경기정보</span>
+                            </button>
+                            <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep1">
+                                <ul class="breadcrumb-cont-list">
+                                    <li><a href="/front/portal/sub01_01">구단소개</a></li>
+                                    <li><a href="/front/portal/sub02_01_list">구단소식</a></li>
+                                    <li><a href="/front/portal/sub03_01">선수단</a></li>
+                                    <li><a href="/front/portal/sub04_01">경기정보</a></li>
+                                    <li><a href="/front/portal/sub05_01_list">팬</a></li>
+                                    <li><a href="/front/portal/sub06_01">유소년</a></li>
+                                    <li><a href="/front/portal/sub07_01">사회적협동조합</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="breadcrumb-box js-dropdown">
+                            <button type="button" class="breadcrumb-btn js-dropdown-btn"
+                                    data-dropdown="breadcrumb-dep2">
+                                <span>리그순위</span>
+                            </button>
+                            <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep2">
+                                <ul class="breadcrumb-cont-list">
+                                    <li><a href="/front/portal/sub04_01">경기일정/결과</a></li>
+                                    <li><a href="/front/portal/sub04_02">리그순위</a></li>
+                                    <li><a href="/front/portal/sub04_03">티켓정보</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </section>
+    <div id="sub_contents">
+        <div class="wrap">
+            <div id="contents_area">
+                <h2 class="container_title">리그순위</h2>
+                <div id="ctt_con" class="sub01_01">
+
+                    <div class="calendar">
+                        <div class="clearfix" style="margin-bottom:30px;">
+                            <div class="date_list">
+                                <el-select v-model="selectYear" placeholder="선택해주세요">
+                                    <el-option label="2022년" :value="2022"></el-option>
+                                    <el-option label="2021년" :value="2021"></el-option>
+                                    <el-option label="2020년" :value="2020"></el-option>
+                                    <el-option label="2019년" :value="2019"></el-option>
+                                    </el-option>
+                                </el-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="likeTbl3">
+                        <ul>
+                            <li class="likeTbl3Tr likeTbl3Th">
+                                <div class="mvInlineN2 td_group">리그</div>
+                                <div>팀순위</div>
+                                <div class="sub04_title">팀명</div>
+                                <div class="td_num">승점</a></div>
+                                <div class="mvInlineN td_group">승무패</a></div>
+                                <div class="mvInlineN td_group">골득실차</a></div>
+                                <div class="mvInlineN td_group">경기수</a></div>
+                            </li>
+                            <li class=" likeTbl3Tr likeTbl3Td" v-for="(item,index) in rankingList">
+                                <!--리그엠블럼 표시 추가-->
+                                <div class="td_group2">
+                                    <img width="45" height="43"  :src="item.logoUrl">
+                                </div>
+                                <div class="td_group">{{index + 1}}</div>
+                                <div class="td_subject" style="padding-left:0px">
+                                    <div class="bo_tit">
+                                        <img width="45" height="43" :src="item.clubLogoImgUrl">
+                                        {{item.clubName}}
+                                    </div>
+                                </div>
+                                <div class="td_name sv_use">승점 {{item.points}}점</div>
+                                <div class="mvInlinev td_num">{{item.win}}승 {{item.draw}}무 {{item.fail}}패</div>
+                                <div class="mvInlinev td_group">골득실 {{item.goalWin}} 득점 {{item.goalDraw}} 실점
+                                    {{item.goalFail}}
+                                </div>
+                                <div class="mvInlinev td_group">{{item.currentCompetitionTimes}}경기</div>
+                            </li>
+                        </ul>
+                        <div
+                                style="width:1200px;height: 100px;color: #ccc;background-color:#f5f5f5;line-height: 100px;text-align: center;"
+                                v-show="rankingList.length === 0"
+                        >
+                            No Data</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div th:replace="include/footer::footer"></div>
+
+<script>
+    new Vue({
+        el: "#sub04_02",
+        data(){
+            return{
+                selectYear: new Date().getFullYear(),
+                pickerOptions: {
+                    shortcuts: [{
+                        text: '최근 일주일',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '최근 한달',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '최근 삼개월',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }]
+                },
+                date: '',
+                rankings: [],
+                token: '',
+            }
+        },
+        computed:{
+            rankingList(){
+            	var list = [];
+            	for(var i = 0; i < this.rankings.length; i++) {
+            		var dt = this.rankings[i].endTime;
+            		if(dt.length > 4 && dt.substr(0, 4) == this.selectYear) {
+            			list.push(this.rankings[i]);
+            		}
+            	}
+                return list;
+            }
+        },
+        methods: {
+            dateChange(date) {
+                this.list(date[0], date[1])
+            },
+            triggle() {
+                let allcheck = document.getElementById("chkall")
+                let inputs = document.getElementsByName("checkbox");
+                for (let i = 0; i < inputs.length; i++) {
+                    inputs[i].checked = allcheck.checked;
+                }
+            },
+            list(start, end) {
+                axios.get('/ranking/list', {
+                    params: {
+                        current: 1,
+                        size: 100,
+                        start: start,
+                        end: end
+                    },
+                    headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    let results = res.data.data
+                    this.rankings = results.records
+                    console.log(results)
+                })
+            },
+        },
+        mounted() {
+            this.list(null, null)
+        }, created() {
+            let loginUserStr = localStorage.getItem('login_user')
+            if (loginUserStr) {
+                let loginUser = JSON.parse(loginUserStr)
+                this.token = loginUser.data.token || ''
+            }
+        }, watch: {}
+    })
+</script>
+</body>

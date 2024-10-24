@@ -1,0 +1,480 @@
+<div id="wrapper">
+    <div style="height:40px;"></div>
+    <div id="container" class="">
+        <head th:replace="admin/include/header::admin_header"></head>
+        <div class="container_wr" id="menu2_1_1">
+            <h1 id="container_title">
+                <p style="font-size:14px;color:#333333;"><i class="fa fa-home" aria-hidden="true"></i> > 게시판관리 > 게시판수정
+                </p>
+                게시판수정
+            </h1>
+            <div class="btn_fixed_top">
+                <a :href="menu.targetUrl" class="btn btn_02">게시판바로가기</a>
+                <a class="btn btn_01" @click="save">저장</a>
+            </div>
+            <section style="margin-top:40px;">
+
+                <h2>게시판 기본설정</h2>
+                <div class="tbl_frm01 tbl_wrap">
+                    <table>
+                        <caption>게시판 기본 설정</caption>
+                        <tbody>
+                        <tr>
+                            <!--调整为父公告栏-->
+                            <th scope="row">로트 선택</th>
+                            <td colspan="2">
+                                <el-select v-model="menu.parentId" placeholder="로트 선택">
+                                    <el-option
+                                            v-for="item in rootMenus"
+                                            :key="item.id"
+                                            :label="item.name"
+                                            :value="item.id">
+                                    </el-option>
+                                </el-select>
+                                <a :href="menu.targetUrl" class="btn_frmline">게시판 바로가기</a>
+                                <a href="/front/admin/menu2_1" class="btn_frmline">목록으로</a>
+                            </td>
+                        </tr>
+                        </tr>
+                        <tr>
+                            <!--公告板名称-->
+                            <th scope="row">게시판명</th>
+                            <td colspan="2">
+                                <input type="text" required class="required frm_input" size="80"
+                                       v-model="menu.name"
+                                       maxlength="120">
+                            </td>
+                        </tr>
+                        <tr>
+                            <!--跳转的url-->
+                            <th scope="row">url 지정</th>
+                            <td colspan="2">
+                                <input type="text" required class="required frm_input" size="80"
+                                       v-model="menu.targetUrl"
+                                       maxlength="120">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">접속기기</th>
+                            <td>
+                                <span class="frm_info">PC 와 모바일 사용을 구분합니다.</span>
+                                <el-select id="bo_device" name="bo_device" v-model="menu.device" size="mini">
+                                    <el-option
+                                            :value="0" selected="selected"
+                                            label="PC와 모바일에서 모두 사용"></el-option>
+                                    <el-option :value="1" label="PC 전용"></el-option>
+                                    <el-option :value="2" label="모바일 전용"></el-option>
+                                </el-select>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <h2 style="padding-top:20px;">게시판 권한 설정</h2>
+                    <table>
+                        <caption>게시판 권한 설정</caption>
+                        <tbody>
+                        <tr>
+                            <!--列表权限-->
+                            <th scope="row">목록보기 권한</th>
+                            <td>
+                                <span class="frm_info">권한 1은 비회원, 2 이상 회원입니다. 권한은 10 이 가장 높습니다.</span>
+                                <el-select v-model="privileges.list" size="mini">
+                                    <el-option :value="item.id" :key="item.id"
+                                               v-for="(item,index) in roles"
+                                               :label="item.name"
+                                    >
+                                    </el-option>
+                                </el-select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">글읽기 권한</th>
+                            <td>
+                                <!--读权限-->
+                                <el-select v-model="privileges.read" size="mini">
+                                    <el-option :value="item.id" :key="item.id"
+                                               v-for="(item,index) in roles"
+                                               :label="item.name"
+                                    >
+                                    </el-option>
+                                </el-select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">글쓰기 권한</th>
+                            <td>
+                                <!--写权限-->
+                                <el-select v-model="privileges.write" size="mini">
+                                    <el-option :value="item.id" :key="item.id"
+                                               v-for="(item,index) in roles"
+                                               :label="item.name"
+                                    >
+                                    </el-option>
+                                </el-select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">댓글답변 권한</th>
+                            <td>
+                                <!--回复权限-->
+                                <el-select v-model="privileges.replay" size="mini">
+                                    <el-option :value="item.id" :key="item.id"
+                                               v-for="(item,index) in roles"
+                                               :label="item.name"
+                                    >
+                                    </el-option>
+                                </el-select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">댓글쓰기 권한</th>
+                            <td>
+                                <!--评论权限-->
+                                <el-select v-model="privileges.comment" size="mini">
+                                    <el-option :value="item.id" :key="item.id"
+                                               v-for="(item,index) in roles"
+                                               :label="item.name"
+                                    >
+                                    </el-option>
+                                </el-select>
+                            </td>
+                        </tr>
+                        <!--<tr>
+                            <th scope="row">링크 권한</th>
+                            <td>
+
+                                <el-select v-model="privileges.url" size="mini">
+                                    <el-option :value="item.id" :key="item.id"
+                                               v-for="(item,index) in roles"
+                                               :label="item.name"
+                                    >
+                                    </el-option>
+                                </el-select>
+                            </td>
+                        </tr>-->
+                        <tr>
+                            <th scope="row">업로드 권한</th>
+                            <td>
+                                <!--上传权限-->
+                                <el-select v-model="privileges.upload" size="mini">
+                                    <el-option :value="item.id" :key="item.id"
+                                               v-for="(item,index) in roles"
+                                               :label="item.name"
+                                    >
+                                    </el-option>
+                                </el-select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">다운로드 권한</th>
+                            <td>
+                                <!--下载权限-->
+                                <el-select v-model="privileges.download" size="mini">
+                                    <el-option :value="item.id" :key="item.id"
+                                               v-for="(item,index) in roles"
+                                               :label="item.name"
+                                    >
+                                    </el-option>
+                                </el-select>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!--<h2 style="padding-top:20px;">게시판 기능 설정</h2>
+                    <table>
+                        <caption>게시판 기능 설정</caption>
+                        <tbody>
+                        <tr>
+                            <th scope="row">원글 수정 불가</th>
+                            <td>
+											 <span class="frm_info">
+											 댓글의 수가 설정 수 이상이면 원글을 수정할 수 없습니다. 0으로 설정하시면 댓글 수에 관계없이 수정할 수있습니다.</span> 댓글
+                                <input type="text" value="1" required class="required numeric frm_input" size="3">개 이상
+                                달리면 수정불가
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">원글 삭제 불가</th>
+                            <td>
+                                댓글 <input type="text" value="1" required class="required numeric frm_input" size="3">개
+                                이상 달리면 삭제불가
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">본인확인 사용</th>
+                            <td>
+                                <span class="frm_info">본인확인 여부에 따라 게시물을 조회 할 수 있도록 합니다.</span>
+                                <select>
+                                    <option value="" selected="selected">사용함</option>
+                                    <option value="">사용안함</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">전체 검색 사용</th>
+                            <td>
+                                <input type="checkbox" value="1">
+                                사용
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>-->
+                    <h2 style="padding-top:20px;">게시판 디자인/양식</h2>
+                    <table>
+                        <caption>게시판 디자인/양식</caption>
+                        <tbody>
+                        <tr>
+                            <th scope="row">제목 길이</th>
+                            <td>
+                                <span class="frm_info">목록에서의 제목 글자수. 잘리는 글은 … 로 표시</span>
+                                <input type="text" value="60" required class="required numeric frm_input" size="4">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">페이지당 목록 수</th>
+                            <td>
+                                <input type="text" value="15" required class="required numeric frm_input" size="4">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">갤러리 이미지 수</th>
+                            <td>
+                                <span class="frm_info">갤러리 형식의 게시판 목록에서 이미지를 한줄에 몇장씩 보여 줄 것인지를 설정하는 값</span>
+                                <select>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4" selected="selected">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">갤러리 이미지 폭</th>
+                            <td>
+                                <span class="frm_info">갤러리 형식의 게시판 목록에서 썸네일 이미지의 폭을 설정하는 값</span>
+                                <input type="text" value="360" required class="required numeric frm_input" size="4">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">갤러리 이미지 높이</th>
+                            <td>
+                                <span class="frm_info">갤러리 형식의 게시판 목록에서 썸네일 이미지의 높이를 설정하는 값</span>
+                                <input type="text" value="250" required class="required numeric frm_input" size="4">
+                            </td>
+                        </tr>
+
+                        <!--<tr>
+                            <th scope="row">게시판 폭</th>
+                            <td>
+                                <span class="frm_info">100 이하는 %</span>
+                                <input type="text" value="90" required class="required numeric frm_input" size="4">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">이미지 폭 크기</th>
+                            <td>
+                                <span class="frm_info">게시판에서 출력되는 이미지의 폭 크기</span>
+                                <input type="text" value="835" required class="required numeric frm_input" size="4"> 픽셀
+                            </td>
+                        </tr>-->
+                        <tr>
+                            <th scope="row">새글 아이콘</th>
+                            <td>
+                                <span class="frm_info">글 입력후 new 이미지를 출력하는 시간. 0을 입력하시면 아이콘을 출력하지 않습니다.</span> <input
+                                    type="text" value="24" required class="required numeric frm_input" size="4">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <h2 style="padding-top:20px;">게시판 기능 설정</h2>
+                    <table>
+                        <caption>게시판 기능 설정</caption>
+                        <tbody>
+                        <tr>
+                            <th scope="row">비밀글 사용</th>
+                            <td>
+                                <span class="frm_info">"체크박스"는 글작성시 비밀글 체크가 가능합니다. "무조건"은 작성되는 모든글을 비밀글로 작성합니다. (관리자는 체크박스로 출력합니다.) 스킨에 따라 적용되지 않을 수 있습니다.</span>
+                                <el-select v-model="menu.useSecret" >
+                                    <el-option :value="0" label="사용하지 않음"></el-option>
+                                    <el-option :value="1" label="체크박스"></el-option>
+                                    <el-option :value="2" label="무조건"></el-option>
+                                </el-select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">이름(실명) 사용</th>
+                            <td>
+                                <el-checkbox v-model="menu.useRealName">사용</el-checkbox>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">IP 보이기 사용</th>
+                            <td>
+                                <el-checkbox v-model="menu.ipVisible">사용</el-checkbox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">파일 업로드 개수</th>
+                            <td>
+                                <span class="frm_info">게시물 한건당 업로드 할 수 있는 파일의 최대 개수 (0 은 파일첨부 사용하지 않음)</span>
+                                <el-input type="number" @input="getFileLimit" class="el-inputs required numeric frm_input" v-model="menu.fileLimit"></el-input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">파일 업로드 용량</th>
+                            <td>
+                                <span class="frm_info">최대 100M 이하 업로드 가능, 1 MB = 1,048,576 bytes</span>
+                                업로드 파일 한개당
+                                <el-input type="number" class="el-inputs" v-model.number="menu.maxSize"></el-input> bytes 이하
+<!--                                <input type="text" value="1048576" required class="required numeric frm_input"  size="10"> -->
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="btn_ok">
+                    <a class="btn btn_01" @click="save">저장</a>
+                </div>
+            </section>
+        </div>
+        <script>
+            new Vue({
+                el: "#menu2_1_1",
+                data() {
+                    return {
+                        rootMenus: [],
+                        token: '',
+                        roles: [],
+                        users: [],
+                        articles: [],
+                        menu: {
+                            id: '',
+                            parentId: '',
+                            name: '',
+                            device: 0,
+                            targetUrl: '',
+                            useSecret: '',
+                            useRealName: true,
+                            fileLimit:10,
+                            maxSize:1048576
+                        },
+                        privileges: {
+                            list: '',
+                            read: '',
+                            write: '',
+                            replay: '',
+                            comment: '',
+                            url: '',
+                            upload: '',
+                            download: ''
+                        }
+                    }
+                },
+                methods: {
+                    init() {
+                        let id = localStorage.getItem('menu2_1_1')
+                        if (id) {
+                            axios.get('/menu/getById', {
+                                params: {
+                                    id: id
+                                },
+                                headers: {
+                                    'Authorization': this.token
+                                }
+                            }).then(res => {
+                                this.menu = res.data.data.menu
+
+                                this.privileges = res.data.data.privileges
+                                console.log('menu', this.menu)
+                            })
+                        }
+                    },
+                    getFileLimit(e){
+                        if(Number(e)>10){
+                            this.$set(this.menu,'fileLimit',10)
+                        }
+                    },
+                    save() {
+                        if(!this.menu.fileLimit || !this.menu.maxSize){
+                            this.$message.error('파일 수 또는 크기는 비워둘 수 없습니다')
+                        }else if(Number(this.menu.maxSize)>104857600){
+                            this.$message.error('크기는 100m를 초과할 수 없습니다.')
+                        }else{
+                            console.log(this.menu.useSecret)
+                            let param = {}
+                            param.menu = this.menu
+                            param.privileges = this.privileges
+                            axios.post('/menu', param, {
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': this.token
+                                }
+                            }).then(res => {
+                                this.$notify({
+                                    title: '알림',
+                                    message: '성공적으로 저장 되었음',
+                                    type: 'success'
+                                });
+                                window.location = '/front/admin/menu2_1'
+                            })
+                        }
+                    },
+                    //获取根目录
+                    getRootMenus() {
+                        axios.get('/menu/root', {
+                            headers: {
+                                'Authorization': this.token
+                            }
+                        }).then(res => {
+                            console.log('rootMenus', res)
+                            this.rootMenus = res.data.data
+                        })
+                    },
+                    getRoles() {
+                        // 获取所有角色数据
+                        axios.get('/role', {
+                            headers: {
+                                'Authorization': this.token
+                            }
+                        }).then(res => {
+                            console.log(res)
+                            this.roles = res.data.data
+                        })
+                    },
+
+                },
+                mounted() {
+                    this.getRoles()
+                    this.getRootMenus()
+                    this.init()
+                }, created() {
+                    let loginAdminStr = localStorage.getItem('login_user')
+                    if (loginAdminStr) {
+                        let loginAdmin = JSON.parse(loginAdminStr)
+                        this.token = loginAdmin.data.token || ''
+                    } else {
+                        window.location = "/front/admin/login"
+                    }
+                }, watch: {}
+            })
+        </script>
+        <div th:replace="admin/include/footer::footer"></div>
+    </div>
+
+</div>
+
+<script>
+    $(".scroll_top").click(function () {
+        $("body,html").animate({scrollTop: 0}, 400);
+    })
+</script>
+</body>
+</html>

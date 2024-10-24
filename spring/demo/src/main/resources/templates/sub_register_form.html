@@ -1,0 +1,277 @@
+<body>
+<div class="wrapper">
+    <!-- :: header s :: -->
+    <head th:replace="include/header :: common_head(~{::title},~{::link},~{})">
+        <title></title>
+    </head>
+</div>
+<div id="subRegisterForm">
+    <section class="container">
+        <div class="sub-top bg1">
+            <div class="sub-top-con">
+                <h2>회원가입</h2>
+            </div>
+        </div>
+        <nav class="breadcrumb">
+            <div class="breadcrumb-container">
+                <ul class="breadcrumb-list">
+                    <li class="home"><span class="screen-out">홈</span></li>
+                    <li>
+                        <div class="breadcrumb-box js-dropdown">
+                            <button type="button" class="breadcrumb-btn js-dropdown-btn"
+                                    data-dropdown="breadcrumb-dep1">
+                                <span>구단소개</span>
+                            </button>
+                            <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep1">
+                                <ul class="breadcrumb-cont-list">
+                                    <li><a href="/front/portal/sub01_01">구단소개</a></li>
+                                    <li><a href="/front/portal/sub02_01_list">구단소식</a></li>
+                                    <li><a href="/front/portal/sub03_01">선수단</a></li>
+                                    <li><a href="/front/portal/sub04_01">경기정보</a></li>
+                                    <li><a href="/front/portal/sub05_01_list">팬</a></li>
+                                    <li><a href="/front/portal/sub06_01">유소년</a></li>
+                                    <li><a href="/front/portal/sub07_01">사회적협동조합</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="breadcrumb-box js-dropdown">
+                            <button type="button" class="breadcrumb-btn js-dropdown-btn"
+                                    data-dropdown="breadcrumb-dep2">
+                                <span>회원가입</span>
+                            </button>
+                            <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep2">
+                                <ul class="breadcrumb-cont-list">
+                                    <li><a href="/front/portal/sub_register">회원가입</a></li>
+                                    <li><a href="/front/portal/member_register_form">회원정보수정</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </section>
+    <div id="sub_contents">
+        <div class="wrap">
+            <div id="contents_area">
+                <h2 class="container_title">회원가입</h2>
+                <div id="ctt_con" class="sub01_01">
+                    <form id="fregisterform">
+                        <div id="register_form" class="form_01">
+                            <div>
+                                <h2>사이트 이용정보 입력</h2>
+                                <ul>
+                                    <li>
+                                        <input type="text" class="frm_input half_input required" placeholder="아이디"
+                                               v-model="regForm.username">
+                                        <el-button
+                                                size="mini"
+                                                @click="idCheck">아이디 중복 체크
+                                        </el-button>
+                                        <p class="frm_info">영문자, 숫자만 입력 가능. 최소 3자 이상 입력하세요.</p>
+                                    </li>
+                                    <li>
+                                        <input type="password" class="frm_input half_input required"
+                                               placeholder="비밀번호" v-model="regForm.password">
+                                        <input type="password" class="frm_input half_input right_input required"
+                                               placeholder="비밀번호 확인" v-model="rePassword">
+                                        <span class="frm_info">영문자, 숫자 조합으로 8자 이상 입력하세요.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="tbl_frm01 tbl_wrap">
+                                <h2>개인정보 입력</h2>
+                                <ul>
+                                    <li>
+                                        <input type="text" class="frm_input half_input required " size="10"
+                                               placeholder="이름" v-model="regForm.realName">
+                                    </li>
+                                    <li>
+                                        <input type="text" class="frm_input required nospace  half_input" size="10"
+                                               placeholder="닉네임" v-model="regForm.nickName">
+                                        <p class="frm_info">공백없이 한글, 영문, 숫자만 입력 가능</p>
+                                    </li>
+                                    <li>
+                                        <input type="text" class="frm_input email full_input required" size="70"
+                                               placeholder="E-mail" v-model="regForm.email">
+                                    </li>
+                                    <li>
+                                        <input type="text" class="frm_input email full_input" size="70"
+                                               placeholder="홈페이지" v-model="regForm.homePage">
+                                    </li>
+                                    <li>
+                                        <input type="text" class="frm_input half_input" placeholder="전화번호"
+                                               v-model="regForm.landline">
+                                        <input type="text" class="frm_input half_input right_input required"
+                                               placeholder="휴대폰번호" v-model="regForm.mobile">
+                                    </li>
+                                    <li>
+                                        <input type="text" class="frm_input " size="20" id="postCode"
+                                               placeholder="우편번호"
+                                               v-model="regForm.postCode">
+                                        <button type="button" class="btn_frmline"
+                                                style="font-size:0.8em;background:#707070;" @click="showApi">주소검색
+                                        </button>
+                                        <br>
+                                        <input type="text" class="frm_input frm_address full_input" size="50"
+                                               placeholder="기본주소" v-model="regForm.baseAddress">
+                                        <input type="text" class="frm_input frm_address full_input" size="50"
+                                               placeholder="상세주소" v-model="regForm.detailAddress">
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="tbl_frm01 tbl_wrap form_02">
+                                <h2>기타 개인설정</h2>
+                                <ul>
+                                    <li>
+                                        <label class="frm_label">메일수신 동의</label>
+                                        <input type="radio" checked="checked" name="receiveEmail" :value="1"
+                                               v-model="regForm.receiveEmail">예&nbsp;
+                                        <input type="radio" name="receiveEmail" :value="0"
+                                               v-model="regForm.receiveEmail">아니오
+                                    </li>
+                                    <li>
+                                        <label class="frm_label">SMS수신 동의</label>
+                                        <input type="radio" name="receiveMsg" :value="1"
+                                               v-model="regForm.receiveMsg">예&nbsp;
+                                        <input type="radio" checked="checked" name="receiveMsg" :value="0"
+                                               v-model="regForm.receiveMsg">아니오
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="btn_confirm">
+                            <a href="javascript:window.history.back(-1);" class="btn_cancel">취소</a>
+                            <input type="button" value="회원가입" class="btn_submit" accesskey="s" @click="register">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div th:replace="include/footer::footer"></div>
+    </div>
+</div>
+</body>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script type="text/javascript">
+    new Vue({
+        el: "#subRegisterForm",
+        data: {
+            rePassword: '',
+            regForm: {
+                username: '',
+                password: '',
+                realName: '',
+                nickName: '',
+                email: '',
+                homePage: '',
+                landline: '',
+                mobile: '',
+                postCode: '',
+                baseAddress: '',
+                detailAddress: '',
+                receiveEmail: '',
+                receiveMsg: '',
+            },
+        },
+        methods: {
+            idCheck() {
+                axios.get('/user/idCheck/' + this.regForm.username, {
+                    headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    console.log(res)
+                    this.$notify({
+                        title: '알림',
+                        message: res.data.data,
+                        type: 'warning'
+                    });
+                })
+            },
+            showApi() {
+                new window.daum.Postcode({
+                    oncomplete: (data) => {
+                        let fullRoadAddr = data.roadAddress;
+                        let extraRoadAddr = '';
+                        if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                            extraRoadAddr += data.bname;
+                        }
+                        if (data.buildingName !== '' && data.apartment === 'Y') {
+                            extraRoadAddr += (extmenu4_1raRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                        }
+                        if (extraRoadAddr !== '') {
+                            extraRoadAddr = ' (' + extraRoadAddr + ')';
+                        }
+                        if (fullRoadAddr !== '') {
+                            fullRoadAddr += extraRoadAddr;
+                        }
+                        this.regForm.postCode = data.zonecode;
+                        this.regForm.baseAddress = fullRoadAddr;
+                    }
+                }).open()
+            },
+            valid() {
+                let form = this.regForm
+                let usernameRex = /^[a-zA-Z0-9]+$/;
+                let nickNameRex = /^[a-zA-Z0-9\\ㄱ-ㅎ\\가-힣]+$/
+                if (!form.username) {
+                    return 'ID 비었습니다!';
+                } else if (form.username.length < 3 || !usernameRex.test(form.username) || form.username.indexOf('_') !== -1
+                ) {
+                    return 'ID는 영문자, 숫자만 입력 가능. 최소 3자 이상 입력하세요.';
+                }
+                if (!form.password) {
+                    return '비밀번호 비었습니다!'
+                } else if (form.password !== this.rePassword) {
+                    return '비밀번호 일치하지 않습니다!';
+                }
+                if (!form.realName) {
+                    return '이름 비었습니다!';
+                }
+                if (!form.nickName) {
+                    return '닉네임 비었습니다!'
+                } else if (form.nickName.indexOf(' ') !== -1 || !nickNameRex.test(form.nickName)) {
+                    return '닉네임은 공백없이 한글, 영문, 숫자만 입력 가능'
+                }
+                if (!form.email) {
+                    return '이메일 비었습니다!'
+                }
+                if (!form.mobile) {
+                    return '휴대폰 번호를 비었습니다!'
+                }
+            },
+            register() {
+                let valid = this.valid()
+                if (valid) {
+                    this.$notify({
+                        title: '알림',
+                        message: valid,
+                        type: 'warning'
+                    });
+                    return
+                }
+                axios.post('/register', JSON.stringify(this.regForm), {
+                    headers: {'Content-Type': 'application/json'}
+                }).then(res => {
+                    console.log(res)
+                    let data = res.data
+                    if (data.code === 200) {
+                        window.location = '/front/portal/login'
+                    } else {
+                        this.$notify({
+                            title: '알림',
+                            message: data.msg,
+                            type: 'warning'
+                        });
+                    }
+                })
+            }
+        },
+        mounted() {
+        }, created() {
+        }, watch: {}
+    })
+</script>

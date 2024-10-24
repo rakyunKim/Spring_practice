@@ -1,0 +1,185 @@
+<div id="wrapper">
+    <div style="height:40px;"></div>
+
+    <div id="container" class="">
+
+        <head th:replace="admin/include/header::admin_header"></head>
+
+        <div id="menu1_2">
+            <div class="container_wr">
+                <h1 id="container_title">
+                    <p style="font-size:14px;color:#333333;"><i class="fa fa-home" aria-hidden="true"></i> > 회원관리 >
+                        회원접속통계
+                    </p>
+                    회원접속통계
+                </h1>
+                <form class="local_sch03 local_sch">
+                    <div class="sch_last">
+                        <el-date-picker
+                                v-model="date"
+                                type="daterange"
+                                align="left"
+                                unlink-panels
+                                range-separator="~"
+                                start-placeholder="시작일"
+                                end-placeholder="마지막일"
+                                :picker-options="pickerOptions"
+                                value-format="yyyy-MM-dd"
+                                @change="dateChange"
+                        >
+                        </el-date-picker>
+                    </div>
+                </form>
+                <section style="margin-top:20px;">
+                    <h2>일간방문자수</h2>
+                    <div class="tbl_head01 tbl_wrap">
+                        <!--이건 참고용으로 넣어드립니다. 막대그래프 형태의 방문자 통계 넣어주시면 됩니다.-->
+                        <ve-line :data="chartData"></ve-line>
+                    </div>
+                </section>
+                <section style="margin-top:40px;">
+                    <h2>회원접속집계 목록</h2>
+                    <div class="tbl_head01 tbl_wrap">
+                        <table>
+                            <caption>접속자집계 목록</caption>
+                            <thead>
+                            <tr>
+                                <th>아이디/닉네임</th>
+                                <th scope="col">접속 경로</th>
+                                <th scope="col">브라우저</th>
+                                <th scope="col">OS</th>
+                                <th scope="col">접속기기</th>
+                                <th scope="col">일시</th>
+                                <th scope="col">IP</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr :class="bg(index)" v-for="(item,index) in records" :key="index">
+                                <td>{{item.username + '/' + item.realname}}</td>
+                                <td>http://google.com</td>
+                                <td class="td_category td_category1">{{item.browser}}</td>
+                                <td class="td_category td_category3">{{item.platForm}}</td>
+                                <td class="td_category td_category2">{{item.device}}</td>
+                                <td class="td_datetime">{{item.lastUpdateTime}}</td>
+                                <td class="td_category">{{item.remoteHost}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+
+        <div th:replace="admin/include/footer::footer"></div>
+    </div>
+    <script src="/front/admin/js/charts/echarts.min.js"></script>
+    <script src="/front/admin/js/charts/vcharts.index.js"></script>
+    <link rel="stylesheet" href="/front/admin/css/vcharts.css">
+    <script>
+        new Vue({
+            el: "#menu1_2",
+            data: {
+                records: [],
+                token: '',
+                chartData: {
+                    columns: [],
+                    rows: []
+                },
+                pickerOptions: {
+                    shortcuts: [{
+                        text: '최근 일주일',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '최근 한달',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '최근 삼개월',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }]
+                },
+                date: ''
+            },
+            methods: {
+                bg(index) {
+                    if (index % 2 === 0) {
+                        return 'bg0'
+                    } else {
+                        return 'bg1'
+                    }
+                },
+                initRecords() {
+                    axios.get('/user/getUserOperateRecords', {
+                        params: {
+                            current: 1,
+                            size: 5,
+                        },
+                        headers: {
+                            'Authorization': this.token
+                        }
+                    }).then(res => {
+                        console.log(res)
+                        let results = res.data.data
+                        this.records = results.records
+                    })
+                },
+                dateChange(date) {
+                    console.log('date', date)
+                    this.initCharts(date[0], date[1])
+                },
+                initCharts(start, end) {
+                    axios.get('/user/statis', {
+                        params: {
+                            start: start,
+                            end: end
+                        },
+                        headers: {
+                            'Authorization': this.token
+                        }
+                    }).then(res => {
+                        console.log('charts', res)
+                        this.chartData = res.data.data
+                    })
+                }
+            },
+            mounted() {
+                this.initCharts(null, null)
+                this.initRecords()
+            }, created() {
+                let loginAdminStr = localStorage.getItem('login_user')
+                if (loginAdminStr) {
+                    let loginAdmin = JSON.parse(loginAdminStr)
+                    this.token = loginAdmin.data.token || ''
+                } else {
+                    window.location = "/front/admin/login"
+                }
+            }, watch: {}
+        })
+    </script>
+
+</div>
+
+<script>
+    $(".scroll_top").click(function () {
+        $("body,html").animate({scrollTop: 0}, 400);
+    })
+    $(".gnb-list a").removeClass("active");
+    $(".gnb-list a:eq(1)").addClass("active");
+</script>
+</body>
+</html>

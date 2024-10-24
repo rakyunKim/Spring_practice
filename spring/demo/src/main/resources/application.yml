@@ -1,0 +1,62 @@
+server:
+  port: 8088
+  max-http-header-size: 102400
+  # dev
+  #error:
+  #  include-exception: true # 오류 응답에 exception의 내용을 포함할지 여부
+  #  include-stacktrace: always # 오류 응답에 stacktrace 내용을 포함할 지 여부
+spring:
+  mail:
+    host: smtp.kakao.com
+    port: 465
+    username: chuncheonfc@kakao.com
+    password: wowns789#@
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+        debug: true
+  application:
+    name: ccfc
+  profiles:
+    active: dev
+  resources:
+    static-locations: classpath:/META-INF/resources/, classpath:/resources/, classpath:/static/, classpath:/public/,file:/home/ubuntu/ccfc/
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: utf-8
+    servlet:
+      content-type: text/html
+    cache: false
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # live
+    url: jdbc:mysql://database-1.cvyosmkmbztd.ap-northeast-2.rds.amazonaws.com:3306/ccfc?&serverTimezone=Asia/Seoul&useSSL=false&useUnicode=true&characterEncoding=utf8
+    username: ccfc
+    password: l9n7y9y9y9
+    # dev
+    #url: jdbc:mysql://localhost:3306/ccfc?&serverTimezone=GMT%2b8&useSSL=false
+    #username: ccfc
+    #password: ccfc
+  redis:
+    # live
+    host: localhost
+    port: 6380
+    password: l9n7y9y9y9
+    # dev
+    #host: localhost
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 30MB
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:/mapper/*Mapper.xml
+
+upload:
+  filepath: /home/ubuntu/ccfc//imgs

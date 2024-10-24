@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.ccfc.mapper.SysPopIpMapper">
+  <resultMap id="BaseResultMap" type="kr.ccfc.domain.SysPopIp">
+    <!--@mbg.generated-->
+    <!--@Table sys_pop_ip-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="sys_pop_id" jdbcType="BIGINT" property="sysPopId" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, ip, sys_pop_id, `status`
+  </sql>
+</mapper>

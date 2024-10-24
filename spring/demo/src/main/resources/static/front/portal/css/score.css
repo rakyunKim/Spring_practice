@@ -1,0 +1,93 @@
+
+
+/**/
+#match-schedule {background:#001129;height:470px;padding:40px 0;overflow:hidden;background-image: url(/front/portal/img/main/main_score_bg.jpg);}
+#match-slider {width:100%;max-width:1100px;margin:0 auto;padding:25px 0;position:relative;overflow:hidden;}
+#match-slider .owl-carousel {max-width:500px;margin:0 auto;position:unset;}
+#match-slider .owl-stage-outer {overflow:visible;}
+#match-slider .owl-item {}
+#match-slider .owl-item .item {
+    box-shadow: 1px 1px 20px rgba(0,0,0,0.5);
+    transition:background 0.5s, height 0.5s, padding 0.5s, margin 0.5s;
+	border:2px solid #fff;
+    background-color:rgba(0, 0, 0, 0.7);
+    margin-top:45px;
+    text-align:center;
+    color:#fff;
+    width:300px;
+    min-height:252px;
+    float:right;
+    padding:20px 0;
+	font-family: 'Noto sans KR', sans-serif;
+}
+#match-slider .owl-item .date {font-size:25px;color:#ffd800;}
+#match-slider .owl-item .btn{width:140px;height:40px;border:1px solid #fff;margin:0 auto;margin-top:20px;}
+#match-slider .owl-item .btn p{/*padding-top:7px;*/font-size:15px;}
+#match-slider .owl-item .league {margin-top:0;display:none;}
+#match-slider .owl-item .league .emblem {display:none;}
+#match-slider .owl-item .score {margin-top:10px;}
+#match-slider .owl-item .score.expected {}
+#match-slider .owl-item .score.expected .goal {display:none;}
+#match-slider .owl-item .score.expected .club .emblem {display:block;}
+#match-slider .owl-item .stadium {font-size:15px;margin-top:10px;}
+#match-slider .owl-item .club {float:left;width:50%;position:relative;}
+#match-slider .owl-item .club:first-child:after {content:"VS";position:absolute;right:-18px;top:0;font-size:35px;}
+#match-slider .owl-item .club .home {}
+#match-slider .owl-item .club .away {}
+#match-slider .owl-item .club .emblem {display:none;width:100%;text-align:center;height:50px;}
+#match-slider .owl-item .club .emblem img {width:auto;display:inline;}
+#match-slider .owl-item .expected .club .emblem img {width:auto;height:auto;max-width:40px;max-height:40px;}
+#match-slider .owl-item .club .name {font-size:15px;}
+#match-slider .owl-item .club .goal {font-size:50px;font-weight:bold;line-height:50px;}
+#match-slider .owl-item .club .goal_num {min-height: 48px;min-width: 25px;opacity: 1;}
+#match-slider .owl-item .club .home .goal {}
+#match-slider .owl-item .club .away .goal {}
+#match-slider .owl-item.active {}
+
+#match-slider .owl-item.active + .owl-item .item {float:left;}
+#match-slider .owl-item.active .item {border:3px solid #cdb9bc;color:#000;width:100%;background:#fff;margin-top:0;padding:0 0 30px 0;/*height:300px;*/}
+#match-slider .owl-item.active .league {margin:15px 0 0 0;font-size:20px;display:block;}
+#match-slider .owl-item.active .league .emblem {display:inline;margin-right:15px;}
+#match-slider .owl-item.active .league .emblem img {display:inline;max-width:50px;max-height: 50px;/*max-width:30px;max-height: 30px;*/}
+#match-slider .owl-item.active .date {background-color:#cb1f15;color:#fff;font-size:32px;}
+#match-slider .owl-item.active .stadium {}
+#match-slider .owl-item.active .btn{width:200px;height:51px;background-color:#2d383c;color:#fff;margin:0 auto;margin-top:20px;}
+#match-slider .owl-item.active .btn p{padding-top:7px;}
+#match-slider .owl-item.active .score {margin-top:20px;}
+#match-slider .owl-item.active .club {position:relative;}
+#match-slider .owl-item.active .club:first-child:after {content:"VS";position:absolute;right:-20px;top:2px;}
+#match-slider .owl-item.active .club .home {}
+#match-slider .owl-item.active .club .away {}
+#match-slider .owl-item.active .club .emblem {display:block;height:65px;}
+#match-slider .owl-item.active .club .emblem img {max-width:90px;max-height:95px;/*max-height:65px;*/}
+#match-slider .owl-item.active .expected .club .emblem img {}
+#match-slider .owl-item.active .club .name {}
+#match-slider .owl-item.active .club .goal {position:absolute;top:4px;font-size:50px;}
+#match-slider .owl-item.active .club .home .goal {right:20%;}
+#match-slider .owl-item.active .club .away .goal {left:20%;}
+#match-nav {position:relative;width:1300px;margin:0 auto;}
+#match-nav .nav-prev,
+#match-nav .nav-next {position:absolute;top:170px;cursor:pointer;}
+#match-nav .nav-prev {left:0;}
+#match-nav .nav-next {right:0;}
+
+
+/* 테블렛 */
+@media (max-width:1200px){
+	#match-nav {position:relative;width:100%;margin:0 auto;z-index:1;top:25px;}
+	#match-nav .nav-prev {left:0;width:40px;}
+	#match-nav .nav-next {right:0;width:40px;}
+
+    #main-visual,
+    #visual-slider,
+    #visual-slider .owl-item .item {height:800px;}
+    #visual-slider .owl-item .item .title {bottom:100px;}
+    #main-schedule-1 img {width:35%;height:auto;max-width:90%;margin:auto;top:0;right:10%;bottom:0;left:auto;}
+}
+@media (max-width:768px){
+	#match-nav {position:relative;width:100%;margin:0 auto;z-index:1;top:25px;}
+	#match-nav .nav-prev {left:0;width:30px;}
+	#match-nav .nav-next {right:0;width:30px;}
+
+
+}

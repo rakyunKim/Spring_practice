@@ -1,0 +1,122 @@
+<head th:replace="include/header :: common_head(~{::title},~{::link},~{})">
+
+
+<body>
+	<section class="container">
+		<div class="sub-top bg3">
+			<div class="sub-top-con">
+				<h2>선수단</h2>
+			</div>
+		</div>
+		<nav class="breadcrumb">
+			<div class="breadcrumb-container">
+				<ul class="breadcrumb-list">
+					<li class="home"><span class="screen-out">홈</span></li>
+					<li>
+						<div class="breadcrumb-box js-dropdown">
+							<button type="button" class="breadcrumb-btn js-dropdown-btn" data-dropdown="breadcrumb-dep1">
+								<span>선수단</span>
+							</button>
+							<div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep1">
+								<ul class="breadcrumb-cont-list">
+									<li><a href="/front/portal/sub01_01">구단소개</a></li>
+									<li><a href="/front/portal/sub02_01_list">구단소식</a></li>
+									<li><a href="/front/portal/sub03_01">선수단</a></li>
+									<li><a href="/front/portal/sub04_01">경기정보</a></li>
+									<li><a href="/front/portal/sub05_01_list">팬</a></li>
+									<li><a href="/front/portal/sub06_01">유소년</a></li>
+									<li><a href="/front/portal/sub07_01">사회적협동조합</a></li>
+								</ul>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="breadcrumb-box js-dropdown">
+							<button type="button" class="breadcrumb-btn js-dropdown-btn" data-dropdown="breadcrumb-dep2">
+								<span>코칭스탭</span>
+							</button>
+							<div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep2">
+								<ul class="breadcrumb-cont-list">
+									<li><a href="/front/portal/sub03_01">코칭스탭</a></li>
+									<li><a href="/front/portal/sub03_02">선수</a></li>
+									<li><a href="/front/portal/sub03_03">등번호</a></li>
+								</ul>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</nav>
+	</section>
+	<div id="sub_contents">
+		<div class="wrap">
+			<div id="contents_area">
+				<h2 class="container_title">코칭스탭</h2>
+
+				<img src="/front/portal/img/sub/staff_total.png" style="margin-bottom:20px;" alt="스탭사진">
+
+				<div id="ctt_con" class="sub01_01">
+					<!-- <p class="under_con">현재 준비중입니다.</p> -->
+					<div class="player staff_list">
+						<div class="player-list">
+							<div class="p_item">
+								<!-- <p class="thumbnail"><img src="/front/portal/img/sub/staff_img01.jpg?v=20230227" alt="정선우" /></p> -->
+								<dl class="profile2">
+									<dt>
+										<i>감독</i>
+										정선우
+										<span>왼쪽에서 3번째</span>
+									</dt>
+								</dl>
+							</div>
+							<div class="p_item">
+								<!-- <p class="thumbnail"><img src="/front/portal/img/sub/staff_img02.jpg?v=20230227" alt="정하영" /></p> -->
+								<dl class="profile2">
+									<dt>
+										<i>수석코치</i>
+										정하영
+										<span>왼쪽에서 2번째</span>
+									</dt>
+								</dl>
+							</div>
+							<div class="p_item">
+								<!-- <p class="thumbnail"><img src="/front/portal/img/sub/staff_img03.jpg" alt="김준호" /></p> -->
+								<dl class="profile2">
+									<dt>
+										<i>GK코치</i>
+										김준호
+										<span>왼쪽에서 4번째</span>
+									</dt>
+								</dl>
+							</div>
+							<div class="p_item">
+								<!-- <p class="thumbnail"><img src="/front/portal/img/sub/staff_img04.jpg" alt="최규호" /></p> -->
+								<dl class="profile2">
+									<dt>
+										<i>플레잉코치</i>
+										허창수
+										<span>왼쪽에서 1번째</span>
+									</dt>
+								</dl>
+							</div>
+							<div class="p_item">
+								<!-- <p class="thumbnail"><img src="/front/portal/img/sub/staff_img04.jpg" alt="최규호" /></p> -->
+								<dl class="profile2">
+									<dt>
+										<i>의무트레이너</i>
+										이대한
+										<span>왼쪽에서 5번째</span>
+									</dt>
+								</dl>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- :: sub contents e :: -->
+			</div>
+		</div>
+	</div>
+
+		<div th:replace="include/footer::footer"></div>
+
+</body>

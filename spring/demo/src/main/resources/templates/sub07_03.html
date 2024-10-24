@@ -1,0 +1,690 @@
+<body>
+<div class="wrapper">
+    <!-- :: header s :: -->
+    <head th:replace="include/header :: common_head(~{::title},~{::link},~{})">
+        <title></title>
+    </head>
+</div>
+<div id="sub07_03">
+    <section class="container">
+        <div class="sub-top bg7">
+            <div class="sub-top-con">
+                <h2>사회적협동조합</h2>
+            </div>
+        </div>
+        <nav class="breadcrumb">
+            <div class="breadcrumb-container">
+                <ul class="breadcrumb-list">
+                    <li class="home"><span class="screen-out">홈</span></li>
+                    <li>
+                        <div class="breadcrumb-box js-dropdown">
+                            <button type="button" class="breadcrumb-btn js-dropdown-btn"
+                                    data-dropdown="breadcrumb-dep1">
+                                <span>사회적협동조합</span>
+                            </button>
+                            <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep1">
+                                <ul class="breadcrumb-cont-list">
+                                    <li><a href="/front/portal/sub01_01">구단소개</a></li>
+                                    <li><a href="/front/portal/sub02_01_list">구단소식</a></li>
+                                    <li><a href="/front/portal/sub03_01">선수단</a></li>
+                                    <li><a href="/front/portal/sub04_01">경기정보</a></li>
+                                    <li><a href="/front/portal/sub05_01_list">팬</a></li>
+                                    <li><a href="/front/portal/sub06_01">유소년</a></li>
+                                    <li><a href="/front/portal/sub07_01">사회적협동조합</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="breadcrumb-box js-dropdown">
+                            <button type="button" class="breadcrumb-btn js-dropdown-btn"
+                                    data-dropdown="breadcrumb-dep2">
+                                <span>조합원/후원신청</span>
+                            </button>
+                            <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep2">
+                                <ul class="breadcrumb-cont-list">
+                                    <li><a href="/front/portal/sub07_01">조합/사업소개</a></li>
+                                    <li v-if="hasPrivilege('sub07_03_replay')"><a
+                                            href="/front/portal/sub07_05_list">후원금내역</a></li>
+                                    <li v-if="hasPrivilege('sub07_03_replay')"><a
+                                            href="/front/portal/sub07_06_list">자료실</a>
+                                    </li>
+                                    <li v-if="hasPrivilege('sub07_03_replay')"><a
+                                            href="/front/portal/sub07_07_list">활동사진</a></li>
+                                    <li v-if="hasPrivilege('sub07_03_replay')"><a
+                                            href="/front/portal/sub07_08_list">조합공지사항</a></li>
+                                    <!--<li><a href="/front/portal/sub07_02_list">조합게시판</a></li>-->
+                                    <li><a href="/front/portal/sub07_03">조합원/후원신청</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </section>
+    <div id="sub_contents">
+        <div class="wrap">
+            <div id="contents_area">
+                <h2 class="container_title">조합원/후원 가입 신청서</h2>
+                <div id="ctt_con" class="sub01_01">
+                    <div>
+                        <form name="support" id="support">
+                            <p>
+                                <span style="color:#ff0000;">※ 유의사항</span><br>
+                                1. 가입 정보 체크 시 조합원 가입, 개인후원 중에 선택하여 진행해 주십시오<br>
+                                2. 약정내용 작성시, 조합원 가입자는 조합원란에, 후원금 가입자는 후원금란에만 기입(*2가지 선택자는 2가지 모두 기입)<br>
+                                3. 조합원/후원 가입 신청서를 다운 받아 이메일, 팩스 또는 우편을 통해 전달 하실수도있습니다.<br><br>
+                                이메일: chuncheonfc@gmail.com <br>
+                                팩스 : 070-4251-3655<br>
+                                우편 : 242-39 강원도 춘천시 스포츠 타운길136<br>
+                                문의 : 033-261-4734<br><br>
+                                <a href="/front/portal/img/sub/조합원(후원)가입신청서.hwp" class="btn_b02 btn">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    신청서 다운로드
+                                </a>
+                            </p>
+                            <section id="support_private">
+                                <h2>
+                                    <i class="fa fa-check" aria-hidden="true"></i> 가입정보
+                                    <span style="margin-left:25px;color:#ff0000;font-size:0.75em;">별표(*)는 필수사항 입니다.</span>
+                                </h2>
+                                <div>
+                                    <table>
+                                        <caption>가입정보</caption>
+                                        <tbody>
+                                        <tr>
+                                            <th>성명(법인) *</th>
+                                            <td>
+                                                <input type="text" placeholder="성명(법인명)"
+                                                       v-model="memberApply.companyName"/>
+                                            </td>
+                                            <th>주민(사업자)등록번호*</th>
+                                            <td>
+                                                <input type="text" placeholder="기부금영수증 발급시 필요"
+                                                       v-model="memberApply.registerNo"
+                                                />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th rowspan="2">연락처</th>
+                                            <td>
+                                                <input type="text" placeholder="일반전화"
+                                                       v-model="memberApply.landline"
+                                                />
+                                            </td>
+                                            <td colspan="2">
+                                                <input type="text" placeholder="팩스" v-model="memberApply.fax"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="text" placeholder="핸드폰*" v-model="memberApply.mobile"/>
+                                            </td>
+                                            <td colspan="2">
+                                                <input type="text" placeholder="이메일" v-model="memberApply.email"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>주소(소재지)*
+                                                <el-button type="primary" icon="el-icon-search"
+                                                           @click="showApi"></el-button>
+                                                <input type="text" placeholder="우편번호" v-model="memberApply.postCode"/>
+
+                                            </th>
+                                            <td colspan="3">
+                                                <input type="text" placeholder="기본주소"
+                                                       required="1"
+                                                       v-model="memberApply.address"
+                                                />
+                                                <input type="text" placeholder="등기우편 수령이 가능한 곳을 작성해주시기 바랍니다."
+                                                       required="1"
+                                                       v-model="memberApply.detailAddress"
+                                                />
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div>
+                                    <table>
+                                        <caption>개인 기업</caption>
+                                        <thead>
+                                        <tr>
+                                            <th colspan="2">
+                                                개인으로 가입 시 체크(2가지 선택 가능)*
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="2" align="left">
+                                                <span style="color:#000;">※유의사항</span><br>
+                                                1. “조합원가입”란은 조합원 가입(출자금 납부)을 위한 체크사항<br>
+                                                2. “개인, 기업후원”란은 조합원 가입과는 별도로 후원금 납부를 위한 체크사항<br>
+                                                3. 아래 약정내용에서는 신청한 영역에만 작성(중복 신청가능- 두 영역 모두 작성)
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox"
+                                                       name="registerType" :value="1"
+                                                       v-model="memberApply.registerType"
+                                                /> 조합원 가입
+                                                <div>
+                                                    - 구좌 당 출자금 5만원 이상 납입 시<br>
+                                                    - 조합 선거권 취득 / 세제혜택 없음 / 출자금 일시납부
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" name="business_2" :value="1"
+                                                       v-model="memberApply.checkBusiness"/> 개인후원 가입
+                                                <div>
+                                                    - 조합원 가입 없이 개인 후원만 가능<br>
+                                                    - 세제혜택(기부금 영수증 발행)
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div>
+                                    <table>
+                                        <caption>조합원 가입</caption>
+                                        <thead>
+                                        <tr>
+                                            <th colspan="2">
+                                                기업으로 가입 시 체크
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" name="business_1" :value="1"
+                                                       v-model="memberApply.service"/> 기업후원
+                                                <!--<div>
+                                                    구좌 당 출자금 10만원, 월 1만원 이상, 조합 선거권 취득
+                                                </div>-->
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+                            <section id="support_private">
+                                <h2>
+                                    <i class="fa fa-check" aria-hidden="true"></i> 약정내용
+                                </h2>
+                                <div>
+                                    <table>
+                                        <tbody>
+                                        <tr>
+                                            <th>예금주 *</th>
+                                            <td>
+                                                <input type="text" placeholder="예금주"
+                                                       v-model="memberApply.holderName"/>
+                                            </td>
+                                            <th>
+                                                예금주 생년월일 *<br/>
+                                                (사업자등록번호)
+                                            </th>
+                                            <td>
+                                                <input type="text" placeholder="예금주 생년월일 또는 사업자등록번호"
+                                                       v-model="memberApply.holderBirth"
+                                                />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>은행명 *</th>
+                                            <td>
+                                                <input type="text" placeholder="은행명"
+                                                       v-model="memberApply.bankName"
+                                                />
+                                            </td>
+                                            <th>계좌번호 *</th>
+                                            <td>
+                                                <input type="text" placeholder="계좌번호" v-model="memberApply.account"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>내용</th>
+                                            <td colspan="3">
+                                                <table>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td rowspan="3" align="center">조합원</td>
+                                                        <td align="center" style="width:200px;">조합원만 신청 시 해당 영역만 작성 진행 해
+                                                            주세요.
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label>
+                                                                <input type="checkbox"/><span
+                                                                    class="font-weight-normal"> 구좌 수</span>
+                                                                <input type="text" v-model="memberApply.cooperator"
+                                                                       @input="changeHandler"/> 개
+                                                            </label>
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <!--위에 구자수를 입력하면 금액 및 구좌 갯수가(출자금 - 1구좌 이부분) 자동 계산되게 해 주세요.-->
+                                                        <td>
+                                                            ㆍ출자금 - 1구좌 <input type="text"
+                                                                              :value="memberApply.cooperatorMoney"
+                                                                              disabled=""/> 원
+                                                            <span style="color:#ff0000;">※ 구좌 수 X 5만원 자동 계산 금액 입니다. 확인 해 주세요.</span>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                                <br>
+                                                <table>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td rowspan="6" align="center">후원금</td>
+                                                        <td colspan="2">
+                                                            <label>
+                                                                <input type="radio" name="payType" :value="1"
+                                                                       v-model="memberApply.payType" @input="clearTransfer"/><span
+                                                                    class="font-weight-normal"> 일시납부</span>
+                                                            </label>
+                                                        </td>
+                                                        <td colspan="2">
+                                                            <input type="text" v-model="memberApply.payMoney"/> 원
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            개인, 기업후원으로 단 1회성으로 후원 시 이 위 체크 선택 후 금액 넣어서 진행 해 주세요.
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td rowspan="3">
+                                                            <label>
+                                                                <input type="radio" name="payType"
+                                                                       :value="0"
+                                                                       v-model="memberApply.payType" @input="clearPerson"/><span
+                                                                    class="font-weight-normal"> 월납부</span>
+                                                            </label>
+                                                        </td>
+                                                        <td>ㆍ금액</td>
+                                                        <td>
+                                                            <label>
+                                                                <span class="font-weight-normal"> 매월</span>
+                                                            </label>
+                                                        </td>
+                                                        <td>
+                                                            (<input type="text" style="width:70px;" @input="changeYear"
+                                                                    v-model="memberApply.monthPay"/>)원&nbsp;&nbsp;&nbsp;
+                                                            연(<input type="text" :value="yearpay"  disabled="" style="width:70px;"/>)원
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td rowspan="2">ㆍ납부방법</td>
+                                                        <td colspan="2"><input type="radio" name="checkTransfer" :value="0"
+                                                                               v-model="memberApply.checkTransfer"/>
+                                                            본인신청(본인이 자동이체 직접신청)</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><input type="radio" name="checkTransfer" :value="1"
+                                                                   v-model="memberApply.checkTransfer"/>
+                                                            자동이체 </td>
+                                                        <td> 매월
+                                                            <select v-model="memberApply.payDate">
+                                                                <option value="매월5일">5일</option>
+                                                                <option value="매월10일">10일</option>
+                                                                <option value="매월15일">15일</option>
+                                                                <option value="매월20일">20일</option>
+                                                                <option value="매월25일">25일</option>
+                                                            </select>
+                                                            출금(미납 시 수시출금)<br>
+                                                            * 자동이체 등록신청 5, 10, 15, 20, 25일 중 택1 </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            * 본인이 직접 월납부 이체를 원하시면 “본인신청”으로 체크<br>
+                                                            * 법인에 의한 월납부 자동이체(CMS)신청을 원하시면 “자동이체(CMS)”에 체크
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                                <!--<table>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>월납입액*</td>
+                                                        <td class="py-2 ">
+                                                            <div><input type="text" v-model="memberApply.monthPay"/>원
+                                                            </div>
+                                                            <div class="text-left">후원기업 가입시 최소단위 10만원부터</div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>납입방법*</td>
+                                                        <td>
+                                                            <ul>
+                                                                <li>
+                                                                    <label>
+                                                                        <input type="radio"
+                                                                               name="payType"
+                                                                               :value="0"
+                                                                               v-model="memberApply.payType"/>
+                                                                        매월
+                                                                        <select v-model="memberApply.payDate">
+                                                                            <option value="매월5일">5일</option>
+                                                                            <option value="매월15일">15일</option>
+                                                                            <option value="매월25일">25일</option>
+                                                                        </select>
+                                                                        자동이체, 미납 발생 시 다음 월에 추가 출금됩니다.
+                                                                    </label>
+                                                                </li>
+                                                                <li>
+                                                                    <label>
+                                                                        <input type="radio" name="payType"
+                                                                               :value="1"
+                                                                               v-model="memberApply.payType"/>
+                                                                        <span>아래의 입금계좌로 직접 입금</span>
+                                                                    </label>
+                                                                </li>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>출자금 납입</td>
+                                                        <td>
+                                                            <div>(조합원 가입시, 필수) 아래의 입금계좌로 직접 입금</div>
+                                                            <div>
+                                                                <input type="text" v-model="memberApply.payMoney"/>원
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>-->
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="py-3">사업내용</th>
+                                            <td colspan="3">
+                                                <div class="text-left pl-3">
+                                                    <span class="font-weight-normal">조합(구단)의 운영, 축구시민축구단 활성화 사업, 축구 저변 확대 사업</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <!--<tr>
+                                            <th class="py-3">지정사업</th>
+                                            <td colspan="3">
+                                                <div class="text-left pl-3">
+                                                    <label>
+                                                        <input type="checkbox" name="business_1" :value="1"
+                                                               v-model="memberApply.service"/>
+                                                        <span class="font-weight-normal">조합(구단)의 운영, 축구저변 확대를 위한 사업비, 프로축구단 창단 시 지원금 사용</span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>기타사업</th>
+                                            <td colspan="3">
+                                                <div class="text-left pl-3 form-inline ">
+                                                    <label class="d-inline">
+                                                        <input type="checkbox" name="business_2" :value="1"
+                                                               v-model="memberApply.checkBusiness"/>
+                                                        <span class="font-weight-normal">조합의 주 사업 외 사용</span>
+                                                    </label>
+                                                    <span>(<input type="text" v-model="memberApply.business"/>)</span>
+                                                </div>
+                                            </td>
+                                        </tr-->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <fieldset class="support_agree">
+                                    <!--<span>
+                                        문의 : 033-261-4734<br>
+                                        ※ (조합원) 입금계좌 농협 355-0076-9686-23<br>
+                                        예금주 : 춘천시민축구단사회적협동조합<br><br>
+
+                                        ※ (후원금) 입금계좌 농협 355-0076-9686-13<br>
+                                        예금주 : 춘천시민축구단사회적협동조합
+                                    </span>-->
+                                    <div style="">
+                                        <span>문의 : 033-261-4734</span>
+                                    </div>
+                                    <ul>
+                                        <li>
+                                            ※ (조합원) 입금계좌 농협 355-0076-9686-23<br>
+                                            예금주 : 춘천시민축구단사회적협동조합<br><br>
+                                        </li>
+                                        <li>
+                                            ※ (후원금) 입금계좌 농협 355-0076-9683-13<br>
+                                            예금주 : 춘천시민축구단사회적협동조합<br><br>
+                                        </li>
+                                    </ul>
+                                </fieldset>
+                            </section>
+                            <div class="cont_text">
+                                <h3 class="cont_text_important">개인정보 수집 및 이용동의</h3>
+                                <br>
+                                <div class="cont_text_info">
+                                    ·수집 및 이용목적 : 가입자관리, CMS 출금이체를 통한 회비 수납, 기부금영수증 발급, 조합관련안내<br>
+                                    · 수집항목 : 성명(법인명), 주민(사업자)등록번호, 연락처, 주소지, 예금주명, 예금주생년월일, 은행명, 계좌번호<br>
+                                    · 보유 및 이용기간 : 수집 및 이용 동의일부터 조합의 탈퇴 또는 CMS 출금이체 종료일(해지일) 후 5년까지<br>
+                                    · 개인정보 수집 및 이용 동의에 거부할 수 있으며, 거부 시 서비스를 제한 받을 수 있습니다.
+                                </div>
+                                <div style="float:right">
+                                    <input type="radio" name="infoCollect" v-model="memberApply.infoCollect"
+                                           :value="0"/> 동의&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input type="radio" name="infoCollect" v-model="memberApply.infoCollect"
+                                           :value="1"/> 비동의
+                                </div>
+                                <br><br>
+                                <h3 class="cont_text_important">개인정보 제 3자 제공(연말정산간소화서비스 및 빌링원플러스)</h3>
+                                <br>
+
+                                <div class="cont_text_info">
+                                    · 제공받는자 : 국세청, 사단법인 금융결제원<br>
+                                    · 제공항목 : 가입정보 및 약정내용<br>
+                                    · 제공목적 및 제공기간 : 연말정산간소화서비스 기부금내역 등재, CMS를 통한 출금이체 및 납입관리<br>
+                                    · 개인정보 제공 동의에 거부할 수 있으며, 거부 시 서비스를 제한 받을 수 있습니다.
+                                </div>
+                                <div style="float:right">
+                                    <input type="radio"
+                                           v-model="memberApply.thirdProvide"
+                                           :value="0"/> 동의&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input type="radio"
+                                           v-model="memberApply.thirdProvide"
+                                           :value="1"/> 비동의
+                                </div>
+                            </div>
+                            <div class="btn_confirm">
+                                <a href="javascript:window.history.back(-1);" class="btn_cancel">취소</a>
+                                <input type="button" value="가입하기" class="btn_submit"
+                                       @click="save"
+                                >
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="include/footer::footer"></div>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script type="text/javascript">
+    new Vue({
+        el: "#sub07_03",
+        data: {
+            moveMode: '',
+            treeData: [],
+            defaultProps: {
+                children: 'subMenus',
+                label: 'name',
+                disabled: 'disabled'
+            },
+            dialogFormVisible: false,
+            activeNames: ['1'],
+            priv: false,
+            commentContent: '',
+            token: '',
+            articleId: '',
+            articleData: {
+                attaches: []
+            },
+            yearpay:null,
+            content: '',
+            privileges: [],
+            comments: [],
+            memberApply: {
+                id: null,
+                companyName: null,
+                registerNo: null,
+                landline: null,
+                fax: null,
+                mobile: null,
+                email: null,
+                address: null,
+                detailAddress: null,
+                registerType: null,
+                holderName: null,
+                holderBirth: null,
+                bankName: null,
+                cooperator: null,
+                cooperatorMoney: null,
+                account: null,
+                monthPay: null,
+                payType: null,
+                payDate: null,
+                payMoney: null,
+                service: false,
+                checkBusiness: false,
+                checkTransfer: null,
+                business: null,
+                infoCollect: null,
+                postCode: '',
+                thirdProvide: null
+            }
+        },
+        methods: {
+            getPrivileges() {
+                let uri = window.location.pathname
+                let privilegesData = localStorage.getItem("privilegesMap")
+                let allPrivileges = JSON.parse(privilegesData) || []
+                let split = uri.split("_")
+                let newUri = split[0] + "_" + split[1]
+                for (let allPrivilegesKey in allPrivileges) {
+                    if (allPrivilegesKey.indexOf(newUri) !== -1) {
+                        let privileges = allPrivileges[allPrivilegesKey]
+                        privileges.forEach((item, index) => {
+                            this.privileges.push(item.name)
+                        })
+                    }
+                }
+            },
+            hasPrivilege(name) {
+                return this.privileges.indexOf(name) !== -1
+            },
+            getCurrentMenuId() {
+                let uri = window.location.pathname
+                // 判断登录是否失效
+                axios.get('/menu/getByUri', {
+                    headers: {
+                        'Authorization': this.token
+                    }, params: {
+                        uri: uri
+                    }
+                }).then(res => {
+                    console.log('res', res)
+                    this.currentMenuId = res.data.data.id
+                }).catch(err => {
+                    console.log(err)
+                });
+            },
+            clearTransfer(){
+                this.memberApply.checkTransfer = null
+                this.memberApply.monthPay = null
+                this.memberApply.payDate = null
+                this.yearpay= null
+            },
+            clearPerson(){
+                this.memberApply.payMoney = null
+            },
+            changeHandler() {
+                this.memberApply.cooperatorMoney = (this.memberApply.cooperator * 50000).toLocaleString()
+            },
+            changeYear(){
+                this.yearpay = (this.memberApply.monthPay * 12).toLocaleString()
+            },
+            showApi() {
+                new window.daum.Postcode({
+                    oncomplete: (data) => {
+                        let fullRoadAddr = data.roadAddress;
+                        let extraRoadAddr = '';
+                        if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                            extraRoadAddr += data.bname;
+                        }
+                        if (data.buildingName !== '' && data.apartment === 'Y') {
+                            extraRoadAddr += (extmenu4_1raRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                        }
+                        if (extraRoadAddr !== '') {
+                            extraRoadAddr = ' (' + extraRoadAddr + ')';
+                        }
+                        if (fullRoadAddr !== '') {
+                            fullRoadAddr += extraRoadAddr;
+                        }
+                        this.memberApply.postCode = data.zonecode;
+                        this.memberApply.address = fullRoadAddr;
+                    }
+                }).open()
+            },
+            save() {
+                let loginUserStr = localStorage.getItem('login_user')
+                if (loginUserStr) {
+                    let loginUser = JSON.parse(loginUserStr)
+                    this.token = loginUser.data.token || ''
+                }
+                else{
+                    alert("로그인하고 가압하세요")
+                    return
+                }
+                let co = this.memberApply.infoCollect
+                let third = this.memberApply.thirdProvide
+                if (co != 0) {
+                    alert("개인정보 수집 및 이용동의 하세요")
+                    return
+                }
+                if (third != 0) {
+                    alert("개인정보 제 3자 제공 동의 하세요 ")
+                    return
+                }
+
+                axios.post('/memberapply', this.memberApply, {
+                    headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    this.$notify({
+                        title: '알림',
+                        message: '가입 완료',
+                        type: 'success'
+                    });
+                    window.location = "/"
+                })
+            },
+        },
+        mounted() {
+            this.getPrivileges()
+        },
+        created() {
+            let loginUserStr = localStorage.getItem('login_user')
+            if (loginUserStr) {
+                let loginUser = JSON.parse(loginUserStr)
+                this.token = loginUser.data.token || ''
+            }
+        },
+        watch: {}
+    })
+</script>
+</body>

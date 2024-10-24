@@ -1,0 +1,280 @@
+<body>
+<div class="wrapper">
+    <!-- :: header s :: -->
+    <head th:replace="include/header :: common_head(~{::title},~{::link},~{})">
+        <title></title>
+    </head>
+</div>
+<section class="container">
+    <div class="sub-top bg3">
+        <div class="sub-top-con">
+            <h2>선수단</h2>
+        </div>
+    </div>
+    <nav class="breadcrumb">
+        <div class="breadcrumb-container">
+            <ul class="breadcrumb-list">
+                <li class="home"><span class="screen-out">홈</span></li>
+                <li>
+                    <div class="breadcrumb-box js-dropdown">
+                        <button type="button" class="breadcrumb-btn js-dropdown-btn" data-dropdown="breadcrumb-dep1">
+                            <span>구단소개</span>
+                        </button>
+                        <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep1">
+                            <ul class="breadcrumb-cont-list">
+                                <li><a href="/front/portal/sub01_01">구단소개</a></li>
+                                <li><a href="/front/portal/sub02_01_list">구단소식</a></li>
+                                <li><a href="/front/portal/sub03_01">선수단</a></li>
+                                <li><a href="/front/portal/sub04_01">경기정보</a></li>
+                                <li><a href="/front/portal/sub05_01_list">팬</a></li>
+                                <li><a href="/front/portal/sub06_01">유소년</a></li>
+                                <li><a href="/front/portal/sub07_01">사회적협동조합</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="breadcrumb-box js-dropdown">
+                        <button type="button" class="breadcrumb-btn js-dropdown-btn" data-dropdown="breadcrumb-dep2">
+                            <span>선수단</span>
+                        </button>
+                        <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep2">
+                            <ul class="breadcrumb-cont-list">
+                                <li><a href="/front/portal/sub03_01">코칭스탭</a></li>
+                                <li><a href="/front/portal/sub03_02">선수</a></li>
+								<li><a href="/front/portal/sub03_03">등번호</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</section>
+<div id="sub_contents">
+    <div class="wrap">
+        <div id="contents_area">
+            <h2 class="container_title">선수</h2>
+
+            <div id="ctt_con" class="sub01_01">
+                <div class="player">
+                    <div class="tab-basic">
+                        <ul>
+                            <li><a href="/front/portal/sub03_02">GK</a></li>
+                            <li class="active"><a href="/front/portal/sub03_02_01">FW</a></li>
+                            <li><a href="/front/portal/sub03_02_02">MF</a></li>
+                            <li><a href="/front/portal/sub03_02_03">DF</a></li>
+                        </ul>
+                    </div>
+					<div class="player-list">
+						<div class="p_item">
+							<p class="thumbnail"><img src="/front/portal/img/sub/2024_squad/FW_07.png" alt="최호주" /></p>
+							<dl class="profile">
+								<dt>
+									<i>7</i>
+									최호주
+								</dt>
+								<dd>
+									<strong>포지션 : </strong>FW
+								</dd>
+								<dd>
+									<strong>등번호 : </strong>7
+								</dd>
+								<dd>
+									<strong>전소속팀 : </strong>폴리스 테로 FC
+								</dd>
+							</dl>
+						</div>
+						<div class="p_item">
+							<p class="thumbnail"><img src="/front/portal/img/sub/2024_squad/FW_09.png" alt="문경민" /></p>
+							<dl class="profile">
+								<dt>
+									<i>9</i>
+									문경민
+								</dt>
+								<dd>
+									<strong>포지션 : </strong>FW
+								</dd>
+								<dd>
+									<strong>등번호 : </strong>9
+								</dd>
+								<dd>
+									<strong>전소속팀 : </strong>양평FC
+								</dd>
+							</dl>
+						</div>
+						<div class="p_item">
+							<p class="thumbnail"><img src="/front/portal/img/sub/2024_squad/FW_10.png" alt="유현규" /></p>
+							<dl class="profile">
+								<dt>
+									<i>10</i>
+									유현규
+								</dt>
+								<dd>
+									<strong>포지션 : </strong>FW
+								</dd>
+								<dd>
+									<strong>등번호 : </strong>10
+								</dd>
+								<dd>
+									<strong>전소속팀 : </strong>시흥시민구단
+								</dd>
+							</dl>
+						</div>
+						<div class="p_item">
+							<p class="thumbnail"><img src="/front/portal/img/sub/2024_squad/FW_11.png" alt="배지훈" /></p>
+							<dl class="profile">
+								<dt>
+									<i>11</i>
+									배지훈
+								</dt>
+								<dd>
+									<strong>포지션 : </strong>FW
+								</dd>
+								<dd>
+									<strong>등번호 : </strong>11
+								</dd>
+								<dd>
+									<strong>전소속팀 : </strong>파주시민구단
+								</dd>
+							</dl>
+						</div>
+						<!-- <div class="p_item">
+							<p class="thumbnail"><img src="/front/portal/img/sub/2024_squad/FW_12.png" alt="황정현" /></p>
+							<dl class="profile">
+								<dt>
+									<i>12</i>
+									황정현
+								</dt>
+								<dd>
+									<strong>포지션 : </strong>FW
+								</dd>
+								<dd>
+									<strong>등번호 : </strong>12
+								</dd>
+								<dd>
+									<strong>전소속팀 : </strong>시흥시민구단
+								</dd>
+							</dl>
+						</div> -->
+						<div class="p_item">
+							<p class="thumbnail"><img src="/front/portal/img/sub/2024_squad/FW_13.png" alt="배도현" /></p>
+							<dl class="profile">
+								<dt>
+									<i>13</i>
+									배도현
+								</dt>
+								<dd>
+									<strong>포지션 : </strong>FW
+								</dd>
+								<dd>
+									<strong>등번호 : </strong>13
+								</dd>
+								<dd>
+									<strong>전소속팀 : </strong>한남대학교
+								</dd>
+							</dl>
+						</div>
+						<div class="p_item">
+							<p class="thumbnail"><img src="/front/portal/img/sub/2024_squad/FW_17.png" alt="김영규" /></p>
+							<dl class="profile">
+								<dt>
+									<i>17</i>
+									김영규
+								</dt>
+								<dd>
+									<strong>포지션 : </strong>FW
+								</dd>
+								<dd>
+									<strong>등번호 : </strong>17
+								</dd>
+								<dd>
+									<strong>전소속팀 : </strong>대전코레일
+								</dd>
+							</dl>
+						</div>
+						<div class="p_item">
+							<p class="thumbnail"><img src="/front/portal/img/sub/2024_squad/FW_18.png" alt="이정오" /></p>
+							<dl class="profile">
+								<dt>
+									<i>18</i>
+									이정오
+								</dt>
+								<dd>
+									<strong>포지션 : </strong>FW
+								</dd>
+								<dd>
+									<strong>등번호 : </strong>18
+								</dd>
+								<dd>
+									<strong>전소속팀 : </strong>남부대학교
+								</dd>
+							</dl>
+						</div>
+						<div class="p_item">
+							<p class="thumbnail"><img src="/front/portal/img/sub/2024_squad/FW_32.png" alt="필리피" /></p>
+							<dl class="profile">
+								<dt>
+									<i>32</i>
+									필리피
+								</dt>
+								<dd>
+									<strong>포지션 : </strong>FW
+								</dd>
+								<dd>
+									<strong>등번호 : </strong>32
+								</dd>
+								<dd>
+									<strong>전소속팀 : </strong>시흥시민축구단
+								</dd>
+							</dl>
+						</div>
+						<div class="p_item">
+							<p class="thumbnail"><img src="/front/portal/img/sub/2024_squad/FW_38.png" alt="김수성" /></p>
+							<dl class="profile">
+								<dt>
+									<i>38</i>
+									김수성
+								</dt>
+								<dd>
+									<strong>포지션 : </strong>FW
+								</dd>
+								<dd>
+									<strong>등번호 : </strong>38
+								</dd>
+								<dd>
+									<strong>전소속팀 : </strong>경주한수원축구단
+								</dd>
+							</dl>
+						</div>
+						<div class="p_item">
+							<p class="thumbnail"><img src="/front/portal/img/sub/2024_squad/FW_39.png" alt="이대광" /></p>
+							<dl class="profile">
+								<dt>
+									<i>39</i>
+									이대광
+								</dt>
+								<dd>
+									<strong>포지션 : </strong>FW
+								</dd>
+								<dd>
+									<strong>등번호 : </strong>39
+								</dd>
+								<dd>
+									<strong>전소속팀 : </strong>수원FC
+								</dd>
+							</dl>
+						</div>
+						
+						
+						
+					</div>
+                </div>
+            </div>
+            <!-- :: sub contents e :: -->
+        </div>
+    </div>
+</div>
+<div th:replace="include/footer::footer"></div>
+</body>
+

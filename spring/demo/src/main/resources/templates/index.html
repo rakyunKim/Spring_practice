@@ -1,0 +1,508 @@
+<style>
+    .thumbnail {
+        position: relative;
+    }
+
+    .thumbnail .video-posi {
+        position: absolute;
+        left: -162px;
+        width: 330px;
+        top: -120px;
+        height: 240px;
+    }
+</style>
+<div class="wrapper">
+    <!-- :: header s :: -->
+    <head th:replace="include/header :: common_head(~{::title},~{::link},~{})">
+        <title></title>
+    </head>
+</div>
+<div id="index">
+    <div>
+        <section class="container0">
+            <div class="visual">
+                <div class="visual-slide js-visual-slide opacity-slide">
+                    <div class="op-indicator">
+                        <button type="button" class="indicator-btn op-prev" style="float:left;margin-left:25px;"><span
+                                class="screen-out"></span></button>
+                        <button type="button" class="indicator-btn op-next" style="float:right;margin-right:25px;"><span
+                                class="screen-out"></span></button>
+                    </div>
+                    <ul class="slide">
+                        <li>
+                        </li>
+                        <li>
+                        </li>
+                        <li>
+                        </li>
+                        <li>
+                        </li>
+                        <li>
+                        </li>
+                        <li>
+                        </li>
+                        
+                            <!--<p class="visual-con">
+                        <span>chuncheon football club</span>
+                        <span>춘천시민 축구단</span>
+                    </p>-->
+                        
+                        <!--<li>
+                            <p class="visual-con">
+                        <span>chuncheon football club</span>
+                        <span>춘천시민 축구단222</span>
+                    </p>
+                        </li>
+                        <li>
+                            <!--<p class="visual-con">
+                        <span>chuncheon football club</span>
+                        <span>춘천시민 축구단222</span>
+                    </p>
+                        </li>-->
+                    </ul>
+                </div>
+            </div>
+        </section>
+<!--        <div class="SF_main_con">-->
+<!--            <div class="main_con_wrap">-->
+<!--                &lt;!&ndash;2&ndash;&gt;-->
+<!--                <div class="m_con01">-->
+<!--                    <video controls="controls" style="max-width:100%"-->
+<!--                           :src="videoData.records[0].imgUrl"-->
+<!--                           v-if="videoData.records[0].imgUrl && videoData.records[0].imgUrl.indexOf('/imgs/')!==-1"></video>-->
+<!--                    <div class="video" v-else>-->
+<!--                        <iframe allow=";" allowfullscreen="" :src="videoData.records[0].imgUrl"></iframe>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="m_con02">-->
+<!--                    <ul>-->
+<!--                        <li class="youtube_bn01">-->
+<!--                            <iframe style="width: 376px;height: 217px;" allow=";" allowfullscreen=""-->
+<!--                                    :src="videoData.records[1].imgUrl"></iframe>-->
+<!--                        </li>-->
+<!--                        <li class="youtube_bn02">-->
+<!--                            <iframe allow=";" style="width: 376px;height: 217px;" allowfullscreen=""-->
+<!--                                    :src="videoData.records[2].imgUrl"></iframe>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </div>-->
+<!--                <div class="m_con03">-->
+<!--                    <ul>-->
+<!--                        <li><a href="/front/portal/sub04_03"><img src="/front/portal/img/main/main_bn01.jpg"></a></li>-->
+<!--                        <li><a href="/front/portal/sub06_01"><img src="/front/portal/img/main/main_bn02.jpg"></a></li>-->
+<!--                    </ul>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+
+        <section id="match-schedule">
+            <div id="match-nav">
+                <div class="nav-prev"><img src="/front/portal/img/main/match_prev_bt.jpg" alt/></div>
+                <div class="nav-next"><img src="/front/portal/img/main/match_next_bt.jpg" alt/></div>
+            </div>
+            <div id="match-slider">
+                <div class="owl-carousel owl-theme">
+                    <div class="item" v-for="(item,index) in schedules" v-cloak>
+                        <div class="date">
+                            {{item.day}}({{item.week}})&nbsp;&nbsp;{{item.time}}
+                        </div>
+                        <div class="league">
+                            <span class="emblem"><img :src='item.seasonImgUrl' alt=''/></span>
+                            <span>{{item.season}}</span>
+                        </div>
+                        <div class="score" style="margin-top:10px;">
+                            <div class="club">
+                                <div class="home">
+                                    <div class="emblem">
+                                        <img :src='item.homeTeamImgUrl'
+                                             alt=''/>
+                                    </div>
+                                    <div class="goal" v-if="item.homeScope!==null && item.homeScope !== undefined">
+                                        {{item.homeScope}}
+                                    </div>
+                                    <div v-else style="min-height: 25px;min-width: 25px;opacity: 1;"></div>
+                                    <div class="name">{{item.homeTeam}}</div>
+                                </div>
+                            </div>
+                            <div class="club">
+                                <div class="away">
+                                    <div class="emblem">
+                                        <img :src='item.visitTeamImgUrl'
+                                             alt=''/>
+                                    </div>
+                                    <div class="goal" v-if="item.visitScope!==null && item.visitScope !== undefined">
+                                        {{item.visitScope}}
+                                    </div>
+                                    <div v-else style="min-height: 25px;min-width: 25px;opacity: 1;"></div>
+                                    <div class="name">{{item.visitTeam}}</div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="stadium">{{item.place}}</div>
+                        <div class="btn" @click="toCalendar(item)">
+                            <p>경기일정 보러가기</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="gallery">
+            <div id="contents">
+                <div class="main_cont">
+                    <div class="main_box_02">
+                        <div class="main_photo">
+                            <h2 class="main_tit"><span>FC</span> GALLERY</h2>
+                            <div class="text_underline"></div>
+                            <ul>
+                                <!--1-->
+                                <li v-for="(item,index) in imgsData.records">
+                                    <a @click="goImgs(item.id)">
+                                        <img :src="item.imgUrl" alt="">
+                                        <p>{{item.title}}</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="gallery-wrap main_cont">
+                        <h2 class="main_tit"><span>FC</span> INSTAGRAM</h2>
+                        <div class="text_underline"></div>
+                        <!-- edit -->
+                        <el-carousel height="500px" :interval="5000">
+                            <el-carousel-item v-for="(item,index) in mediaList" :key="index">
+                                <ul class="gallery-list">
+                                    <li v-for="pics in item" :key="pics.id">
+                                        <a :href="pics.permalink" target="_blank">
+                                            <div class="thumbnail">
+                                                <img v-if="pics.media_type ==='CAROUSEL_ALBUM'||pics.media_type ==='IMAGE'"
+                                                     :src="pics.media_url" alt=""/>
+                                                <iframe allowfullscreen="" class="video-posi"
+                                                        v-else-if="pics.media_type ==='VIDEO'"
+                                                        :src="pics.media_url"></iframe>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </el-carousel-item>
+                        </el-carousel>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="SF_main_con">
+            <div class="main_con_wrap">
+                <!--2-->
+                <div class="m_con01">
+                    <video controls="controls" style="max-width:100%"
+                           :src="videoData.records[0].imgUrl"
+                           v-if="videoData.records[0].imgUrl && videoData.records[0].imgUrl.indexOf('/imgs/')!==-1"></video>
+                    <div class="video" v-else>
+                        <iframe allow=";" allowfullscreen="" :src="videoData.records[0].imgUrl"></iframe>
+                    </div>
+                </div>
+                <div class="m_con02">
+                    <ul>
+                        <li class="youtube_bn01">
+                            <iframe style="width: 376px;height: 217px;" allow=";" allowfullscreen=""
+                                    :src="videoData.records[1].imgUrl"></iframe>
+                        </li>
+                        <li class="youtube_bn02">
+                            <iframe allow=";" style="width: 376px;height: 217px;" allowfullscreen=""
+                                    :src="videoData.records[2].imgUrl"></iframe>
+                        </li>
+                    </ul>
+                </div>
+                <div class="m_con03">
+                    <ul>
+                        <li><a href="/front/portal/sub04_03"><img src="/front/portal/img/main/main_bn01.jpg"></a></li>
+                        <li><a href="/front/portal/sub06_01"><img src="/front/portal/img/main/main_bn02.jpg"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="fc-pr">
+            <div class="pr-wrap">
+                <h2>춘천시민 축구단의 더 많은 소식을 SNS를 통해 만나보세요.</h2>
+                <div class="text_underline2"></div>
+                <ul class="pr-sns">
+                    <li><a href="https://www.facebook.com/chuncheonfootballclub/" target="_blank" title="새창열림"><span
+                            class="screen-out">페이스북 바로가기</span></a></li>
+                    <li><a href="https://www.instagram.com/chuncheoncitizen_fc/" target="_blank" title="새창열림"><span
+                            class="screen-out">인스타그램 바로가기</span></a></li>
+                    <li><a href="https://www.youtube.com/channel/UClR3HgIg3TgnCHxgdg-PSLA" target="_blank"
+                           title="새창열림"><span
+                            class="screen-out">유튜브 바로가기</span></a></li>
+                    <li><a href="https://blog.naver.com/chuncheonmedia" target="_blank" title="새창열림"><span
+                            class="screen-out">블로그 바로가기</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="sponsor">
+            <ul>
+                <li class="spon_text">
+                    춘천시민 축구단 공식스폰서
+                    <p>춘천시민 여러분들이 더욱 힘낼 수 있게 선수단이 열심히 뛰겠습니다.</p>
+                </li>
+                <li class="spon_list">
+                    <ul>
+                        <li class="spon_img">
+                            <a href="http://www.chuncheon.go.kr/index.chuncheon" target="_blank"><img src="/front/portal/img/main/spon_img01.jpg"></a>
+                        </li>
+                        <li class="spon_img">
+                            <a href="http://chuncheon.nonghyup.com/" target="_blank"><img src="/front/portal/img/main/spon_img02.jpg"></a>
+                        </li>
+                        <li class="spon_img">
+                            <a href="https://www.shinhan.com/" target="_blank"><img src="/front/portal/img/main/spon_img06.jpg"></a>
+                        </li>
+                        <li class="spon_img">
+                            <a href="https://soccerapplerind.com/" target="_blank"><img src="/front/portal/img/main/spon_img03.jpg"></a>
+                        </li>
+                        <li class="spon_img">
+                            <a href="http://ccfa.kr/soc1/" target="_blank"><img src="/front/portal/img/main/spon_img13.png"></a>
+                        </li>
+                        <li class="spon_img">
+                            <a href="https://www.khnp.co.kr/hangang/main.office?mnCd=BR05" target="_blank"><img src="/front/portal/img/main/spon_img05.jpg"></a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="fc_notice">
+                    <section>
+                        <div class="lat">
+                            <h2 class="lat_title"><a href="/front/portal/sub02_01_list">공지사항</a></h2>
+                            <ul>
+                                <li v-for="(item,index) in noticeData.records">
+									<span class="f_left ellipsis">
+									<a @click="goArticleDetail(item.id)">{{item.title.length > 21 ? item.title.substr(0, 21) + '...' : item.title}}</ a></span>
+                                    <span class="lt_info">
+									<span class="lt_date">{{item.created}}</span>
+									</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div th:replace="include/footer::footer"></div>
+</div>
+<script type="text/javascript">
+    Date.prototype.format = function (fmt) {
+        let o = {
+            "M+": this.getMonth() + 1,
+            "d+": this.getDate(),
+            "h+": this.getHours(),
+            "m+": this.getMinutes(),
+            "s+": this.getSeconds(),
+            "q+": Math.floor((this.getMonth() + 3) / 3),
+            "S": this.getMilliseconds()
+        };
+        if (/(y+)/.test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        }
+        for (var k in o) {
+            if (new RegExp("(" + k + ")").test(fmt)) {
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            }
+        }
+        return fmt;
+    }
+    new Vue({
+        el: "#index",
+        data() {
+            return {
+                schedules: [],
+                token: '',
+                noticeData: {},
+                imgsData: {},
+                mediaList: [],
+                videoData: {
+                    records: [{imgUrl: ''}, {imgUrl: ''}, {imgUrl: ''}]
+                },
+                pops: []
+            }
+        },
+        methods: {
+            toCalendar(item) {
+                console.log('dateTime', item.dateTime)
+                window.location = "/front/portal/sub04_01?dateTime=" + item.dateTime
+            },
+            updateCompetition() {
+                axios.get('/competition/list', {
+                    params: {
+                        current: 1,
+                        size: 100,
+                    },
+                    headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    let results = res.data.data
+                    localStorage.setItem('schedules', JSON.stringify(results.records))
+                    this.schedules = results.records
+                })
+            },
+            competitionList() {
+                let schedule = localStorage.getItem('schedules')
+                this.schedules = JSON.parse(schedule)
+                setInterval(() => {
+                    this.updateCompetition()
+                }, 1500)
+            },
+            // 获取所有需要的弹窗
+            getPops() {
+                axios.get('/syspop/showPop', {
+                    headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    console.log('pops', res)
+                    this.pops = res.data.data
+                })
+            },
+            // 打开弹窗
+            openPopUP(id, left, top, width, height) {
+                let myWindow = window.open('/pop?id=' + id, '', 'left=' + left + ',top=' + top + ',width=' + width + ',height=' + height + ',resizable=no');
+                myWindow.focus();
+            },
+            goArticleDetail(id) {
+                localStorage.setItem('sub02_01_view', id)
+                window.location = '/front/portal/sub02_01_view'
+            },
+            goImgs(id) {
+                localStorage.setItem('sub02_02_view', id)
+                window.location = '/front/portal/sub02_02_view'
+            },
+            searchImgs() {
+                axios.get('/portal/article', {
+                    params: {
+                        current: 1,
+                        size: 5,
+                        type: 2
+                    },
+                    headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    this.imgsData = res.data.data
+                    console.log(this.imgsData)
+                })
+            }, searchVideos() {
+                axios.get('/portal/article', {
+                    params: {
+                        current: 1,
+                        size: 4,
+                        type: 3
+                    },
+                    headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    this.videoData = res.data.data
+                    console.log('videoData', this.videoData)
+                })
+            }, searchArticle() {
+                axios.get('/portal/article', {
+                    params: {
+                        current: 1,
+                        size: 3,
+                        type: '1'
+                    },
+                    headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    this.noticeData = res.data.data
+                    this.noticeData.records.forEach((item, index) => {
+                        item.created = new Date(item.created).format('MM-dd')
+                    })
+                })
+            }, visit() {
+                axios.get('/visit', {
+                    headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                })
+            }, initIns() {
+                const that = this
+                axios.get('/ins/media').then(response => {
+                    const res = response.data
+                    if (res.code === 200) {
+                        const page = Math.floor(res.data.length / 10) + 1
+                        console.log(page)
+                        for (let i = 0; i < page; i++) {
+                            that.mediaList.push(res.data.slice(i * 10, (i + 1) * 10))
+                        }
+                    }
+                })
+            }
+        },
+        mounted() {
+            this.competitionList()
+            this.searchImgs()
+            this.searchVideos()
+            this.searchArticle()
+            this.getPops()
+            this.visit()
+            this.$nextTick(() => {
+                this.initIns()
+            })
+        }, created() {
+            let loginUserStr = localStorage.getItem('login_user')
+            if (loginUserStr) {
+                let loginUser = JSON.parse(loginUserStr)
+                this.token = loginUser.data.token || ''
+            }
+        }, watch: {
+            'pops': function (newVal, oldVal) {
+                console.log('newVal', newVal)
+                if (newVal.length) {
+                    newVal.forEach((item, index) => {
+                        this.openPopUP(item.id, item.left, item.top, item.width, item.height)
+                    })
+                }
+            }
+        }
+    })
+</script>
+<script type="text/javascript">
+    window.onload = function () {
+        let schedule = localStorage.getItem('schedules')
+        let schedules = JSON.parse(schedule)
+        let showIndex = 0;
+        for (let i = 0; i < schedules.length; i++) {
+            let item = schedules[i]
+            if (item.show) {
+                showIndex = i
+                break;
+            }
+            if (i === schedules.length - 1) {
+                showIndex = i
+                break;
+            }
+        }
+        var match = $('#match-slider .owl-carousel');
+        match.owlCarousel({
+            items: 1,
+            center: false,
+            loop: false,
+            dots: false,
+            nav: false,
+            startPosition: showIndex,
+        });
+        $('#match-nav .nav-prev').click(function () {
+            match.trigger('prev.owl.carousel');
+        });
+        $('#match-nav .nav-next').click(function () {
+            match.trigger('next.owl.carousel');
+        });
+    }
+</script>
+</body>
+</html>

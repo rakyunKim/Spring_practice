@@ -1,0 +1,279 @@
+<body>
+<div class="wrapper">
+    <!-- :: header s :: -->
+    <head th:replace="include/header :: common_head(~{::title},~{::link},~{})">
+        <title></title>
+    </head>
+</div>
+<div id="subwrite">
+    <section class="container">
+        <div class="sub-top bg7">
+            <div class="sub-top-con">
+                <h2>사회적협동조합</h2>
+            </div>
+        </div>
+        <nav class="breadcrumb">
+            <div class="breadcrumb-container">
+                <ul class="breadcrumb-list">
+                    <li class="home"><span class="screen-out">홈</span></li>
+                    <li>
+                        <div class="breadcrumb-box js-dropdown">
+                            <button type="button" class="breadcrumb-btn js-dropdown-btn"
+                                    data-dropdown="breadcrumb-dep1">
+                                <span>사회적협동조합</span>
+                            </button>
+                            <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep1">
+                                <ul class="breadcrumb-cont-list">
+                                    <li><a href="/front/portal/sub01_01">구단소개</a></li>
+                                    <li><a href="/front/portal/sub02_01_list">구단소식</a></li>
+                                    <li><a href="/front/portal/sub03_01">선수단</a></li>
+                                    <li><a href="/front/portal/sub04_01">경기정보</a></li>
+                                    <li><a href="/front/portal/sub05_01_list">팬</a></li>
+                                    <li><a href="/front/portal/sub06_01">유소년</a></li>
+                                    <li><a href="/front/portal/sub07_01">사회적협동조합</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="breadcrumb-box js-dropdown">
+                            <button type="button" class="breadcrumb-btn js-dropdown-btn"
+                                    data-dropdown="breadcrumb-dep2">
+                                <span>조합게시판</span>
+                            </button>
+                            <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep2">
+                                <ul class="breadcrumb-cont-list">
+                                    <li><a href="/front/portal/sub07_01">조합/사업소개</a></li>
+                                    <li><a href="/front/portal/sub07_05_list">후원금내역</a></li>
+                                    <li><a href="/front/portal/sub07_06_list">자료실</a></li>
+                                    <li><a href="/front/portal/sub07_07_list">활동사진</a></li>
+                                    <li><a href="/front/portal/sub07_08_list">조합공지사항</a></li>
+                                    <!--<li><a href="/front/portal/sub07_02_list">조합게시판</a></li>-->
+                                    <li><a href="/front/portal/sub07_03">조합원/후원신청</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </section>
+    <div id="sub_contents">
+        <div class="wrap">
+            <div id="contents_area">
+                <h2 class="container_title">조합게시판</h2>
+                <section id="bo_w">
+                    <form name="fwrite" id="fwrite">
+                        <div class="write_div">
+                            <input type="checkbox" v-model="article.notice">
+                            <label for="notice">공지</label>
+                            <input type="checkbox" v-show="pageData.useSecret === 1" v-model="article.secret">
+                            <label for="secret" v-show="pageData.useSecret === 1">비밀글</label>
+                        </div>
+                        <div class="bo_w_tit write_div">
+                            <div id="autosave_wrapper write_div">
+                                <input type="text" required class="frm_input full_input required" size="50"
+                                       maxlength="255"
+                                       v-model="article.title"
+                                       placeholder="제목">
+                            </div>
+                        </div>
+                        <div class="write_div">
+                            <div class="wr_content">
+                                <!--                                    <textarea style="width:100%;height:300px;font-size:12px;"-->
+                                <!--                                              v-model="content"></textarea>-->
+                                <div id="editor">
+                                </div>
+                            </div>
+                        </div>
+                        <el-upload class="upload-demo" action="/portal/article/upload" :on-success="uploadSuccess"
+                                   :file-list="article.attaches"
+                                   :before-remove="beforeRemove" :before-upload="beforeUpload">
+                            <el-button size="small" v-show="article.attaches.length < pageData.fileLimit" type="primary">첨부파일 업로드</el-button>
+                        </el-upload>
+                        <div class="btn_confirm write_div">
+                            <a href="javascript:window.history.back(-1);" class="btn_cancel btn">취소</a>
+                            <input type="button" value="작성완료" id="btn_submit" accesskey="s" class="btn_submit btn"
+                                   @click="submit">
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="include/footer::footer"></div>
+</body>
+<script type="text/javascript">
+    new Vue({
+        el: "#subwrite",
+        data: {
+            token: '',
+            article: {
+                id: '',
+                notice: false,
+                secret: false,
+                url: '',
+                description: '',
+                menuUrl:'',
+                type: 9,
+                title: '',
+                attaches: []
+            },
+            pageData:{
+                fileLimit: 0
+            },
+            editor: null,
+            imgRecord: [],
+            content: '',
+        },
+        methods: {
+            beforeUpload(file){
+                if(file.size>this.pageData.maxSize){
+                    this.$message.error('파일 크기가 설정된 제한을 초과합니다')
+                    return false
+                }
+            },
+            beforeRemove(file){
+                console.log('removeFile', file)
+                const index = this.article.attaches.findIndex(el=>el.attachPath===file.attachPath)
+                this.article.attaches.splice(index,1)
+            },
+            uploadSuccess(res, file) {
+                console.log('uploadres',res)
+                console.log('file', file)
+                if (res.data && res.data.length > 0) {
+                    this.article.attaches.push({
+                        name: file.name,
+                        size: file.size,
+                        attachPath: res.data[0].url
+                    })
+                }
+            },
+            initEdit() {
+                let that = this
+                const E = window.wangEditor
+                const editor = new E('#editor')
+                editor.config.excludeMenus = [
+                    'list',
+                    'todo',
+                    'table',
+                    'code'
+                ]
+                editor.config.fontNames = [
+                    {name: "맑은 고딕", value: "맑은 고딕"},
+                    {name: "휴먼고딕", value: "휴먼고딕"},
+                    {name: "바탕체", value: "바탕체"},
+                    {name: "굴림", value: "굴림"},
+                    {name: "돋음체", value: "돋음체"},
+                    {name: "궁서", value: "궁서"},
+                    {name: "굴림체", value: "굴림체"},
+                    {name: "arial", value: "arial"},
+                    {name: "arial black", value: "arial black"},
+                    {name: "comic sans MS", value: "comic sans MS"},
+                    {name: "courier New", value: "courier New"},
+                    {name: "Helvetica", value: "Helvetica"},
+                    {name: "Impact", value: "Impact"},
+                    {name: "Tahoma", value: "Tahoma"},
+                    {name: "Times New Roman", value: "Times New Roman"},
+                    {name: "Verdana", value: "Verdana"}
+                ]
+                editor.config.uploadImgMaxSize = 50 * 1024 * 1024
+                editor.config.customUploadImg = function (resultFiles, insertImgFn) {
+                    console.log(resultFiles)
+                    that.upload(resultFiles[0], insertImgFn)
+                }
+                editor.create()
+                this.editor = editor
+            },
+            upload(file, insertImgFn) {
+                let formData = new FormData;
+                formData.append('file', file)
+                axios.post('/portal/article/upload', formData, {
+                    headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    let data = res.data.data
+                    let url = data[0].url
+                    insertImgFn(url)
+                })
+            },
+            submit() {
+                this.article.content = escape(this.editor.txt.html())
+                let data = JSON.stringify(this.article)
+                if (this.article.id) {
+                    axios.patch('/portal/article', data, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': this.token
+                        }
+                    }).then(res => {
+                        window.location = '/front/portal/sub07_02_list'
+                    })
+                } else {
+                    axios.post('/portal/article', data, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': this.token
+                        }
+                    }).then(res => {
+                        // todo 跳转到文章列表
+                        window.location = '/front/portal/sub07_02_list'
+                    })
+                }
+            },
+            getArticle(articleId) {
+                axios.get('/portal/article/' + articleId, {
+                    headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    this.article = res.data.data
+                    this.content = unescape(this.article.content)
+                    this.editor.txt.html(this.content)
+                    let attach = this.article.attaches
+                    console.log('attach', attach)
+                    let fileList = []
+                    attach.forEach((item, index) => {
+                        let file = {}
+                        file.name = item.name
+                        file.url = item.url
+                        fileList.push(file)
+                    })
+                    this.fileList = fileList
+                })
+            },
+            getPageData(){
+                const curPath ='/front'+ window.document.location.href.split('/front')[1];
+                axios.get('/menu/ck?uri='+ curPath, {
+                    headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res=>{
+                    this.pageData = res.data.data
+                })
+            }
+        },
+        mounted() {
+            this.article.menuUrl = '/front'+window.location.href.split('/front')[1]
+            this.initEdit()
+            let articleId = localStorage.getItem('sub07_02_write')
+            if (articleId) {
+                this.getArticle(articleId)
+            }
+        },
+        created() {
+            let loginAdminStr = localStorage.getItem('login_user')
+            if (loginAdminStr) {
+                let loginAdmin = JSON.parse(loginAdminStr)
+                this.token = loginAdmin.data.token || ''
+            } else {
+                window.location = "/front/portal/login"
+            }
+            this.getPageData()
+        },
+        watch: {}
+    })
+</script>

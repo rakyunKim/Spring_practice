@@ -1,0 +1,246 @@
+<div id="wrapper">
+    <div style="height:40px;"></div>
+    <div id="container" class="">
+        <head th:replace="admin/include/header::admin_header"></head>
+        <div class="container_wr" id="menu5_1_1">
+            <h1 id="container_title">
+                <p style="font-size:14px;color:#333333;"><i class="fa fa-home" aria-hidden="true"></i> > 기타환경설정 > 팝업등록
+                </p>
+                <span v-if="false">팝업 신규등록</span>
+            </h1>
+            <div class="btn_fixed_top">
+                <a href="/front/admin/menu5_1"><input type="submit" value="목록" class="btn btn_02"></a>
+                <a @click="submit" class="btn btn_01">저장</a>
+            </div>
+            <section style="margin-top:40px;">
+                <h2>팝업정보입력</h2>
+                <div class="tbl_frm01 tbl_wrap">
+                    <table>
+                        <caption>팝업레이어 입력</caption>
+                        <colgroup>
+                            <col class="grid_4">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th scope="row">시작일시</th>
+                            <td>
+                                <el-date-picker
+                                        v-model="pop.startTime"
+                                        type="datetime"
+                                        value-format="yyyy-MM-dd HH:mm:ss"
+                                >
+                                </el-date-picker>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">종료일시</th>
+                            <td>
+                                <el-date-picker
+                                        v-model="pop.endTime"
+                                        type="datetime"
+                                        value-format="yyyy-MM-dd HH:mm:ss"
+                                >
+                                </el-date-picker>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">시간</th>
+                            <td>
+                                <span class="frm_info">다시 보지 않음을 선택할 시 몇 시간동안 팝업레이어를 보여주지 않을지 설정합니다.</span>
+                                <input type="text" value="24" class="frm_input required" size="5"
+                                       v-model="pop.refreshTime">
+                                시간
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">팝업 좌측 위치</th>
+                            <td>
+                                <input type="text" value="10" class="frm_input required" size="5"
+                                       v-model="pop.left"> px
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">팝업 상단 위치</th>
+                            <td>
+                                <input type="text" value="10" class="frm_input required" size="5"
+                                       v-model="pop.top"
+                                > px
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">팝업 넓이</th>
+                            <td>
+                                <input type="text" value="450" class="frm_input required" size="5"
+                                       v-model="pop.width"
+                                > px
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">팝업 높이</th>
+                            <td>
+                                <input type="text" value="500" class="frm_input required" size="5"
+                                       v-model="pop.height"
+                                > px
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">팝업 제목</th>
+                            <td>
+                                <input type="text" value="" class="frm_input required" size="80"
+                                       v-model="pop.title"
+                                >
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">내용</th>
+                            <td>
+                                <!--에디터 넣어 주세요.-->
+                                <!--                                <textarea maxlength="65536" style="width:100%;height:300px"></textarea>-->
+                                <div id="editor"></div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="btn_ok">
+                    <a @click="submit" class="btn btn_01">저장</a>
+                </div>
+            </section>
+        </div>
+        <div th:replace="admin/include/footer::footer"></div>
+    </div>
+    <script>
+        new Vue({
+            el: "#menu5_1_1",
+            data: {
+                editor: null,
+                pop: {
+                    id: null,
+                    refreshTime: 24,
+                    startTime: '',
+                    endTime: '',
+                    left: 20,
+                    top: 20,
+                    width: 500,
+                    height: 500,
+                    title: '',
+                    content: ''
+                }
+            },
+            methods: {
+                initEdit() {
+                    let that = this
+                    const E = window.wangEditor
+                    const editor = new E('#editor')
+                    editor.config.excludeMenus = [
+                        'list',
+                        'todo',
+                        'table',
+                        'code'
+                    ]
+                    editor.config.fontNames = [
+                        {name: "맑은 고딕", value: "맑은 고딕"},
+                        {name: "휴먼고딕", value: "휴먼고딕"},
+                        {name: "바탕체", value: "바탕체"},
+                        {name: "굴림", value: "굴림"},
+                        {name: "돋음체", value: "돋음체"},
+                        {name: "궁서", value: "궁서"},
+                        {name: "굴림체", value: "굴림체"},
+                        {name: "arial", value: "arial"},
+                        {name: "arial black", value: "arial black"},
+                        {name: "comic sans MS", value: "comic sans MS"},
+                        {name: "courier New", value: "courier New"},
+                        {name: "Helvetica", value: "Helvetica"},
+                        {name: "Impact", value: "Impact"},
+                        {name: "Tahoma", value: "Tahoma"},
+                        {name: "Times New Roman", value: "Times New Roman"},
+                        {name: "Verdana", value: "Verdana"}
+                    ]
+                    editor.config.uploadImgMaxSize = 50 * 1024 * 1024
+                    editor.config.customUploadImg = function (resultFiles, insertImgFn) {
+                        that.upload(resultFiles[0], insertImgFn)
+                    }
+                    editor.create()
+                    this.editor = editor
+                },
+                init() {
+                    let id = localStorage.getItem('menu5_1_1')
+                    if (id) {
+                        axios.get('/syspop/getById', {
+                            params: {
+                                id: id
+                            },
+                            headers: {
+                                'Authorization': this.token
+                            }
+                        }).then(res => {
+                            console.log(res)
+                            this.pop = res.data.data
+                            this.content = unescape(this.pop.content)
+                            this.editor.txt.html(this.content)
+                        })
+                    }
+                },
+                submit() {
+                    this.pop.content = escape(this.editor.txt.html())
+                    let data = JSON.stringify(this.pop)
+                    axios.post('/syspop', data, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': this.token
+                        }
+                    }).then(res => {
+                        window.location = '/front/admin/menu5_1'
+                    })
+                },
+                upload(file, insertImgFn) {
+                    let formData = new FormData;
+                    formData.append('file', file)
+                    axios.post('/portal/article/upload', formData, {
+                        headers: {
+                            'Authorization': this.token
+                        }
+                    }).then(res => {
+                        let data = res.data.data
+                        let url = data[0].url
+                        insertImgFn(url)
+                    })
+                },
+            },
+            mounted() {
+                this.init()
+                this.initEdit()
+            }, created() {
+                let loginAdminStr = localStorage.getItem('login_user')
+                if (loginAdminStr) {
+                    let loginAdmin = JSON.parse(loginAdminStr)
+                    this.token = loginAdmin.data.token || ''
+                } else {
+                    window.location = "/front/admin/login"
+                }
+            }, watch: {}
+        })
+    </script>
+    <style>
+        /*#editor {*/
+        /*    z-index: 10 !important;*/
+        /*}*/
+
+        .w-e-toolbar {
+            z-index: 100 !important;
+        }
+
+        .w-e-text-container {
+            z-index: 10 !important;
+        }
+    </style>
+</div>
+
+<script>
+    $(".scroll_top").click(function () {
+        $("body,html").animate({scrollTop: 0}, 400);
+    })
+</script>
+</body>
+</html>

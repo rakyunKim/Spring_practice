@@ -1,0 +1,257 @@
+<body>
+<div class="wrapper">
+    <!-- :: header s :: -->
+    <head th:replace="include/header :: common_head(~{::title},~{::link},~{})">
+        <title></title>
+    </head>
+</div>
+<div id="sub0701">
+    <section class="container">
+        <div class="sub-top bg7">
+            <div class="sub-top-con">
+                <h2>사회적협동조합</h2>
+            </div>
+        </div>
+        <nav class="breadcrumb">
+            <div class="breadcrumb-container">
+                <ul class="breadcrumb-list">
+                    <li class="home"><span class="screen-out">홈</span></li>
+                    <li>
+                        <div class="breadcrumb-box js-dropdown">
+                            <button type="button" class="breadcrumb-btn js-dropdown-btn"
+                                    data-dropdown="breadcrumb-dep1">
+                                <span>사회적협동조합</span>
+                            </button>
+                            <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep1">
+                                <ul class="breadcrumb-cont-list">
+                                    <li><a href="/front/portal/sub01_01">구단소개</a></li>
+                                    <li><a href="/front/portal/sub02_01_list">구단소식</a></li>
+                                    <li><a href="/front/portal/sub03_01">선수단</a></li>
+                                    <li><a href="/front/portal/sub04_01">경기정보</a></li>
+                                    <li><a href="/front/portal/sub05_01_list">팬</a></li>
+                                    <li><a href="/front/portal/sub06_01">유소년</a></li>
+                                    <li><a href="/front/portal/sub07_01">사회적협동조합</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="breadcrumb-box js-dropdown">
+                            <button type="button" class="breadcrumb-btn js-dropdown-btn"
+                                    data-dropdown="breadcrumb-dep2">
+                                <span>조합/사업소개</span>
+                            </button>
+                            <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep2">
+                                <ul class="breadcrumb-cont-list">
+                                    <li><a href="/front/portal/sub07_01">조합/사업소개</a></li>
+                                    <li v-if="hasPrivilege('sub07_01_replay')"><a href="/front/portal/sub07_05_list">후원금내역</a></li>
+                                    <li v-if="hasPrivilege('sub07_01_replay')"><a href="/front/portal/sub07_06_list">자료실</a></li>
+                                    <li v-if="hasPrivilege('sub07_01_replay')"><a href="/front/portal/sub07_07_list">활동사진</a></li>
+                                    <li v-if="hasPrivilege('sub07_01_replay')"><a href="/front/portal/sub07_08_list">조합공지사항</a></li>
+                                    <!--<li><a href="/front/portal/sub07_02_list">조합게시판</a></li>-->
+                                    <li><a href="/front/portal/sub07_03">조합원/후원신청</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </section>
+    <div id="sub_contents">
+        <div class="wrap">
+            <div id="contents_area">
+                <h2 class="container_title">조합/사업소개</h2>
+                <div id="ctt_con" class="sub01_01">
+                    <!--<div class="ready">
+                        <p>
+                            컨텐츠 준비 중 입니다.<br><br>
+                            <span>빠른 시일내에 좋은 모습으로 찾아뵙겠습니다.</span>
+                        </p>
+                    </div>-->
+                    <div class="cont_text_info2">
+                        <p>
+                            <span>사회적 협동조합이란?</span><br>
+                            사회적협동조합은 지역주민들의 권익,복지증진과 관련된 사업을 수행하거나,
+                            취약계층에게 사회서비스를 제공하는 등 <br>조합원의 이익증진을 넘어 사회적목적을
+                            실현하고자 비영리목적의 사업을 수행하는 협동조합입니다.
+                        </p>
+                    </div>
+                    <section class="pdb80">
+                        <!-- 컨텐츠내용 -->
+                        <div class="sr_col2 cancerdf">
+                            <div class="right">
+                                <!-- 컨텐츠타이틀 및 내용 2단 -->
+                                <div class="sr_tit2 pdt30">
+                                    <h1><span class="bnum pt">01</span>
+                                        <p>춘천시민축구단 사회적협동조합 소개</p></h1>
+                                    <p class="desc">
+                                        춘천시민이면 누구나 참여 가능한 조합원이 모여 자주적,자립적,자치적 조합활동을 통하여
+                                        시민축구단 운영과 국민생활 예술 체육활동을 제공함으로써 조합원의 삶의 질 향상과 지역사회발전 및
+                                        사회공헌을 목적으로 합니다.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- // 컨텐츠내용 -->
+                    </section>
+
+                    <section class="pdb80">
+                        <!-- 컨텐츠타이틀 및 내용 2단 -->
+                        <div class="sr_tit2">
+                            <h1><span class="bnum pt">02</span>
+                                <p>연혁</p></h1>
+                        </div>
+                        <!-- // 컨텐츠타이틀 및 내용 2단 -->
+                        <!-- 컨텐츠내용 4단 -->
+                        <div class="sr_col4_style2 four">
+                            <ul>
+                                <li><span>01</span>
+                                    <p>춘천시민축구단 사회적협동조합 법인설립 창립총회<br>(2021. 3)</p></li>
+                                <li><span>02</span>
+                                    <p>법인 설립 신청·인가<br>(2021.7)</p>
+                                    <p style="color:#ff0000;">*인가승인기관: 문화체육관광부</p>
+                                </li>
+                                <li><span>03</span>
+                                    <p>법인 등기 사업자등록<br>(2021.8)</p></li>
+                                <li><span>04</span>
+                                    <p>지정기부금 단체 지정<br>(2021.12)</p></li>
+                            </ul>
+                            <!--<p class="desc">
+                                *인가승인기관: 문화체육관광부
+                            </p>-->
+                        </div>
+                        <!-- // 컨텐츠내용 4단 -->
+                        <!--<p class="desc">
+                            *인가승인기관: 문화체육관광부
+                        </p>-->
+                    </section>
+
+                    <section class="pdb80">
+                        <!-- 컨텐츠타이틀 및 내용 2단 -->
+                        <div class="sr_tit2">
+                            <h1><span class="bnum pt">03</span>
+                                <p>사업소개</p></h1>
+                        </div>
+
+                        <div class="info_box">
+                            <dl>
+                                <dt>비전</dt>
+                                <dd>춘천시민이 주인인 전국 최고의 사회적협동조합 축구단 구축</dd>
+                            </dl>
+                            <dl>
+                                <dt>목표</dt>
+                                <dd>
+                                    ㆍ춘천시민축구단 수준 향상 및 우리 안의 자원 발굴·육성<br>
+                                    ㆍ스포츠 관람·참여 문화 조성으로 시민의 행복 지수 향상
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>추진전략</dt>
+                                <dd>지역화 / 전문화 / 특성화 / 자립기반강화</dd>
+                            </dl>
+                            <dl>
+                                <dt>전략과제</dt>
+                                <dd>
+                                    ㆍ사회적협동조합 구단으로 축구 도시 브랜딩<br>
+                                    ㆍ문화도시 선정으로 스포츠 문화 가치 상승 기대<br>
+                                    ㆍ축구선수 계열화 완성으로 인적·물적 자원 활용<br>
+                                    ㆍ축구전문가, 축구협회, 재무분석가, 협동조합 출신 등 구단 운영 및 활성화에 기여 할 인력풀 확보<br>
+                                    ㆍ구단의 행정력 및 우수 선수단 구축
+                                </dd>
+
+                            </dl>
+                            <dl>
+                                <dt>핵심가치</dt>
+                                <dd>
+                                    ㆍ축구로 행복한 춘천 만들기<br>
+                                    ㆍ시민들의 참여 문화 확산 조성
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>주요사업</dt>
+                                <dd>
+                                    ㆍ춘천시민축구단 운영 및 조합 활성화 사업<br>
+                                    ㆍ축구 저변 확대를 위한 유소년 지원 사업<br>
+                                    ㆍ지역 사회 공헌 사업<br>
+                                    ㆍ조합원에 대한 교육훈련 및 정보제공 사업
+                                </dd>
+                            </dl>
+
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="include/footer::footer"></div>
+</body>
+
+<script type="text/javascript">
+    new Vue({
+        el: "#sub0701",
+        data: {
+            moveMode: '',
+            treeData: [],
+            defaultProps: {
+                children: 'subMenus',
+                label: 'name',
+                disabled: 'disabled'
+            },
+            dialogFormVisible: false,
+            currentMenuId: 0,
+            seachParam: '',
+            selectMode: 0,
+            privileges: [],
+            token: '',
+            checkList: [],
+            pageData: []
+        },
+        methods: {
+            getPrivileges() {
+                let uri = window.location.pathname
+                let privilegesData = localStorage.getItem("privilegesMap")
+                let allPrivileges = JSON.parse(privilegesData) || []
+                let privileges = allPrivileges[uri]
+                if (privileges) {
+                    privileges.forEach((item, index) => {
+                        this.privileges.push(item.name)
+                    })
+                }
+                console.log('this.privileges', this.privileges)
+            },
+            hasPrivilege(name) {
+                return this.privileges.indexOf(name) !== -1
+            },
+            getCurrentMenuId() {
+                let uri = window.location.pathname
+                // 判断登录是否失效
+                axios.get('/menu/getByUri', {
+                    headers: {
+                        'Authorization': this.token
+                    }, params: {
+                        uri: uri
+                    }
+                }).then(res => {
+                    console.log('res', res)
+                    this.currentMenuId = res.data.data.id
+                }).catch(err => {
+                    console.log(err)
+                });
+            },
+        },
+        mounted() {
+            this.getPrivileges()
+        },
+        created() {
+            let loginUserStr = localStorage.getItem('login_user')
+            if (loginUserStr) {
+                let loginUser = JSON.parse(loginUserStr)
+                this.token = loginUser.data.token || ''
+            }
+        },
+        watch: {}
+    })
+</script>
+

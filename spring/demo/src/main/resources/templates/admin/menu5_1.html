@@ -1,0 +1,177 @@
+<div id="wrapper">
+    <div style="height:40px;"></div>
+
+    <div id="container" class="">
+        <head th:replace="admin/include/header::admin_header"></head>
+        <div class="container_wr" id="menu5_1">
+            <h1 id="container_title">
+                <p style="font-size:14px;color:#333333;"><i class="fa fa-home" aria-hidden="true"></i> > 기타환경설정 > 팝업관리
+                </p>
+                팝업관리
+            </h1>
+            <div class="local_ov01 local_ov">
+						<span class="btn_ov01"><span class="ov_txt">전체 </span>
+						<span class="ov_num"> {{totalPop}}건 </span></span>
+            </div>
+            <div class="btn_fixed_top">
+                <input type="button" @click="delById" value="선택삭제" class="btn btn_02">
+                <a @click="goCreate" class="btn btn_01">팝업추가</a>
+            </div>
+            <section style="margin-top:40px;">
+                <h2>등록된 팝업리스트</h2>
+                <div class="tbl_head01 tbl_wrap">
+                    <table>
+                        <caption>등록된 팝업리스트</caption>
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" id="chkall" @change="triggle"></th>
+                            <th>번호</th>
+                            <th>제목</th>
+                            <th>시작일시</th>
+                            <th>종료일시</th>
+                            <th>표시여부</th>
+                            <th>관리</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="(item,index) in popsList">
+                            <td><input type="checkbox" name="popcheckbox" :value="item.id"></td>
+                            <td>{{item.id}}</td>
+                            <td>
+                                <a @click="goEdit(item.id)" style="font-weight:bold;">{{item.title}}</a>
+                            </td>
+                            <td>{{item.startTime}}</td>
+                            <td>
+                                {{item.endTime}}
+                            </td>
+                            <td>
+                                <input type="radio" :name="item.id" :value="1" v-model="item.status">표시
+                                <input type="radio" :name="item.id" :value="0" v-model="item.status">표시 안함
+                                <a @click="changeStatus(item.id,item.status)" class="btn btn_04">저장</a>
+                            </td>
+                            <td>
+                                <a @click="goEdit(item.id)" class="btn btn_03">수정</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <script>
+            new Vue({
+                el: "#menu5_1",
+                data: {
+                    totalPop:0,
+                    popsList: []
+                },
+                methods: {
+                    delById() {
+                        let inputs = document.getElementsByName("popcheckbox");
+                        let ids = []
+                        for (let i = 0; i < inputs.length; i++) {
+                            if (inputs[i].checked) {
+                                ids.push(inputs[i].value)
+                            }
+                        }
+                        let idsJoin = ids.join(",")
+                        if (!idsJoin) {
+                            this.$notify({
+                                title: '알림',
+                                message: '삭제할 내용을 선택하세요',
+                                type: 'warning'
+                            });
+                            return
+                        }
+                        axios.delete('/syspop', {
+                            params: {
+                                ids: idsJoin
+                            }, headers: {
+                                'Authorization': this.token
+                            }
+                        }).then(res => {
+                            this.$notify({
+                                title: '알림',
+                                message: '삭제 성공',
+                                type: 'success'
+                            });
+                            // this.pageSearch()
+                            window.location.reload()
+                        })
+                    },
+                    triggle() {
+                        let allcheck = document.getElementById("chkall")
+                        let inputs = document.getElementsByName("popcheckbox");
+                        for (let i = 0; i < inputs.length; i++) {
+                            inputs[i].checked = allcheck.checked;
+                        }
+                    },
+                    changeStatus(id, status) {
+                        axios.patch('/syspop/status', {id: id, status: status}, {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': this.token
+                            }
+                        }).then(res => {
+                            let data = res.data
+                            console.log('status', data)
+                            this.$notify({
+                                title: '알림',
+                                message: data.data,
+                                type: 'success'
+                            });
+                            this.getPopsList()
+                        })
+                    },
+                    goCreate() {
+                        localStorage.removeItem('menu5_1_1')
+                        window.location = "/front/admin/menu5_1_1"
+                    },
+                    goEdit(id) {
+                        localStorage.setItem('menu5_1_1', id)
+                        window.location = "/front/admin/menu5_1_1"
+                    },
+                    getPopsList() {
+                        axios.get('/syspop/list', {
+                            params: {
+                                current: 1,
+                                size: 10,
+                            },
+                            headers: {
+                                'Authorization': this.token
+                            }
+                        }).then(res => {
+                            console.log(res)
+                            this.totalPop=res.data.data.total
+                            let results = res.data.data
+                            this.popsList = results.records
+                        })
+                    }
+                },
+                mounted() {
+                    this.getPopsList()
+                }, created() {
+                    let loginAdminStr = localStorage.getItem('login_user')
+                    if (loginAdminStr) {
+                        let loginAdmin = JSON.parse(loginAdminStr)
+                        this.token = loginAdmin.data.token || ''
+                    } else {
+                        window.location = "/front/admin/login"
+                    }
+                }, watch: {}
+            })
+        </script>
+
+        <div th:replace="admin/include/footer::footer"></div>
+    </div>
+
+</div>
+
+<script>
+    $(".scroll_top").click(function () {
+        $("body,html").animate({scrollTop: 0}, 400);
+    })
+</script>
+</body>
+</html>

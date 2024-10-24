@@ -1,0 +1,85 @@
+<body>
+<div class="wrapper">
+    <!-- :: header s :: -->
+    <head th:replace="include/header :: common_head(~{::title},~{::link},~{})">
+        <title></title>
+    </head>
+</div>
+<section class="container">
+    <div class="sub-top bg4">
+        <div class="sub-top-con">
+            <h2>경기정보</h2>
+        </div>
+    </div>
+    <nav class="breadcrumb">
+        <div class="breadcrumb-container">
+            <ul class="breadcrumb-list">
+                <li class="home"><span class="screen-out">홈</span></li>
+                <li>
+                    <div class="breadcrumb-box js-dropdown">
+                        <button type="button" class="breadcrumb-btn js-dropdown-btn" data-dropdown="breadcrumb-dep1">
+                            <span>경기정보</span>
+                        </button>
+                        <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep1">
+                            <ul class="breadcrumb-cont-list">
+                                <li><a href="/front/portal/sub01_01">구단소개</a></li>
+                                <li><a href="/front/portal/sub02_01_list">구단소식</a></li>
+                                <li><a href="/front/portal/sub03_01">선수단</a></li>
+                                <li><a href="/front/portal/sub04_01">경기정보</a></li>
+                                <li><a href="/front/portal/sub05_01_list">팬</a></li>
+                                <li><a href="/front/portal/sub06_01">유소년</a></li>
+                                <li><a href="/front/portal/sub07_01">사회적협동조합</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="breadcrumb-box js-dropdown">
+                        <button type="button" class="breadcrumb-btn js-dropdown-btn" data-dropdown="breadcrumb-dep2">
+                            <span>티켓정보</span>
+                        </button>
+                        <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep2">
+                            <ul class="breadcrumb-cont-list">
+                                <li><a href="/front/portal/sub04_01">경기일정/결과</a></li>
+                                <li><a href="/front/portal/sub04_02">리그순위</a></li>
+                                <li><a href="/front/portal/sub04_03">티켓정보</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</section>
+<div id="sub_contents">
+    <div class="wrap">
+        <div id="contents_area">
+            <h2 class="container_title">티켓정보</h2>
+
+            <div id="ctt_con" class="sub01_01">
+                <!-- <div class="ready">
+                    <p>
+                        준비 중 입니다.<br><br>
+                        <span>빠른 시일내에 좋은 모습으로 찾아뵙겠습니다.</span>
+                    </p>
+                </div> -->
+                <div class="emblem">
+                    <!--<h4 class="h4-tit">앰블럼</h4>-->
+                    <div class="emblem-box">
+                        <div class="item2">
+                            <img src="/front/portal/img/sub/tickets_2408.png" alt=""/>
+                        </div>
+                    </div>
+                    <div class="emblem-cont">
+                        <p class="emblem_txt01">CHUNCHEON</p>
+                        <p class="emblem_txt02">FOOTBALL CLUB</p>
+                        <!-- <p class="emblem_txt05" style="margin-bottom:50px;font-weight:bold;color:#fd9602;">준비 중 입니다.</p> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="include/footer::footer"></div>
+
+</body>

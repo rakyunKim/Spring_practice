@@ -1,0 +1,269 @@
+<body>
+<div class="wrapper">
+    <!-- :: header s :: -->
+    <head th:replace="include/header :: common_head(~{::title},~{::link},~{})">
+        <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="utf-8"></script>
+        <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+        <title></title>
+    </head>
+</div>
+<div id="login">
+    <div>
+        <section class="container">
+            <div class="sub-top bg1">
+                <div class="sub-top-con">
+                    <h2>로그인</h2>
+                </div>
+            </div>
+            <nav class="breadcrumb">
+                <div class="breadcrumb-container">
+                    <ul class="breadcrumb-list">
+                        <li class="home"><span class="screen-out">홈</span></li>
+                        <li>
+                            <div class="breadcrumb-box js-dropdown">
+                                <button type="button" class="breadcrumb-btn js-dropdown-btn"
+                                        data-dropdown="breadcrumb-dep1">
+                                    <span>구단소개</span>
+                                </button>
+                                <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep1">
+                                    <ul class="breadcrumb-cont-list">
+                                        <li><a href="/front/portal/sub01_01">구단소개</a></li>
+                                        <li><a href="/front/portal/sub02_01_list">구단소식</a></li>
+                                        <li><a href="/front/portal/sub03_01">선수단</a></li>
+                                        <li><a href="/front/portal/sub04_01">경기정보</a></li>
+                                        <li><a href="/front/portal/sub05_01_list">팬</a></li>
+                                        <li><a href="/front/portal/sub06_01">유소년</a></li>
+                                        <li><a href="/front/portal/sub07_01">사회적협동조합</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="breadcrumb-box js-dropdown">
+                                <button type="button" class="breadcrumb-btn js-dropdown-btn"
+                                        data-dropdown="breadcrumb-dep2">
+                                    <span>로그인</span>
+                                </button>
+                                <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep2">
+                                    <ul class="breadcrumb-cont-list">
+                                        <li><a href="/front/portal/id_find">아이디 찾기</a></li>
+                                        <li><a href="/front/portal/pw_find">비밀번호 찾기</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </section>
+        <div id="sub_contents">
+            <div class="wrap">
+                <div id="contents_area">
+                    <h2 class="container_title">로그인</h2>
+
+                    <div id="ctt_con" class="sub01_01">
+                        <div id="mb_login" class="mbskin">
+                            <input type="hidden">
+
+                            <fieldset id="login_fs">
+                                <legend>회원로그인</legend>
+                                <input type="text" class="frm_input required" size="20" placeholder="아이디"
+                                       v-model="username">
+                                <input type="password" class="frm_input required" size="20" placeholder="비밀번호"
+                                       v-model="password">
+                                <input type="submit" value="로그인" class="btn_submit" @click="toLogin">
+                                <input type="checkbox" name="auto_login" id="login_auto_login" v-model="autoLogin">
+                                <label for="login_auto_login">자동로그인</label>
+                            </fieldset>
+
+
+                            <aside id="login_info">
+                                <h2>회원로그인 안내</h2>
+                                <a href="/front/portal/id_find" id="login_id_lost" class="btn_b01 btn">아이디 찾기</a>
+                                <a href="/front/portal/pw_find" id="login_password_lost" class="btn_b01 btn">비밀번호 찾기</a>
+                                <a href="/front/portal/register" class="btn_b01 btn">회원 가입</a>
+                            </aside>
+
+                            <aside id="login_info_sns">
+                                <input type="button" value="네이버 로그인" class="btn_naver" @click="loginWithNaver">
+                                <input type="button" value="카카오 로그인" class="btn_kakao" @click="loginWithKanako">
+<!--                                <input type="button" value="페이스북 로그인" class="btn_face" @click="faceBookloginApi">-->
+                            </aside>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="include/footer::footer"></div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $("body").keydown(function () {
+        if (event.keyCode === 13) {
+            $('.btn_submit').click();
+        }
+    });
+    new Vue({
+        el: "#login",
+        data: {
+            username: '',
+            password: '',
+            autoLogin: false,
+            redirectUri: "http://cccitizenfc.co.kr/front/portal/login?app=kakao",
+            client_id: '2e1bcf3f8eb12538fd897cbdf911868c',
+            naver_redirectUri: "http://cccitizenfc.co.kr/front/portal/login?app=naver",
+            naver_client_id: 'dGvlCGvh4uFAuTGqjqTG',
+            naver_secret: 'dc45EHGCxi',
+            ins_client_id: '563521274692191',
+            ins_secret: '050efa7251c81f66b7fc35f837fd72bb',
+            ins_redirectUri: 'https://localhost:8088/front/portal/login?app=ins'
+        },
+        methods: {
+            getQueryVariable(variable) {
+                var query = window.location.search.substring(1);
+                var vars = query.split("&");
+                for (var i = 0; i < vars.length; i++) {
+                    var pair = vars[i].split("=");
+                    if (pair[0] === variable) {
+                        return pair[1];
+                    }
+                }
+                return false;
+            },
+            loginWithNaver() {
+                window.location = "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=" + this.naver_client_id + "&redirect_uri=" + this.naver_redirectUri;
+            },
+            loginWithKanako() {
+                window.location = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=" + this.client_id + "&redirect_uri=" + this.redirectUri;
+            }, loginWithIns() {
+                window.location = "https://api.instagram.com/oauth/authorize?response_type=code&client_id=" +
+                    this.ins_client_id + "&redirect_uri=" + this.ins_redirectUri + "&scope=user_profile,user_media";
+            },
+            toLogin() {
+                axios.post('/user/login', {
+                    username: this.username,
+                    password: this.password,
+                }).then(res => {
+                    let data = res.data
+                    if (data.code === 200) {
+                        localStorage.setItem('login_user', JSON.stringify(data))
+                        this.$notify({
+                            title: '알림',
+                            message: '로그인 성공',
+                            type: 'success'
+                        });
+                        window.location = '/'
+                    } else {
+                        this.$notify({
+                            title: '알림',
+                            message: data.msg,
+                            type: 'warning'
+                        });
+                    }
+                }).catch(err => {
+                    console.log(err)
+                });
+            }, kaKaoSsoLogin(code) {
+                axios.post('/sso/kaKaoLogin', {
+                    grant_type: 'authorization_code',
+                    client_id: this.client_id,
+                    redirect_uri: this.redirectUri,
+                    code: code
+                }).then(res => {
+                    let data = res.data
+                    if (data.code === 200) {
+                        localStorage.setItem('login_user', JSON.stringify(data))
+                        this.$notify({
+                            title: '알림',
+                            message: '로그인 성공',
+                            type: 'success'
+                        });
+                        window.location = '/'
+                    } else {
+                        this.$notify({
+                            title: '알림',
+                            message: data.msg,
+                            type: 'warning'
+                        });
+                    }
+                });
+            }, naverSsoLogin(code) {
+                axios.post('/sso/naverLogin', {
+                    grant_type: 'authorization_code',
+                    client_id: this.naver_client_id,
+                    client_secret: this.naver_secret,
+                    redirect_uri: this.naver_redirectUri,
+                    code: code
+                }).then(res => {
+                    let data = res.data
+                    if (data.code === 200) {
+                        localStorage.setItem('login_user', JSON.stringify(data))
+                        this.$notify({
+                            title: '알림',
+                            message: '로그인 성공',
+                            type: 'success'
+                        });
+                        window.location = '/'
+                    } else {
+                        this.$notify({
+                            title: '알림',
+                            message: data.msg,
+                            type: 'warning'
+                        });
+                    }
+                });
+            }, faceBookloginApi() {
+                let that = this
+                FB.login(function (response) {
+                    console.log(response)
+                    axios.post('/sso/fbLogin', response.authResponse)
+                        .then(res => {
+                            let data = res.data
+                            if (data.code === 200) {
+                                localStorage.setItem('login_user', JSON.stringify(data))
+                                that.$notify({
+                                    title: '알림',
+                                    message: '로그인 성공',
+                                    type: 'success'
+                                });
+                                window.location = '/'
+                            } else {
+                                that.$notify({
+                                    title: '알림',
+                                    message: data.msg,
+                                    type: 'warning'
+                                });
+                            }
+                        })
+                }, {scope: 'public_profile,email'});
+            },
+            faceBookLoginInit() {
+                window.fbAsyncInit = function () {
+                    FB.init({
+                        appId: '430338168420856',
+                        autoLogAppEvents: true,
+                        xfbml: true,
+                        version: 'v11.0'
+                    });
+                };
+            }
+        },
+        mounted() {
+
+        },
+        created() {
+            this.faceBookLoginInit()
+            let app = this.getQueryVariable("app")
+            if (app) {
+                let code = this.getQueryVariable("code")
+                if (app === 'kakao') {
+                    this.kaKaoSsoLogin(code)
+                } else if (app === 'naver') {
+                    this.naverSsoLogin(code)
+                }
+            }
+        },
+        watch: {}
+    })
+</script>

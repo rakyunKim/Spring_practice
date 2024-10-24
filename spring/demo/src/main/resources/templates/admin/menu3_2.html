@@ -1,0 +1,483 @@
+<div id="wrapper">
+    <div style="height:40px;"></div>
+    <div id="container" class="">
+        <head th:replace="admin/include/header::admin_header"></head>
+        <div class="container_wr" id="menu3_2">
+            <h1 id="container_title">
+                <p style="font-size:14px;color:#333333;"><i class="fa fa-home" aria-hidden="true"></i> > 경기정보관리 > 리그순위
+                    입력</p>
+                리그순위 정보관리
+            </h1>
+            <!--            <div class="btn_fixed_top">-->
+            <!--                <input type="submit" value="엑셀 받기" class="btn btn_02">-->
+            <!--                <input type="submit" value="엑셀 업로드" class="btn btn_02">-->
+            <!--            </div>-->
+            <section style="margin-top:40px;">
+                <h2>리그순위 정보입력</h2>
+                <div class="tbl_head01 tbl_wrap">
+                    <table>
+                        <caption>리그순위정보관리</caption>
+                        <thead>
+                        <tr>
+                            <th rowspan="2">리그<br>(리그엠블럼)</th>
+                            <th rowspan="2">리그 시간</th>
+                            <th rowspan="2">순위</th>
+                            <th colspan="2">구단정보</th>
+                            <th rowspan="2">경기수</th>
+                            <th rowspan="2">승점</th>
+                            <th rowspan="2">승/무/패</th>
+                            <th rowspan="2">골득실차</th>
+
+                        </tr>
+                        <tr>
+                            <th>구단로고</th>
+                            <th>구단명</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><input type="text"
+                                       v-model="ranking.season"
+                                       class="frm_input readonly" maxlength="10">
+                                <div v-show="ranking.logoUrl" style="position: relative">
+                                    <el-image
+                                            style="width: 50px; height: 50px;margin-top: 10px;"
+                                            :src="ranking.logoUrl"
+                                            fit="none"></el-image>
+                                    <i class="el-icon-delete" @click="deleteLogoUrl" style="position: absolute;font-size: 20px;top:27px;right:4px;cursor:pointer;color: #f00;"></i>
+                                </div>
+                                <!-- edit position -->
+                                <el-upload
+                                        action="/portal/article/upload"
+                                        v-show="!ranking.logoUrl"
+                                        :show-file-list = false
+                                        :on-success="handleLogoUpload"
+                                >
+                                    <a class="btn btn_03" style="margin-top:8px;">리그logo 업로드</a>
+                                </el-upload>
+                            </td>
+                            <td>
+                                <el-date-picker
+                                        v-model="date"
+                                        type="daterange"
+                                        align="left"
+                                        unlink-panels
+                                        range-separator="~"
+                                        start-placeholder="시작일"
+                                        end-placeholder="마지막일"
+                                        value-format="yyyy-MM-dd"
+                                >
+                                </el-date-picker>
+                            </td>
+                            <td><input type="number" class="frm_input readonly" maxlength="10"
+                                       v-model="ranking.ranks"
+                            ></td>
+                            <td>
+                                <el-upload
+                                        action="/portal/article/upload"
+                                        :on-remove="handleRemove"
+                                        :on-success="handleLogoImgSuccess"
+                                        multiple
+                                        :limit="1"
+                                        list-type="picture"
+                                        :file-list="logoFileList">
+                                    <a class="btn btn_03">이미지찾기</a>
+                                    <div slot="tip" class="el-upload__tip">이미지 파일은 jpg/png만 업로드 됩니다</div>
+                                </el-upload>
+                            </td>
+                            <td><input type="text" value="구단명입력" class="frm_input readonly"
+                                       v-model="ranking.clubName"
+                                       maxlength="10">
+                            </td>
+                            <td><input type="number" value="경기수입력" class="frm_input readonly"
+                                       v-model="ranking.currentCompetitionTimes"
+                                       maxlength="10">
+                            </td>
+                            <td><input type="number"
+                                       v-model="ranking.points"
+                                       class="frm_input readonly" maxlength="10"></td>
+                            <td>
+                                <input type="number" class="frm_input2 readonly" v-model="ranking.win"
+                                       maxlength="10">
+                                <input type="number" class="frm_input2 readonly" v-model="ranking.draw"
+                                       maxlength="10">
+                                <input type="number" class="frm_input2 readonly" v-model="ranking.fail"
+                                       maxlength="10">
+                            </td>
+                            <td>
+                                <input type="number" class="frm_input2 readonly" v-model="ranking.goalWin"
+                                       maxlength="10">
+                                <input type="number" class="frm_input2 readonly" v-model="ranking.goalDraw"
+                                       maxlength="10">
+                                <input type="number" class="frm_input2 readonly" v-model="ranking.goalFail"
+                                       maxlength="10">
+                            </td>
+                            <!--<td><input type="number" value="경기수" class="frm_input readonly" maxlength="10"
+                                       v-model="ranking.totalCompetitionTimes"></td>-->
+                        </tr>
+                        </tbody>
+                    </table>
+                    <span class="page_text01">* 로고 이미지 업로드 크기는 600px*600px로 업로드 가능합니다.</span>
+                    <div class="btn_ok">
+                        <a class="btn btn_01" @click="save">확인</a>
+                    </div>
+                    <div style="height:80px;"></div>
+                    <div class="play_date_list">
+                        <input type="button" value="엑셀 받기" class="btn btn_02" @click="exportExcel">
+                        <input type="button" value="선택삭제" class="btn btn_02" @click="delById">
+                        <el-date-picker
+                                v-model="date"
+                                type="daterange"
+                                align="left"
+                                unlink-panels
+                                range-separator="~"
+                                start-placeholder="시작일"
+                                end-placeholder="마지막일"
+                                :picker-options="pickerOptions"
+                                value-format="yyyy-MM-dd"
+                                @change="dateChange"
+                        >
+                        </el-date-picker>
+                    </div>
+                    <h2 style="padding-top:20px;">리그순위 리스트</h2>
+                    <table>
+                        <caption>리그순위정보관리</caption>
+                        <thead>
+                        <tr>
+                            <th rowspan="2">
+                                <input type="checkbox" id="chkall" @change="triggle">
+                            </th>
+                            <th rowspan="2">리그</th>
+                            <th rowspan="2">리그 시간</th>
+                            <th rowspan="2">순위</th>
+                            <th colspan="2">구단정보</th>
+                            <th rowspan="2">경기수</th>
+                            <th rowspan="2">승점</th>
+                            <th rowspan="2">승/무/패</th>
+                            <th rowspan="2">골득실차</th>
+                            <!--<th rowspan="2">경기수</th>-->
+                            <th rowspan="2">관리</th>
+                        </tr>
+                        <tr>
+                            <th>구단로고</th>
+                            <th>구단명</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="(item,index) in rankings">
+                            <td><input type="checkbox" name="checkbox" :value="item.id"></td>
+                            <!--상단 리그명, 리그엠블럼 등록 시 아래 부분에 리그명  리그엠블럼 같이 표출되게 해 주세요-->
+                            <td>
+                                <img width="30" height="30" :src="item.logoUrl"><br>
+
+                                {{item.season}}
+                            </td>
+                            <td>{{item.startTime}}-{{item.endTime}}</td>
+                            <td>{{item.ranks}}</td>
+                            <td><img width="30" height="30" :src="item.clubLogoImgUrl"></td>
+                            <td>{{item.clubName}}</td>
+                            <td>{{item.currentCompetitionTimes}}</td>
+                            <td>{{item.points}}</td>
+                            <td>
+                                {{item.win}}승 {{item.draw}}무 {{item.fail}}패
+                            </td>
+                            <td>골득실-{{item.goalWin}} 득점{{item.goalDraw}} 실점{{item.goalFail}}</td>
+                            <!--<td>{{item.totalCompetitionTimes}}</td>-->
+                            <td>
+                                <a @click="toEdit(item)" class="btn btn_03">수정</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+        <div th:replace="admin/include/footer::footer"></div>
+
+        <script type="text/javascript">
+            new Vue({
+                el: "#menu3_2",
+                data(){
+                    return {
+                        pickerOptions: {
+                            shortcuts: [{
+                                text: '최근 일주일',
+                                onClick(picker) {
+                                    const end = new Date();
+                                    const start = new Date();
+                                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                                    picker.$emit('pick', [start, end]);
+                                }
+                            }, {
+                                text: '최근 한달',
+                                onClick(picker) {
+                                    const end = new Date();
+                                    const start = new Date();
+                                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                                    picker.$emit('pick', [start, end]);
+                                }
+                            }, {
+                                text: '최근 삼개월',
+                                onClick(picker) {
+                                    const end = new Date();
+                                    const start = new Date();
+                                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                                    picker.$emit('pick', [start, end]);
+                                }
+                            }]
+                        },
+                        logoFileList: [],
+                        rankings: [],
+                        ranking: {
+                            id: null,
+                            season: null,
+                            startTime: null,
+                            endTime: null,
+                            ranks: null,
+                            clubLogoImgUrl: null,
+                            clubName: null,
+                            currentCompetitionTimes: null,
+                            points: null,
+                            win: null,
+                            draw: null,
+                            fail: null,
+                            goalWin: null,
+                            goalDraw: null,
+                            goalFail: null,
+                            totalCompetitionTimes: null,
+                            logoUrl:''
+                        },
+                        date: [],
+                        activeNames: ['1'],
+                        priv: false,
+                        commentContent: '',
+                        token: '',
+                        articleId: '',
+                        articleData: {},
+                        content: '',
+                        privileges: [],
+                        comments: [],
+                    }
+                },
+                methods: {
+                    handleLogoUpload(response,file){
+                        this.ranking.logoUrl = response.data[0].url
+                    },
+                    deleteLogoUrl(){
+                        this.$confirm('삭제 하시겠습니까?', '알림', {
+                            confirmButtonText: '확인',
+                            cancelButtonText: '취소',
+                            type: 'warning'
+                        }).then(() => {
+                            this.$set(this.ranking,'logoUrl','')
+                            this.$message.success('성공적으로 삭제되었습니다')
+                        })
+                    },
+                    exportExcel() {
+                        let inputs = document.getElementsByName("checkbox");
+                        let ids = []
+                        for (let i = 0; i < inputs.length; i++) {
+                            if (inputs[i].checked) {
+                                ids.push(inputs[i].value)
+                            }
+                        }
+                        axios.post("/ranking/downloadExcel", ids, {
+                            responseType: 'blob'
+                        }).then(function (res) {
+                            var blob = res.data;
+                            // FileReader主要用于将文件内容读入内存
+                            var reader = new FileReader();
+                            reader.readAsDataURL(blob);
+                            // onload当读取操作成功完成时调用
+                            reader.onload = function (e) {
+                                var a = document.createElement('a');
+                                // 获取文件名fileName
+                                var fileName = res.headers["content-disposition"].split("=");
+                                fileName = fileName[fileName.length - 1];
+                                fileName = fileName.replace(/"/g, "");
+                                a.download = fileName;
+                                a.href = e.target.result;
+                                document.body.appendChild(a);
+                                a.click();
+                                document.body.removeChild(a);
+                            }
+                        });
+                    },
+                    toEdit(item) {
+                        this.ranking = item
+                        console.log(item)
+                        let logoFileList = []
+                        let seasonFile = {}
+                        seasonFile.name = ''
+                        seasonFile.url = item.clubLogoImgUrl
+                        logoFileList.push(seasonFile)
+                        this.logoFileList = logoFileList
+                        this.date.push(item.startTime)
+                        this.date.push(item.endTime)
+
+                        window.scrollTo(0,0);
+                    },
+                    handleRemove(file, fileList) {
+                        console.log(file, fileList);
+                    },
+                    handleExceed(files, fileList) {
+                        this.$message.warning(`파일 하나만 선택할 수 있습니다， ${files.length} 개 파일을 선택했는데， ${files.length + fileList.length} 개 파일을 선택했습니다.`);
+                    },
+                    beforeRemove(file, fileList) {
+                        return this.$confirm(`${file.name} 파일 삭제 하시겠습니까？`);
+                    },
+                    dateChange(date) {
+                        this.list(date[0], date[1])
+                    }, triggle() {
+                        let allcheck = document.getElementById("chkall")
+                        let inputs = document.getElementsByName("checkbox");
+                        for (let i = 0; i < inputs.length; i++) {
+                            inputs[i].checked = allcheck.checked;
+                        }
+                    },
+                    delById() {
+                        let inputs = document.getElementsByName("checkbox");
+                        let ids = []
+                        for (let i = 0; i < inputs.length; i++) {
+                            if (inputs[i].checked) {
+                                ids.push(inputs[i].value)
+                            }
+                        }
+                        let idsJoin = ids.join(",")
+                        if (!idsJoin) {
+                            this.$notify({
+                                title: '알림',
+                                message: '삭제할 내용을 선택하세요',
+                                type: 'warning'
+                            });
+                            return
+                        }
+                        axios.delete('/ranking', {
+                            params: {
+                                ids: idsJoin
+                            }, headers: {
+                                'Authorization': this.token
+                            }
+                        }).then(res => {
+                            this.$notify({
+                                title: '알림',
+                                message: '삭제 성공',
+                                type: 'success'
+                            });
+                            this.list();
+                            window.location.reload()
+                        })
+                    },
+                    list(start, end) {
+                        axios.get('/ranking/list', {
+                            params: {
+                                current: 1,
+                                size: 100,
+                                start: start,
+                                end: end
+                            },
+                            headers: {
+                                'Authorization': this.token
+                            }
+                        }).then(res => {
+                            let results = res.data.data
+                            this.rankings = results.records
+                        })
+                    },
+                    save() {
+                        let data = this.ranking
+                        data.startTime = this.date[0]
+                        data.endTime = this.date[1]
+                        axios.post('/ranking', data, {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': this.token
+                            }
+                        }).then(res => {
+                            this.$notify({
+                                title: '알림',
+                                message: '저장 성공',
+                                type: 'success'
+                            });
+                            window.location.reload()
+                        })
+                    },
+                    handleLogoImgSuccess(res, file) {
+                        this.ranking.clubLogoImgUrl = res.data[0].url
+                    },
+                    handleChange(val) {
+                        console.log(val);
+                    },
+                    getPrivileges() {
+                        let uri = window.location.pathname
+                        let privilegesData = localStorage.getItem("privilegesMap")
+                        let allPrivileges = JSON.parse(privilegesData) || []
+                        let split = uri.split("_")
+                        let newUri = split[0] + "_" + split[1]
+                        for (let allPrivilegesKey in allPrivileges) {
+                            if (allPrivilegesKey.indexOf(newUri) !== -1) {
+                                let privileges = allPrivileges[allPrivilegesKey]
+                                privileges.forEach((item, index) => {
+                                    this.privileges.push(item.name)
+                                })
+                            }
+                        }
+                    },
+                    hasPrivilege(name) {
+                        let privileges = name.split("_")
+                        let privilege = privileges[privileges.length - 1]
+                        if (this.privileges) {
+                            for (let i = 0; i < this.privileges.length; i++) {
+                                let item = this.privileges[i]
+                                if (item.indexOf(privilege) !== -1) {
+                                    return true
+                                }
+                            }
+                        }
+                        return false
+                    },
+                    goCreate() {
+                        localStorage.removeItem('sub02_01_write')
+                        window.location = '/front/portal/sub02_01_write'
+                    },
+                    goDel() {
+                        axios.delete('/portal/article', {
+                            params: {
+                                ids: this.articleId
+                            }, headers: {
+                                'Authorization': this.token
+                            }
+                        }).then(res => {
+                            window.location = "/front/portal/sub02_01_list"
+                        })
+                    },
+                    goEdit() {
+                        localStorage.setItem('sub02_01_write', this.articleId)
+                        window.location = '/front/portal/sub02_01_write'
+                    }
+                },
+                mounted() {
+                    this.list()
+                },
+                created() {
+                    let loginUserStr = localStorage.getItem('login_user')
+                    if (loginUserStr) {
+                        let loginUser = JSON.parse(loginUserStr)
+                        this.token = loginUser.data.token || ''
+                    }
+                },
+                watch: {}
+            })
+        </script>
+
+    </div>
+
+</div>
+
+<script>
+    $(".scroll_top").click(function () {
+        $("body,html").animate({scrollTop: 0}, 400);
+    })
+</script>
+</body>
+</html>

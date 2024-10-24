@@ -1,0 +1,174 @@
+<div id="wrapper">
+    <div style="height:40px;"></div>
+
+    <div id="container">
+        <head th:replace="admin/include/header::admin_header"></head>
+        <div class="container_wr" id="index">
+            <h1 id="container_title">
+                <p style="font-size:14px;color:#333333;"><i class="fa fa-home" aria-hidden="true"></i> > 관리자메인</p>
+                관리자메인
+            </h1>
+            <section style="margin-top:20px;">
+                <h2>일간방문자수</h2>
+                <div class="tbl_head01 tbl_wrap">
+                    <!--이건 참고용으로 넣어드립니다. 선 그래프 형태의 방문자 통계 넣어주시면 됩니다.-->
+                    <!--                    <div th:replace="admin/chart::chart"></div>-->
+                    <ve-line :data="chartData"></ve-line>
+                </div>
+            </section>
+            <section style="margin-top:40px;">
+                <h2>회원현황</h2>
+                <div class="tbl_head01 tbl_wrap">
+                    <table>
+                        <caption>회원현황</caption>
+                        <thead>
+                        <tr>
+                            <th scope="col">회원아이디</th>
+                            <th scope="col">닉네임</th>
+                            <th scope="col">이메일</th>
+                            <th scope="col">주소</th>
+                            <th scope="col">연락처</th>
+                            <th scope="col">조합원 신청 유/무</th>
+                            <th scope="col">후원금</th>
+                            <th scope="col">최근접속일</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="(item,index) in users">
+                            <th>{{item.username}}</th>
+                            <td>{{item.nickName}}</td>
+                            <td>{{item.email}}</td>
+                            <td>{{item.baseAddress}}&nbsp;{{item.detailAddress}}</td>
+                            <td>{{item.mobile}}</td>
+                            <td class="table_text01">{{item.memberApply ? '신청완료' : '미신청'}}</td>
+                            <td>{{item.praiseGrant || 0}}원</td>
+                            <td>{{item.lastVisitTime}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <div style="text-align: center">
+                        <a href="/front/admin/menu1_1" class="table_text01">더보기</a>
+                    </div>
+                </div>
+            </section>
+            <section style="margin-top:40px;">
+                <h2>최근 게시물</h2>
+                <!--<div class="local_desc02 local_desc">
+                전체 45 건 중 5건 목록
+                </div>-->
+                <div class="tbl_head01 tbl_wrap">
+                    <table>
+                        <caption>최근 게시물</caption>
+                        <thead>
+                        <tr>
+                            <th scope="col">제목</th>
+                            <th scope="col">게시판 이름</th>
+                            <th scope="col">조회수</th>
+                            <th scope="col">회원아이디</th>
+                            <th scope="col">게시일</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="(item,index) in articles">
+                            <td>
+                                <a href="javascript:void(0)" @click="goArticle(item)">{{item.title}}</a>
+                            </td>
+                            <td>{{item.sysMenu.name}}</td>
+                            <td>{{item.count}}</td>
+                            <td>{{item.author}}</td>
+                            <td>{{item.created}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+        <div th:replace="admin/include/footer::footer"></div>
+    </div>
+    <script src="/front/admin/js/charts/echarts.min.js"></script>
+    <script src="/front/admin/js/charts/vcharts.index.js"></script>
+    <link rel="stylesheet" href="/front/admin/css/vcharts.css">
+    <script>
+        new Vue({
+            el: "#index",
+            data: {
+                token: '',
+                users: [],
+                articles: [],
+                chartData: {
+                    columns: [],
+                    rows: []
+                }
+            },
+            methods: {
+                goArticle(item){
+                    localStorage.setItem(item.target,item.id)
+                    window.open(item.targetUrl)
+                },
+                initCharts() {
+                    axios.get('/user/statis', {
+                        headers: {
+                            'Authorization': this.token
+                        }
+                    }).then(res => {
+                        console.log('charts', res)
+                        this.chartData = res.data.data
+                    })
+                },
+                pageArticle() {
+                    axios.get('/portal/article', {
+                        params: {
+                            current: 1,
+                            size: 10,
+                        },
+                        headers: {
+                            'Authorization': this.token
+                        }
+                    }).then(res => {
+                        console.log(res)
+                        let results = res.data.data
+                        this.articles = results.records
+                    })
+                },
+                pageUsers() {
+                    axios.get('/user/list', {
+                        params: {
+                            current: 1,
+                            size: 5
+                        },
+                        headers: {
+                            'Authorization': this.token
+                        }
+                    }).then(res => {
+                        let results = res.data.data
+                        this.users = results.records
+                        console.log(this.users)
+                    })
+                }
+            },
+            mounted() {
+                this.pageUsers()
+                this.pageArticle()
+                this.initCharts()
+            }, created() {
+                let loginAdminStr = localStorage.getItem('login_user')
+                if (loginAdminStr) {
+                    let loginAdmin = JSON.parse(loginAdminStr)
+                    this.token = loginAdmin.data.token || ''
+                    this.username = loginAdmin.data.username
+                } else {
+                    window.location = "/front/admin/login"
+                }
+            }, watch: {}
+        })
+    </script>
+</div>
+
+<script>
+    $(".scroll_top").click(function () {
+        $("body,html").animate({scrollTop: 0}, 400);
+    })
+</script>
+</body>
+</html>

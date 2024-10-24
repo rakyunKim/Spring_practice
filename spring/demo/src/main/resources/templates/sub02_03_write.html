@@ -1,0 +1,192 @@
+<body>
+<div class="wrapper">
+    <!-- :: header s :: -->
+    <head th:replace="include/header :: common_head(~{::title},~{::link},~{})">
+        <title></title>
+    </head>
+</div>
+<div id="subwrite">
+    <section class="container">
+        <div class="sub-top bg1">
+            <div class="sub-top-con">
+                <h2>구단소개</h2>
+            </div>
+        </div>
+        <nav class="breadcrumb">
+            <div class="breadcrumb-container">
+                <ul class="breadcrumb-list">
+                    <li class="home"><span class="screen-out">홈</span></li>
+                    <li>
+                        <div class="breadcrumb-box js-dropdown">
+                            <button type="button" class="breadcrumb-btn js-dropdown-btn"
+                                    data-dropdown="breadcrumb-dep1">
+                                <span>구단소식</span>
+                            </button>
+                            <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep1">
+                                <ul class="breadcrumb-cont-list">
+                                    <li><a href="/front/portal/sub01_01">구단소개</a></li>
+                                    <li><a href="/front/portal/sub02_01_list">구단소식</a></li>
+                                    <li><a href="/front/portal/sub03_01">선수단</a></li>
+                                    <li><a href="/front/portal/sub04_01">경기정보</a></li>
+                                    <li><a href="/front/portal/sub05_01_list">팬</a></li>
+                                    <li><a href="/front/portal/sub06_01">유소년</a></li>
+                                    <li><a href="/front/portal/sub07_01">사회적협동조합</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="breadcrumb-box js-dropdown">
+                            <button type="button" class="breadcrumb-btn js-dropdown-btn"
+                                    data-dropdown="breadcrumb-dep2">
+                                <span>동영상자료</span>
+                            </button>
+                            <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep2">
+                                <ul class="breadcrumb-cont-list">
+                                    <li><a href="/front/portal/sub02_01_list">공지사항</a></li>
+                                    <li><a href="/front/portal/sub02_02_list">사진자료</a></li>
+                                    <li><a href="/front/portal/sub02_03_list">동영상자료</a></li>
+                                    <li><a href="/front/portal/sub02_04_list">관련기사</a></li>
+                                    <li><a href="/front/portal/sub02_05_list">협약</a></li>
+                                    <li><a href="/front/portal/sub02_06_list">마케터</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </section>
+    <div id="sub_contents">
+        <div class="wrap">
+            <div id="contents_area">
+                <h2 class="container_title">동영상자료</h2>
+                <section id="bo_w">
+                    <form name="fwrite" id="fwrite">
+                        <div class="write_div">
+                            <input type="checkbox" v-model="videos.notice">
+                            <label for="notice">공지</label>
+                            <input type="checkbox" v-model="videos.secret">
+                            <label for="secret">비밀글</label>
+                        </div>
+                        <div class="bo_w_tit write_div">
+                            <div id="autosave_wrapper write_div">
+                                <input type="text" required class="frm_input full_input required" size="50"
+                                       maxlength="255"
+                                       v-model="videos.title"
+                                       placeholder="제목">
+                            </div>
+                        </div>
+                        <div class="bo_w_link write_div">
+                            <label><i class="fa fa-link" aria-hidden="true"></i></label>
+                            <input type="text" class="frm_input full_input" size="50" placeholder="링크를 입력해 주세요."
+                                   v-model="videos.imgUrl">
+                        </div>
+                        <div class="bo_w_flie write_div" v-for="(item,index) in fileList" v-if="false">
+                            <div class="file_wr write_div">
+                                <label class="lb_icon"><i class="fa fa-download" aria-hidden="true"></i></label>
+                                <input type="file" class="frm_file " :value="item.file"
+                                       @change="handleFileChange($event,index)">
+                            </div>
+                        </div>
+                        <div class="btn_confirm write_div">
+                            <a href="javascript:window.history.back(-1);" class="btn_cancel btn">취소</a>
+                            <input type="button" value="작성완료" id="btn_submit" accesskey="s" class="btn_submit btn"
+                                   @click="submit">
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="include/footer::footer"></div>
+</body>
+<script type="text/javascript">
+    new Vue({
+        el: "#subwrite",
+        data: {
+            token: '',
+            article: {},
+            videos: {
+                id: '',
+                notice: false,
+                secret: false,
+                imgUrl: '',//video文件的真实地址
+                url: '',//点击跳转的地址
+                type: 3,
+                title: '',
+            },
+            fileList:[],
+            editor: null,
+            imgRecord: [],
+            content: '',
+        },
+        methods: {
+            getArticle(articleId) {
+                axios.get('/portal/article/' + articleId, {
+                    headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    this.videos = res.data.data
+                })
+            },
+            handleFileChange(e, index) {
+                let file = e.target.files[0]
+                // 处理文件上传
+                let formData = new FormData;
+                formData.append('file', file)
+                axios.post('/portal/article/upload', formData, {
+                    headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    let data = res.data
+                    let url = data.data
+                    console.log(res.data)
+                    this.videos.imgUrl = url[0].url
+                })
+            },
+            submit() {
+                let data = JSON.stringify(this.videos)
+                if (this.videos.id) {
+                    axios.patch('/portal/article', data, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': this.token
+                        }
+                    }).then(res => {
+                        window.location = '/front/portal/sub02_03_list'
+                    })
+                } else {
+                    axios.post('/portal/article', data, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': this.token
+                        }
+                    }).then(res => {
+                        window.location = '/front/portal/sub02_03_list'
+                    })
+                }
+            },
+        },
+        mounted() {
+            let videoId = localStorage.getItem('sub02_03_write')
+            if (videoId) {
+                this.getArticle(videoId)
+            }
+        },
+        created() {
+            let loginAdminStr = localStorage.getItem('login_user')
+            if (loginAdminStr) {
+                let loginAdmin = JSON.parse(loginAdminStr)
+                this.token = loginAdmin.data.token || ''
+            } else {
+                window.location = "/front/portal/login"
+            }
+        },
+        watch: {}
+    })
+</script>

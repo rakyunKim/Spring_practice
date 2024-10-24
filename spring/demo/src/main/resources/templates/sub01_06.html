@@ -1,0 +1,76 @@
+<body>
+<div class="wrapper">
+    <!-- :: header s :: -->
+    <head th:replace="include/header :: common_head(~{::title},~{::link},~{})">
+        <title></title>
+    </head>
+</div>
+<section class="container">
+    <div class="sub-top bg1">
+        <div class="sub-top-con">
+            <h2>구단소개</h2>
+        </div>
+    </div>
+    <nav class="breadcrumb">
+        <div class="breadcrumb-container">
+            <ul class="breadcrumb-list">
+                <li class="home"><span class="screen-out">홈</span></li>
+                <li>
+                    <div class="breadcrumb-box js-dropdown">
+                        <button type="button" class="breadcrumb-btn js-dropdown-btn" data-dropdown="breadcrumb-dep1">
+                            <span>구단소개</span>
+                        </button>
+                        <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep1">
+                            <ul class="breadcrumb-cont-list">
+                                <li><a href="/front/portal/sub01_01">구단소개</a></li>
+                                <li><a href="/front/portal/sub02_01_list">구단소식</a></li>
+                                <li><a href="/front/portal/sub03_01">선수단</a></li>
+                                <li><a href="/front/portal/sub04_01">경기정보</a></li>
+                                <li><a href="/front/portal/sub05_01_list">팬</a></li>
+                                <li><a href="/front/portal/sub06_01">유소년</a></li>
+                                <li><a href="/front/portal/sub07_01">사회적협동조합</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="breadcrumb-box js-dropdown">
+                        <button type="button" class="breadcrumb-btn js-dropdown-btn" data-dropdown="breadcrumb-dep2">
+                            <span>조직도</span>
+                        </button>
+                        <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep2">
+                            <ul class="breadcrumb-cont-list">
+                                <li><a href="/front/portal/sub01_01">인사말</a></li>
+                                <li><a href="/front/portal/sub01_02">연혁</a></li>
+                                <li><a href="/front/portal/sub01_06">조직도</a></li>
+                                <li><a href="/front/portal/sub01_03">구단상징</a></li>
+                                <li><a href="/front/portal/sub01_04">홈경기장</a></li>
+                                <li><a href="/front/portal/sub01_05">스폰서</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</section>
+<div id="sub_contents">
+    <div class="wrap">
+        <div id="contents_area">
+            <h2 class="container_title">조직도</h2>
+
+            <div id="ctt_con" class="sub01_01">
+                <div class="emblem">
+                    <!--<h4 class="h4-tit">앰블럼</h4>-->
+                    <div class="org-box">
+                        <div class="item2">
+                            <p class="image"><img src="/front/portal/img/sub/sub01_06_img02.jpg" alt=""/></p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="include/footer::footer"></div>
+</body>

@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="ko" th:fragment="admin_header">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="imagetoolbar" content="no">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <title>관리자 | 춘천시민축구단</title>
+    <link rel="stylesheet" href="/front/admin/css/admin.css">
+    <link rel="stylesheet" href="/front/admin/js/font-awesome/css/font-awesome.min.css?ver=191202">
+    <script src="/front/admin/js/jquery-1.12.4.min.js?ver=191202"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src=" /front/common/vue.js"></script>
+    <script src="/front/portal/js/request/axios.min.js"></script>
+    <script src="/front/portal/js/element.js"></script>
+    <script src="/front/portal/js/webEdit.js"></script>
+    <link rel="stylesheet" href="/front/portal/css/element.css">
+
+    <script src="/front/common/element.ko.js"></script>
+    <script>
+        console.log(ELEMENT)
+        ELEMENT.locale(ELEMENT.lang.ko)
+    </script>
+    <script>
+        $(function () {
+            $("#datepicker").datepicker();
+        });
+        $(function () {
+            $("#datepicker2").datepicker();
+        });
+    </script>
+</head>
+<body>
+
+<div id="hd_login_msg">최고관리자 최고관리자님 로그인 중 <a href="#">로그아웃</a></div>
+<div id="to_content"><a href="#container">본문 바로가기</a></div>
+<header id="hd">
+    <h1>춘천시민축구단</h1>
+    <div id="top_area">
+        <div id="hd_top">
+            <div id="logo"><a href="/admin">ADMINISTRATOR</a></div>
+            <div id="tnb">
+                <ul>
+                    <li class="tnb_li"><a href="#" class="tnb_community" target="_blank" title="커뮤니티 바로가기">커뮤니티 바로가기</a>
+                    </li>
+                    <li class="tnb_li">
+                        <!--<i class="fa fa-user-circle-o" aria-hidden="true"></i>-->
+                        <button type="button" class="tnb_mb_btn">{{username}}<span class="./img/btn_gnb.png">메뉴열기</span>
+                        </button>
+                        <ul class="tnb_mb_area">
+                            <!--<li><a href="#">관리자정보</a></li>-->
+                            <li id="tnb_logout"><a href="javascript:return false" @click="logout">로그아웃</a></li>
+                        </ul>
+                    </li>
+                    <li class="tnb_li"><a href="/" class="tnb_service">홈페이지가기</a></li>
+                </ul>
+            </div>
+        </div>
+        <nav id="gnb" class="gnb_large ">
+            <ul>
+                <li class="gnb_li on">
+                    <div class="gnb_oparea">
+                        <div class="left_member">
+                            <span><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>
+                            <p><strong>{{roleName}}</strong>님 환영합니다.</p>
+                            <p><img src="/front/admin/img/logout_bt.jpg" @click="logout"></p>
+                        </div>
+                    </div>
+                    <el-menu
+                            style="left: 3px;top: 300px;width: 226px"
+                            default-active="2"
+                            class="el-menu-vertical-demo"
+                            @open="handleOpen"
+                            @close="handleClose">
+                        <el-submenu index="1">
+                            <template slot="title">
+                                <i class="el-icon-user"></i>
+                                <span>회원관리</span>
+                            </template>
+                            <el-menu-item-group>
+                                <a href="/front/admin/menu1_1">
+                                    <el-menu-item index="1-1">회원관리
+                                    </el-menu-item>
+                                </a>
+                                <a href="/front/admin/menu1_2">
+                                    <el-menu-item index="1-2">회원접속통계
+                                    </el-menu-item>
+                                </a>
+                            </el-menu-item-group>
+                        </el-submenu>
+                        <el-submenu index="2">
+                            <template slot="title">
+                                <i class="el-icon-notebook-2"></i>
+                                <span>게시판관리</span>
+                            </template>
+                            <el-menu-item-group>
+                                <a href="/front/admin/menu2_1">
+                                    <el-menu-item index="2-1">게시판관리</el-menu-item>
+                                </a>
+                            </el-menu-item-group>
+                        </el-submenu>
+                        <el-submenu index="3">
+                            <template slot="title">
+                                <i class="el-icon-trophy"></i>
+                                <span>경기 정보 관리</span>
+                            </template>
+                            <el-menu-item-group>
+                                <a href="/front/admin/menu3_1">
+                                    <el-menu-item index="3-1">경기정보관리</el-menu-item>
+                                </a>
+                                <a href="/front/admin/menu3_2">
+                                    <el-menu-item index="3-2">리그순위</el-menu-item>
+                                </a>
+                            </el-menu-item-group>
+                        </el-submenu>
+                        <el-submenu index="4">
+                            <template slot="title">
+                                <i class="el-icon-office-building"></i>
+                                <span>사회적 협동 조합</span>
+                            </template>
+                            <el-menu-item-group>
+                                <a href="/front/admin/menu4_1">
+                                    <el-menu-item index="4-1">사회적협동조합</el-menu-item>
+                                </a>
+                            </el-menu-item-group>
+                        </el-submenu>
+                        <el-submenu index="5">
+                            <template slot="title">
+                                <i class="el-icon-setting"></i>
+                                <span>기타환경설정</span>
+                            </template>
+                            <el-menu-item-group>
+                                <a href="/front/admin/menu5_1">
+                                    <el-menu-item index="5-1">팝업관리</el-menu-item>
+                                </a>
+                            </el-menu-item-group>
+                        </el-submenu>
+                    </el-menu>
+            </ul>
+        </nav>
+    </div>
+</header>
+<script>
+    jQuery(function($){
+
+        var menu_cookie_key = 'g5_admin_btn_gnb';
+
+        $(".tnb_mb_btn").click(function(){
+            $(".tnb_mb_area").toggle();
+        });
+
+        $("#btn_gnb").click(function(){
+
+            var $this = $(this);
+
+            try {
+                if( ! $this.hasClass("btn_gnb_open") ){
+                    set_cookie(menu_cookie_key, 1, 60*60*24*365);
+                } else {
+                    delete_cookie(menu_cookie_key);
+                }
+            }
+            catch(err) {
+            }
+
+            $("#container").toggleClass("container-small");
+            $("#gnb").toggleClass("gnb_small");
+            $this.toggleClass("btn_gnb_open");
+
+        });
+
+        $(".gnb_ul li .btn_op" ).click(function() {
+            $(this).parent().addClass("on").siblings().removeClass("on");
+        });
+
+    });
+</script>
+<script type="text/javascript">
+    new Vue({
+        el: "#top_area",
+        data: {
+            token: '',
+            username: '',
+            roleName: ''
+        },
+        methods: {
+            handleOpen(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleClose(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            logout() {
+                let that = this
+                axios.post('/user/logout', {token: that.token}).then(res => {
+                    console.log('lgoutres', res)
+                    localStorage.removeItem('login_user')
+                    window.location = '/front/admin/login'
+                }).catch(err => {
+                    console.log(err)
+                });
+            }, status() {
+                // 判断登录是否失效
+                axios.get('/status', {
+                    headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    console.log('status', res)
+                    if (res.data.code !== 200) {
+                        this.logout()
+                    }
+                }).catch(err => {
+                    this.logout()
+                    console.log(err)
+                });
+            }
+        },
+        mounted() {
+        }, created() {
+            let loginUserStr = localStorage.getItem('login_user')
+            if (loginUserStr) {
+                let loginUser = JSON.parse(loginUserStr)
+                this.token = loginUser.data.token || ''
+                this.status()
+                this.roleName = loginUser.data.roleName;
+                this.username = loginUser.data.username;
+                let ranks = loginUser.data.ranks;
+                if (ranks > 3) {
+                    alert('방문권한이 없습니다')
+                    window.location = '/front/admin/login'
+                }
+            }
+        }, watch: {}
+    })
+</script>
+<!--<div class="adm_menu">-->
+<!--    <ul>-->
+<!--        &lt;!&ndash;페이지에 방문 했을 때 a:visited 속성 걸어주세요. admin.css 110번째 라인 입니다.&ndash;&gt;-->
+<!--        회원관리-->
+<!--        <li><a href="/front/admin/menu1_1">회원관리</a></li>-->
+<!--        <li><a href="/front/admin/menu1_2">회원접속통계</a></li>-->
+<!--        게시판관리-->
+<!--        <li><a href="/front/admin/menu2_1">게시판관리</a></li>-->
+<!--        경기 정보 관리-->
+<!--        <li><a href="/front/admin/menu3_1">경기정보관리</a></li>-->
+<!--        <li><a href="/front/admin/menu3_2">리그순위</a></li>-->
+<!--        사회적 협동 조합-->
+<!--        <li><a href="/front/admin/menu4_1">사회적협동조합</a></li>-->
+<!--        기타환경설정-->
+<!--        <li><a href="/front/admin/menu5_1">팝업관리</a></li>-->
+<!--    </ul>-->
+<!--</div>-->
+</body>
+<style>
+    .header-active {
+        background-color: #fd9602;
+    }
+</style>
+</html>

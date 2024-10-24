@@ -1,0 +1,434 @@
+<div id="wrapper">
+    <div style="height:40px;"></div>
+
+    <div id="container" class="">
+        <head th:replace="admin/include/header::admin_header"></head>
+        <div class="container_wr" id="menu4_1_1">
+
+            <h1 id="container_title">
+                <p style="font-size:14px;color:#333333;"><i class="fa fa-home" aria-hidden="true"></i> > 회원관리 > 사회적협동조합
+                    > 정보수정</p>
+                조합원/후원금명단 정보수정
+            </h1>
+
+            <div class="btn_fixed_top">
+                <a href="javascript:history.back(-1);"><input type="button" value="명단목록" class="btn btn_02"></a>
+                <!--<input type="submit" value="선택삭제" class="btn btn_02">-->
+                <a class="btn btn_01" @click="save">저장</a>
+            </div>
+            <section style="margin-top:40px;">
+
+                <h2>정보수정</h2>
+                <div class="tbl_frm01 tbl_wrap">
+                    <table>
+                        <caption>정보 수정</caption>
+                        <colgroup>
+                            <col class="grid_4">
+                            <col>
+                            <col class="grid_4">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th scope="row">접속아이디</th>
+                            <td>
+                                <!--使用v-model 绑定 data 中的属性memberApply.id-->
+                                <input type="text" readonly class="frm_input" size="15" maxlength="20"
+                                       v-model="memberApply.userName">
+                            </td>
+                            <th scope="row">성명(법인명)</th>
+                            <td>
+                                <input type="text" class="frm_input " size="15" maxlength="20"
+                                       v-model="memberApply.companyName">
+                            </td>
+                            <th scope="row">주민(사업자)등록번호</th>
+                            <td><input type="text" class="frm_input " size="15" maxlength="20"
+                                       v-model="memberApply.registerNo">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">일반전화</th>
+                            <td>
+                                <input type="text" class="frm_input" size="15" maxlength="20"
+                                       v-model="memberApply.landline">
+                            </td>
+                            <th scope="row">핸드폰</th>
+                            <td>
+                                <input type="text" class="frm_input" maxlength="100" size="20"
+                                       v-model="memberApply.mobile">
+                            </td>
+                            <td colspan="2"></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">팩스</th>
+                            <td>
+                                <input type="text" class="frm_input" size="15" maxlength="20"
+                                       v-model="memberApply.fax">
+                            </td>
+                            <th scope="row">이메일</th>
+                            <td>
+                                <input type="text" class="frm_input" maxlength="100" size="20"
+                                       v-model="memberApply.email">
+                            </td>
+                            <td colspan="2"></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">주소</th>
+                            <td colspan="5" class="td_addr_line">
+                                <input type="text" class="frm_input" size="15"
+                                       v-model="memberApply.postCode">
+                                <button type="button" class="btn_frmline" @click="showApi">주소 검색</button>
+                                <br>
+                                <input type="text" class="frm_input" size="50" v-model="memberApply.address">
+                                기본주소<br>
+                                <input type="text" class="frm_input" size="50" v-model="memberApply.detailAddress">
+                                상세주소
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">조합원가입</th>
+                            <td>
+                                <input type="radio" name="registerType" :value="true" v-model="memberApply.registerType">예&nbsp;
+                                <input type="radio" name="registerType" :value="null" v-model="memberApply.registerType">아니오
+                            </td>
+                            <th scope="row">개인후원가입</th>
+                            <td>
+                                <input type="radio" name="checkBusiness" :value="true" v-model="memberApply.checkBusiness">예&nbsp;
+                                <input type="radio" name="checkBusiness" :value="false" v-model="memberApply.checkBusiness">아니오
+                            </td>
+                            <th scope="row">기업후원</th>
+                            <td>
+                                <input type="radio" name="service" :value="true" v-model="memberApply.service">예&nbsp;
+                                <input type="radio" name="service" :value="false" v-model="memberApply.service">아니오
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">예금주</th>
+                            <td>
+                                <input type="text" class="frm_input " size="15" maxlength="20"
+                                       v-model="memberApply.holderName">
+                            </td>
+                            <th scope="row">예금주 생년월일<br>(사업자등록번호)</th>
+                            <td>
+                                <input type="text" class="frm_input " size="15" maxlength="20"
+                                       v-model="memberApply.holderBirth">
+                            </td>
+                            <td colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">은행명</th>
+                            <td>
+                                <input type="text" class="frm_input " size="15" maxlength="20"
+                                       v-model="memberApply.bankName">
+                            </td>
+                            <th scope="row">계좌번호</th>
+                            <td>
+                                <input type="text" class="frm_input " size="15" maxlength="20"
+                                       v-model="memberApply.account">
+                            </td>
+                            <td colspan="2"></td>
+                        </tr>
+                        <!--2021.9.13일 추가부분 시작-->
+                        <tr>
+                            <th scope="row">구좌수</th>
+                            <td><input type="text" v-model="memberApply.cooperator" class="frm_input " size="15" maxlength="20"></td>
+                            <th scope="row">출자금액</th>
+                            <td><input type="text" v-model="memberApply.cooperatorMoney" class="frm_input " size="15" maxlength="20">
+                                원</td>
+                            <th scope="row">일시납부금액</th>
+                            <td><input type="text" v-model="memberApply.payMoney" class="frm_input " size="15" maxlength="20">
+                                원</td>
+                        </tr>
+                        </tr>
+                        <tr>
+                            <th scope="row">월납부금액</th>
+                            <td><input type="text" v-model="memberApply.monthPay" class="frm_input " size="15" maxlength="20"></td>
+                            <th scope="row">납부방법</th>
+                            <td>
+                                <input type="radio" :value="false" v-model="memberApply.checkTransfer"/> 본인 &nbsp;&nbsp;&nbsp;<input type="radio" :value="true" v-model="memberApply.checkTransfer"/> 자동이체
+                                <select v-model="memberApply.payDate">
+                                    <option value="매월5일">5일</option>
+                                    <option value="매월10일">10일</option>
+                                    <option value="매월15일">15일</option>
+                                    <option value="매월20일">20일</option>
+                                    <option value="매월25일">25일</option>
+                                </select>
+                            </td>
+                            <td colspan="2"></td>
+                        </tr>
+                        <!--2021.9.13일 추가부분 끝-->
+
+                        </tbody>
+                    </table>
+                    <!--<table>
+                        <caption>정보 수정</caption>
+                        <colgroup>
+                            <col class="grid_4">
+                            <col>
+                            <col class="grid_4">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th scope="row">접속아이디</th>
+                            <td>
+
+                                <input type="text" readonly class="frm_input" size="15" maxlength="20"
+                                       v-model="memberApply.userName">
+                            </td>
+                            <th scope="row">성명</th>
+                            <td>
+                                <input type="text" class="frm_input " size="15" maxlength="20"
+                                       v-model="memberApply.companyName">
+                            </td>
+                            <th scope="row">주민(사업자)등록번호</th>
+                            <td><input type="text" class="frm_input " size="15" maxlength="20"
+                                       v-model="memberApply.registerNo">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">일반전화</th>
+                            <td>
+                                <input type="text" class="frm_input" size="15" maxlength="20"
+                                       v-model="memberApply.landline">
+                            </td>
+                            <th scope="row">핸드폰</th>
+                            <td>
+                                <input type="text" class="frm_input" maxlength="100" size="20"
+                                       v-model="memberApply.mobile">
+                            </td>
+                            <td colspan="2"></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">팩스</th>
+                            <td>
+                                <input type="text" class="frm_input" size="15" maxlength="20"
+                                       v-model="memberApply.fax">
+                            </td>
+                            <th scope="row">이메일</th>
+                            <td>
+                                <input type="text" class="frm_input" maxlength="100" size="20"
+                                       v-model="memberApply.email">
+                            </td>
+                            <td colspan="2"></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">주소</th>
+                            <td colspan="5" class="td_addr_line">
+                                <input type="text" class="frm_input" size="15"
+                                       v-model="memberApply.postCode">
+                                <button type="button" class="btn_frmline" @click="showApi">주소 검색</button>
+                                <br>
+                                <input type="text" class="frm_input" size="50" v-model="memberApply.address">
+                                기본주소<br>
+                                <input type="text" class="frm_input" size="50" v-model="memberApply.detailAddress">
+                                상세주소
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">조합원가입</th>
+                            <td>
+                                <input type="radio" name="copartner" :value="true" v-model="memberApply.copartner">예&nbsp;
+                                <input type="radio" name="copartner" :value="false" v-model="memberApply.copartner">아니오
+                            </td>
+                            <th scope="row">개인후원가입</th>
+                            <td>
+                                <input type="radio" name="registerTyp" :value="0" v-model="memberApply.registerType">예&nbsp;
+                                <input type="radio" name="registerTyp" :value="1" v-model="memberApply.registerType">아니오
+                            </td>
+                            <th scope="row">기업후원</th>
+                            <td>
+                                <input type="radio" name="registerType" :value="1" v-model="memberApply.registerType">예&nbsp;
+                                <input type="radio" name="registerType" :value="0" v-model="memberApply.registerType">아니오
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">예금주</th>
+                            <td>
+                                <input type="text" class="frm_input " size="15" maxlength="20"
+                                       v-model="memberApply.holderName">
+                            </td>
+                            <th scope="row">예금주 생년월일<br>(사업자등록번호)</th>
+                            <td>
+                                <input type="text" class="frm_input " size="15" maxlength="20"
+                                       v-model="memberApply.holderBirth">
+                            </td>
+                            <td colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">은행명</th>
+                            <td>
+                                <input type="text" class="frm_input " size="15" maxlength="20"
+                                       v-model="memberApply.bankName">
+                            </td>
+                            <th scope="row">계좌번호</th>
+                            <td>
+                                <input type="text" class="frm_input " size="15" maxlength="20"
+                                       v-model="memberApply.account">
+                            </td>
+                            <td colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">월납입액</th>
+                            <td>
+                                <input type="text" class="frm_input " size="15" maxlength="20"
+                                       v-model="memberApply.monthPay">
+                            </td>
+                            <th scope="row">납입방법</th>
+                            <td>
+                                <input type="text" class="frm_input " size="15" maxlength="10"
+                                          v-model="memberApply.payDate">
+                                <input type="radio" name="payType" :value="0"
+                                       v-model="memberApply.payType">자동이체&nbsp;
+                                <input type="radio" name="payType" :value="1"
+                                       v-model="memberApply.payType">직접입금
+                            </td>
+                            <th scope="row">출자금</th>
+                            <td>
+                                <input type="text" class="frm_input " size="15" maxlength="20"
+                                       v-model="memberApply.payMoney">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">지정사업</th>
+                            <td>
+                                <input type="radio" name="service" :value="true" v-model="memberApply.service">예
+                                <input type="radio" name="service" :value="false" v-model="memberApply.service">아니오
+                            </td>
+                            <th scope="row">기타사업</th>
+                            <td>
+                                <input type="radio" name="thirdProvide" :value="true" v-model="memberApply.thirdProvide">예
+                                <input type="radio" name="thirdProvide" :value="false" v-model="memberApply.thirdProvide">아니오
+                                <input type="text" value="" class="frm_input " size="15" maxlength="20"
+                                       v-model="memberApply.business">
+                            </td>
+                            <td colspan="2"></td>
+                        </tr>
+                        </tr>
+                        </tbody>
+                    </table>-->
+
+                </div>
+                <div class="btn_ok">
+                    <a class="btn btn_01" @click="save">저장</a>
+                </div>
+            </section>
+
+        </div>
+        <div th:replace="admin/include/footer::footer"></div>
+    </div>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script>
+        new Vue({
+            el: "#menu4_1_1",
+            data: {
+                radio:0,
+                memberApply: {
+                    id: null,
+                    postCode: null,
+                    companyName: null,
+                    registerNo: null,
+                    landline: null,
+                    fax: null,
+                    mobile: null,
+                    email: null,
+                    address: null,
+                    detailAddress: null,
+                    registerType: null,
+                    holderName: null,
+                    holderBirth: null,
+                    bankName: null,
+                    account: null,
+                    cooperator: null,
+                    cooperatorMoney: null,
+                    monthPay: null,
+                    payType: null,
+                    payDate: null,
+                    payMoney: null,
+                    service: null,
+                    checkBusiness: null,
+                    checkTransfer: null,
+                    business: null,
+                    infoCollect: null,
+                    thirdProvide: null,
+                    userName: null,
+                    userId: null
+                }
+            },
+            methods: {
+                showApi() {
+                    new window.daum.Postcode({
+                        oncomplete: (data) => {
+                            let fullRoadAddr = data.roadAddress;
+                            let extraRoadAddr = '';
+                            if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                                extraRoadAddr += data.bname;
+                            }
+                            if (data.buildingName !== '' && data.apartment === 'Y') {
+                                extraRoadAddr += (extmenu4_1raRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                            }
+                            if (extraRoadAddr !== '') {
+                                extraRoadAddr = ' (' + extraRoadAddr + ')';
+                            }
+                            if (fullRoadAddr !== '') {
+                                fullRoadAddr += extraRoadAddr;
+                            }
+                            this.memberApply.postCode = data.zonecode;
+                            this.memberApply.address = fullRoadAddr;
+                        }
+                    }).open()
+                },
+                init() {
+                    let id = localStorage.getItem('menu4_1_1')
+                    if (id) {
+                        axios.get('/memberapply/getById', {
+                            params: {
+                                id: id
+                            },
+                            headers: {
+                                'Authorization': this.token
+                            }
+                        }).then(res => {
+                            this.memberApply = res.data.data
+                            console.log('this.memberApply', this.memberApply)
+                        })
+                    }
+                },
+                save() {
+                    let data = this.memberApply
+                    axios.post('/memberapply', data, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': this.token
+                        }
+                    }).then(res => {
+                        window.location = '/front/admin/menu4_1'
+                    })
+                },
+            },
+            mounted() {
+                this.init()
+            }, created() {
+                let loginAdminStr = localStorage.getItem('login_user')
+                if (loginAdminStr) {
+                    let loginAdmin = JSON.parse(loginAdminStr)
+                    this.token = loginAdmin.data.token || ''
+                } else {
+                    window.location = "/front/admin/login"
+                }
+            }, watch: {}
+        })
+    </script>
+</div>
+
+<script>
+    $(".scroll_top").click(function () {
+        $("body,html").animate({scrollTop: 0}, 400);
+    })
+</script>
+</body>
+</html>

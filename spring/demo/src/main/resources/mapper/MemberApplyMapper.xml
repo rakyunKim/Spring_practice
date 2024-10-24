@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.ccfc.mapper.MemberApplyMapper">
+  <resultMap id="BaseResultMap" type="kr.ccfc.domain.MemberApply">
+    <!--@mbg.generated-->
+    <!--@Table member_apply-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="register_no" jdbcType="VARCHAR" property="registerNo" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="landline" jdbcType="VARCHAR" property="landline" />
+    <result column="fax" jdbcType="VARCHAR" property="fax" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="register_type" jdbcType="VARCHAR" property="registerType" />
+    <result column="holder_name" jdbcType="VARCHAR" property="holderName" />
+    <result column="holder_birth" jdbcType="VARCHAR" property="holderBirth" />
+    <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="month_pay" jdbcType="INTEGER" property="monthPay" />
+    <result column="pay_type" jdbcType="TINYINT" property="payType" />
+    <result column="pay_date" jdbcType="INTEGER" property="payDate" />
+    <result column="pay_money" jdbcType="DECIMAL" property="payMoney" />
+    <result column="service" jdbcType="TINYINT" property="service" />
+    <result column="check_business" jdbcType="TINYINT" property="checkBusiness" />
+    <result column="business" jdbcType="VARCHAR" property="business" />
+    <result column="info_collect" jdbcType="TINYINT" property="infoCollect" />
+    <result column="third_provide" jdbcType="TINYINT" property="thirdProvide" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, register_no, company_name, landline, fax, mobile, email, address, register_type, 
+    holder_name, holder_birth, bank_name, account, month_pay, pay_type, pay_date, pay_money, 
+    service, check_business, business, info_collect, third_provide, created, last_update_time
+  </sql>
+</mapper>

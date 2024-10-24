@@ -1,0 +1,246 @@
+<body>
+<div class="wrapper">
+    <!-- :: header s :: -->
+    <head th:replace="include/header :: common_head(~{::title},~{::link},~{})">
+        <title></title>
+    </head>
+</div>
+<div id="sub04_01_01">
+    <section class="container">
+        <div class="sub-top bg4">
+            <div class="sub-top-con">
+                <h2>경기정보</h2>
+            </div>
+        </div>
+        <nav class="breadcrumb">
+            <div class="breadcrumb-container">
+                <ul class="breadcrumb-list">
+                    <li class="home"><span class="screen-out">홈</span></li>
+                    <li>
+                        <div class="breadcrumb-box js-dropdown">
+                            <button type="button" class="breadcrumb-btn js-dropdown-btn"
+                                    data-dropdown="breadcrumb-dep1">
+                                <span>경기정보</span>
+                            </button>
+                            <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep1">
+                                <ul class="breadcrumb-cont-list">
+                                    <li><a href="/front/portal/sub01_01">구단소개</a></li>
+                                    <li><a href="/front/portal/sub02_01_list">구단소식</a></li>
+                                    <li><a href="/front/portal/sub03_01">선수단</a></li>
+                                    <li><a href="/front/portal/sub04_01">경기정보</a></li>
+                                    <li><a href="/front/portal/sub05_01_list">팬</a></li>
+                                    <li><a href="/front/portal/sub06_01">유소년</a></li>
+                                    <li><a href="/front/portal/sub07_01">사회적협동조합</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="breadcrumb-box js-dropdown">
+                            <button type="button" class="breadcrumb-btn js-dropdown-btn"
+                                    data-dropdown="breadcrumb-dep2">
+                                <span>경기일정/결과</span>
+                            </button>
+                            <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep2">
+                                <ul class="breadcrumb-cont-list">
+                                    <li><a href="/front/portal/sub04_01">경기일정/결과</a></li>
+                                    <li><a href="/front/portal/sub04_02">리그순위</a></li>
+                                    <li><a href="/front/portal/sub04_03">티켓정보</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </section>
+    <div id="sub_contents">
+        <div class="wrap">
+            <div id="contents_area">
+                <h2 class="container_title">경기일정</h2>
+                <div id="ctt_con" class="sub01_01">
+
+                    <div class="calendar">
+                        <div class="clearfix" style="margin-bottom:30px;">
+                            <div class="cal_list">
+                                <ul>
+                                    <li><a class="btn-cal" href="/front/portal/sub04_01">달력</a></li>
+                                    <li class="sel"><a class="btn-list" href="/front/portal/sub04_01_01">리스트</a></li>
+                                </ul>
+                            </div>
+                            <div class="date_list">
+                                <el-date-picker
+                                        v-model="date"
+                                        type="daterange"
+                                        align="right"
+                                        unlink-panels
+                                        range-separator="~"
+                                        start-placeholder="시작일"
+                                        end-placeholder="마지막일"
+                                        :picker-options="pickerOptions"
+                                        value-format="yyyy-MM-dd"
+                                        @change="dateChange"
+                                >
+                                </el-date-picker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="likeTbl2">
+                        <ul>
+                            <li class="likeTbl2Tr likeTbl2Th">
+                                <div>경기일시</div>
+                                <div class="mvInlineN">경기장</div>
+                                <div class="mvInlineN td_num">리그</div>
+                                <div class="mvInlineN td_group">홈팀</div>
+                                <div class="mvInlineN td_group">원정팀</div>
+                            </li>
+                            <li class=" likeTbl2Tr likeTbl2Td" v-for="(item,index) in schedules"
+                                v-if="item.homeScope===null||item.homeScope===undefined">
+                                <div class="td_subject" style="padding-left:0">
+                                    <div class="bo_tit">
+                                        {{item.dateTime}}
+                                    </div>
+                                </div>
+                                <div class="mvInlinev td_name sv_use"><span class="sv_member">{{item.place}}</span>
+                                </div>
+                                <div class="mvInlinev td_num">
+                                    <img width="25" height="25" :src="item.seasonImgUrl" alt="">
+                                    K{{item.season}}리그
+                                </div>
+                                <div class="mvInlinev td_group">
+                                    <div class="emblem01">
+                                        <img :src='item.homeTeamImgUrl' alt=''/>
+                                    </div>
+                                    {{item.homeTeam}}
+                                </div>
+                                <div class="mvInlinev td_group">
+                                    <div class="emblem01">
+                                        <img :src='item.visitTeamImgUrl' alt=''/>
+                                    </div>
+                                    {{item.visitTeam}}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div style="padding-top:60px;"></div>
+                    <h2 class="container_title">경기결과</h2>
+                    <div class="likeTbl2">
+                        <ul>
+                            <li class="likeTbl2Tr likeTbl2Th">
+
+                                <div>경기일시</div>
+                                <div class="mvInlineN">경기장</div>
+                                <div class="mvInlineN td_num"><a href="#">리그</a></div>
+                                <div class="mvInlineN td_group"><a href="#">홈팀</a></div>
+                                <div class="mvInlineN td_group"><a href="#">원정팀</a></div>
+                                <div class="mvInlineN td_group"><a href="#">결과</a></div>
+                            </li>
+                            <li class=" likeTbl2Tr likeTbl2Td" v-for="(item,index) in schedules"
+                                v-if="item.homeScope!==null&&item.visitScope!==undefined">
+                                <div class="td_subject" style="padding-left:0">
+                                    <div class="bo_tit">
+                                        {{item.dateTime}}
+                                    </div>
+                                </div>
+                                <div class="mvInlinev2 td_name sv_use"><span class="sv_member">{{item.place}}</span>
+                                </div>
+                                <div class="mvInlinev2 td_num">K{{item.season}}리그</div>
+                                <div class="mvInlinev2 td_group">
+                                    <div class="emblem01">
+                                        <img :src='item.homeTeamImgUrl' alt=''/>
+                                    </div>
+                                    {{item.homeTeam}}
+                                </div>
+                                <div class="mvInlinev2 td_group">
+                                    <div class="emblem01">
+                                        <img :src='item.visitTeamImgUrl' alt=''/>
+                                    </div>
+                                    {{item.visitTeam}}
+                                </div>
+                                <div class="mvInlinev2 td_group">{{item.homeScope}}:{{item.visitScope}}</div>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="include/footer::footer"></div>
+<script>
+    new Vue({
+        el: "#sub04_01_01",
+        data: {
+            pickerOptions: {
+                shortcuts: [{
+                    text: '최근 일주일',
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                        picker.$emit('pick', [start, end]);
+                    }
+                }, {
+                    text: '최근 한달',
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                        picker.$emit('pick', [start, end]);
+                    }
+                }, {
+                    text: '최근 삼개월',
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                        picker.$emit('pick', [start, end]);
+                    }
+                }]
+            },
+            date: '',
+            schedules: [],
+            token: '',
+        },
+        methods: {
+            dateChange(date) {
+                this.list(date[0], date[1])
+            },
+            triggle() {
+                let allcheck = document.getElementById("chkall")
+                let inputs = document.getElementsByName("checkbox");
+                for (let i = 0; i < inputs.length; i++) {
+                    inputs[i].checked = allcheck.checked;
+                }
+            },
+            list(start, end) {
+                axios.get('/competition/list', {
+                    params: {
+                        current: 1,
+                        size: 100,
+                        start: start,
+                        end: end
+                    },
+                    headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    let results = res.data.data
+                    this.schedules = results.records
+                })
+            },
+        },
+        mounted() {
+            this.list(null, null)
+        }, created() {
+            let loginUserStr = localStorage.getItem('login_user')
+            if (loginUserStr) {
+                let loginUser = JSON.parse(loginUserStr)
+                this.token = loginUser.data.token || ''
+            }
+            this.initDate()
+        }, watch: {}
+    })
+</script>
+</body>

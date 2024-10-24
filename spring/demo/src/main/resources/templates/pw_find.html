@@ -1,0 +1,192 @@
+<body>
+<div class="wrapper">
+    <!-- :: header s :: -->
+    <head th:replace="include/header :: common_head(~{::title},~{::link},~{})">
+        <title></title>
+    </head>
+</div>
+<div id="pw_find">
+    <section class="container">
+        <div class="sub-top bg1">
+            <div class="sub-top-con">
+                <h2>비밀번호 찾기</h2>
+            </div>
+        </div>
+        <nav class="breadcrumb">
+            <div class="breadcrumb-container">
+                <ul class="breadcrumb-list">
+                    <li class="home"><span class="screen-out">홈</span></li>
+                    <li>
+                        <div class="breadcrumb-box js-dropdown">
+                            <button type="button" class="breadcrumb-btn js-dropdown-btn"
+                                    data-dropdown="breadcrumb-dep1">
+                                <span>구단소개</span>
+                            </button>
+                            <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep1">
+                                <ul class="breadcrumb-cont-list">
+                                    <li><a href="/front/portal/sub01_01">구단소개</a></li>
+                                    <li><a href="/front/portal/sub02_01_list">구단소식</a></li>
+                                    <li><a href="/front/portal/sub03_01">선수단</a></li>
+                                    <li><a href="/front/portal/sub04_01">경기정보</a></li>
+                                    <li><a href="/front/portal/sub05_01_list">팬</a></li>
+                                    <li><a href="/front/portal/sub06_01">유소년</a></li>
+                                    <li><a href="/front/portal/sub07_01">사회적협동조합</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="breadcrumb-box js-dropdown">
+                            <button type="button" class="breadcrumb-btn js-dropdown-btn"
+                                    data-dropdown="breadcrumb-dep2">
+                                <span>로그인</span>
+                            </button>
+                            <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep2">
+                                <ul class="breadcrumb-cont-list">
+                                    <li><a href="/front/portal/id_find">아이디 찾기</a></li>
+                                    <li><a href="/front/portal/pw_find">비밀번호 찾기</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </section>
+    <div id="sub_contents">
+        <div class="wrap">
+            <div id="contents_area">
+                <h2 class="container_title">비밀번호 찾기</h2>
+
+                <div id="ctt_con" class="sub01_01">
+                    <div id="mb_login" class="mbskin">
+                        <div id="fregister" style="margin-bottom:25px;">
+                            <p>
+                                아이디와 이메일 입력 > 인증코드발송 > 인증코드 입력 > 새로운 비밀번호 입력 및 확인 > 비밀번호 변경 순으로 입력 하세요.
+                            </p>
+                        </div>
+                        <input type="hidden">
+
+                        <fieldset id="login_fs">
+                            <input type="text" class="frm_input required" size="20" placeholder="가입한 아이디"
+                                   v-model="username"
+                            >
+                            <input type="text" class="frm_input required" size="20" placeholder="이메일"
+                                   v-model="email"
+                            >
+                            <input type="button" value="인증코드 발송" class="btn_submit" style="margin-bottom: 10px"
+                                   @click="sendResetEmail">
+                            <input type="text" class="frm_input required" size="20" placeholder="인증코드"
+                                   v-model="code"
+                            >
+                            <input type="password" class="frm_input required" size="20" placeholder="새로운 비밀번호"
+                                   v-model="password"
+                            >
+                            <input type="password" class="frm_input required" size="20" placeholder="새로운 비밀번호 확인"
+                                   v-model="comfirmPwd"
+                            >
+                            <input type="button" value="비밀번호 변경" class="btn_submit" @click="resetPwd">
+                            <input type="button" onClick="javascript:window.history.back(-1);" value="취소"
+                                   class="btn_submit2">
+
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    new Vue({
+        el: "#pw_find",
+        data: {
+            email: '',
+            username: '',
+            code: '',
+            password: '',
+            comfirmPwd: ''
+        },
+        methods: {
+            resetPwd() {
+                if (this.password !== this.comfirmPwd) {
+                    this.$notify({
+                        title: '알림',
+                        message: '같은 비밀번호를 입력하세요',
+                        type: 'warning'
+                    });
+                    return
+                }
+                axios.post('/user/resetConfirm', {
+                    username: this.username,
+                    email: this.email,
+                    code: this.code,
+                    newPwd: this.password
+                }).then(res => {
+                    let data = res.data
+                    if (data.code === 200) {
+                        this.$notify({
+                            title: '알림',
+                            message: data.data,
+                            type: 'success'
+                        });
+                        window.location = "/front/portal/login"
+                    } else {
+                        this.$notify({
+                            title: '알림',
+                            message: data.msg,
+                            type: 'warning'
+                        });
+                    }
+                }).catch(err => {
+                    console.log(err)
+                });
+            },
+            sendResetEmail() {
+                if (!this.email) {
+                    this.$notify({
+                        title: '알림',
+                        message: '이메일 입력하세요',
+                        type: 'warning'
+                    });
+                    return
+                }
+                if (!this.username) {
+                    this.$notify({
+                        title: '알림',
+                        message: '이름을 입력하세요',
+                        type: 'warning'
+                    });
+                    return
+                }
+                axios.post('/user/sendResetEmail', {
+                    email: this.email,
+                    username: this.username
+                }).then(res => {
+                    let data = res.data
+                    if (data.code === 200) {
+                        this.$notify({
+                            title: '알림',
+                            message: '확인 메일을 보냈습니다(*유효시간은 10분입니다),확인하세요',
+                            type: 'success'
+                        });
+                    } else {
+                        this.$notify({
+                            title: '알림',
+                            message: data.msg,
+                            type: 'warning'
+                        });
+                    }
+                }).catch(err => {
+                    console.log(err)
+                });
+            }
+        },
+        mounted() {
+        }, created() {
+        }, watch: {}
+    })
+</script>
+<div th:replace="include/footer::footer"></div>
+</body>
+

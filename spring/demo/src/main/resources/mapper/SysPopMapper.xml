@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.ccfc.mapper.SysPopMapper">
+  <resultMap id="BaseResultMap" type="kr.ccfc.domain.SysPop">
+    <!--@mbg.generated-->
+    <!--@Table sys_pop-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="refresh_time" jdbcType="INTEGER" property="refreshTime" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="left" jdbcType="INTEGER" property="left" />
+    <result column="top" jdbcType="INTEGER" property="top" />
+    <result column="width" jdbcType="INTEGER" property="width" />
+    <result column="height" jdbcType="INTEGER" property="height" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+    <result column="create_by" jdbcType="BIGINT" property="createBy" />
+    <result column="modify_by" jdbcType="BIGINT" property="modifyBy" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, refresh_time, start_time, end_time, `left`, `top`, width, height, title, content,
+    create_by, modify_by, created, last_update_time
+  </sql>
+</mapper>

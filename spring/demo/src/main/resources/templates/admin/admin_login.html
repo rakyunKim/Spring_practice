@@ -1,0 +1,69 @@
+<html lang="ko" style="height:100%;">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<head>
+    <title>춘천시민축구단-관리자모드</title>
+    <link href="css/admin.css" rel="stylesheet" type="text/css">
+    <script src="/front/portal/js/request/axios.min.js"></script>
+    <script src="/front/portal/js/vue.min.js"></script>
+    <script src="/front/portal/js/jquery-3.3.1.min.js"></script>
+</head>
+
+<body id="bg_body"
+      style="height:100%; background:#e6e8ed url(/front/admin/img/login_bg.jpg) no-repeat; background-size:cover; background-position:center center;">
+<div id="login">
+    <form method="post" style="height:100%; width:100%;">
+        <div class="login_box">
+            <div class="title_login">춘천시민축구단</div>
+            <div class="stitle_login">Administrator Login</div>
+            <div class="pw_area">
+                <label style="display:none;">ID</label>
+                <input type="id" title="아이디" id="id" placeholder="ID" v-model="username"/>
+            </div>
+            <div class="pw_area">
+                <label style="display:none;">비밀번호</label>
+                <input type="password" title="비밀번호" id="pw" placeholder="Password" v-model="password"/>
+            </div>
+            <input class="btn_login" type="button" title="관리자 로그인" alt="관리자 로그인" value="관리자 로그인" @click="toLogin"/>
+        </div>
+    </form>
+</div>
+
+<script>
+    $("body").keydown(function () {
+        if (event.keyCode === 13) {
+            $('.btn_login').click();
+        }
+    });
+    new Vue({
+        el: "#login",
+        data: {
+            username: '',
+            password: '',
+            autoLogin: false,
+        },
+        methods: {
+            toLogin() {
+                axios.post('/user/login', {
+                    username: this.username,
+                    password: this.password,
+                }).then(res => {
+                    let data = res.data
+                    console.log(data)
+                    if (data.code === 200) {
+                        localStorage.setItem('login_user', JSON.stringify(data))
+                        window.location = '/admin'
+                    } else {
+                        alert(data.msg)
+                    }
+                }).catch(err => {
+                    console.log(err)
+                });
+            }
+        },
+        mounted() {
+        }, created() {
+        }, watch: {}
+    })
+</script>
+</body>
+</html>

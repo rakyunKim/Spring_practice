@@ -1,0 +1,463 @@
+<body>
+<div class="wrapper">
+    <!-- :: header s :: -->
+    <head th:replace="include/header :: common_head(~{::title},~{::link},~{})">
+        <title></title>
+    </head>
+</div>
+<div id="sub0706view">
+    <section class="container">
+        <div class="sub-top bg7">
+            <div class="sub-top-con">
+                <h2>사회적협동조합</h2>
+            </div>
+        </div>
+        <nav class="breadcrumb">
+            <div class="breadcrumb-container">
+                <ul class="breadcrumb-list">
+                    <li class="home"><span class="screen-out">홈</span></li>
+                    <li>
+                        <div class="breadcrumb-box js-dropdown">
+                            <button type="button" class="breadcrumb-btn js-dropdown-btn"
+                                    data-dropdown="breadcrumb-dep1">
+                                <span>사회적협동조합</span>
+                            </button>
+                            <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep1">
+                                <ul class="breadcrumb-cont-list">
+                                    <li><a href="/front/portal/sub01_01">구단소개</a></li>
+                                    <li><a href="/front/portal/sub02_01_list">구단소식</a></li>
+                                    <li><a href="/front/portal/sub03_01">선수단</a></li>
+                                    <li><a href="/front/portal/sub04_01">경기정보</a></li>
+                                    <li><a href="/front/portal/sub05_01_list">팬</a></li>
+                                    <li><a href="/front/portal/sub06_01">유소년</a></li>
+                                    <li><a href="/front/portal/sub07_01">사회적협동조합</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="breadcrumb-box js-dropdown">
+                            <button type="button" class="breadcrumb-btn js-dropdown-btn"
+                                    data-dropdown="breadcrumb-dep2">
+                                <span>자료실</span>
+                            </button>
+                            <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep2">
+                                <ul class="breadcrumb-cont-list">
+                                    <li><a href="/front/portal/sub07_01">조합/사업소개</a></li>
+                                    <li v-if="hasPrivilege('sub07_06_list_list')"><a href="/front/portal/sub07_05_list">후원금내역</a></li>
+                                    <li v-if="hasPrivilege('sub07_06_list_list')"><a href="/front/portal/sub07_06_list">자료실</a></li>
+                                    <li v-if="hasPrivilege('sub07_06_list_list')"><a href="/front/portal/sub07_07_list">활동사진</a></li>
+                                    <li v-if="hasPrivilege('sub07_06_list_list')"><a href="/front/portal/sub07_08_list">조합공지사항</a></li>
+                                    <!--<li><a href="/front/portal/sub07_02_list">조합게시판</a></li>-->
+                                    <li><a href="/front/portal/sub07_03">조합원/후원신청</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </section>
+
+    <el-dialog title="메뉴 선택하세요" :visible.sync="dialogFormVisible">
+        <el-tree
+                :data="treeData"
+                node-key="id"
+                show-checkbox
+                default-expand-all
+                ref="tree"
+                :props="defaultProps"
+        >
+        </el-tree>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">취 소</el-button>
+            <el-button type="primary" @click="moveConfirm">확 인</el-button>
+        </div>
+    </el-dialog>
+
+    <div id="sub_contents">
+        <div class="wrap">
+            <div id="contents_area">
+                <h2 class="container_title">자료실</h2>
+                <div id="bo_v">
+                    <header>
+                        <h2 id="bo_v_title">
+                        <span class="bo_v_tit">
+                            {{articleData.title}}</span>
+                        </h2>
+                    </header>
+                    <section id="bo_v_info">
+                        <strong><span
+                                class="sv_member">{{articleData.author}}</span>&nbsp;({{articleData.authorIp}})</strong>
+                        <i class="fa fa-eye" aria-hidden="true"></i> {{articleData.count }}회</strong>
+                        <strong class="if_date"><i class="fa fa-clock-o"
+                                                   aria-hidden="true"></i>{{articleData.lastUpdateTime }}</strong>
+                    </section>
+                    <section id="bo_v_atc">
+                        <div id="bo_v_con"><p v-html="content"><br/></p></div>
+                    </section>
+                    <!-- 첨부파일 시작 글작성 시 첨부파일이 있을 때만 해당 구역이 나오도록-->
+                    <section id="bo_v_file">
+                        <h2>첨부파일</h2>
+                        <ul v-if="articleData.attaches&&articleData.attaches.length>0">
+                            <li v-for="item in articleData.attaches" :key="item.id">
+                                <i class="fa fa-download" aria-hidden="true"></i>
+                                <a herf="" class="view_file_download" @click="downloadFile(item.id)">
+                                    <strong>{{item.name}}</strong>
+                                </a>
+                                ({{item.size}})
+                                <span class="bo_v_file_cnt">0회 다운로드 | DATE : {{item.lastUpdateTime}}</span>
+                            </li>
+                        </ul>
+                        <div v-else style="height: 34px;text-align: center;line-height: 34px">No File</div>
+                    </section>
+                    <!-- } 첨부파일 끝 -->
+                    <!-- 게시물 상단 버튼 시작 { -->
+                    <div id="bo_v_top">
+                        <ul v-if="hasPrivilege('sub07_06_list_replay')" class="bo_v_left">
+                            <li><a class="btn_b01 btn" @click="goEdit"><i class="fa fa-pencil-square-o"
+                                                                          aria-hidden="true"></i> 수정</a>
+                            </li>
+                            <li><a class="btn_b01 btn" @click="goDel"><i class="fa fa-trash-o"
+                                                                         aria-hidden="true"></i> 삭제</a>
+                            </li>
+                            <li><a class="btn_admin btn" @click="move('copy')"><i class="fa fa-files-o"
+                                                                                  aria-hidden="true"></i>
+                                복사</a>
+                            </li>
+                            <li><a class="btn_admin btn" @click="move('move')"><i class="fa fa-arrows"
+                                                                                  aria-hidden="true"></i> 이동</a>
+                            </li>
+                        </ul>
+                        <ul class="bo_v_com">
+                            <li><a href="/front/portal/sub07_06_list" class="btn_b01 btn"><i
+                                    class="fa fa-list" aria-hidden="true"></i> 목록</a>
+                            </li>
+                            <li v-if="hasPrivilege('sub07_06_list_write')">
+                                <a @click="goCreate" class="btn_b02 btn"><i class="fa fa-pencil-square-o"
+                                                                            aria-hidden="true"></i> 글등록</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- 댓글 시작 { -->
+                    <hr class="dashHr">
+                    <button type="button" class="cmt_btn" style="font-size:18px;"><i class="fa fa-commenting-o"
+                                                                                     aria-hidden="true"></i>
+                        댓글목록 <i class="fa fa-chevron-up" aria-hidden="true"></i><i class="fa fa-chevron-down"
+                                                                                   aria-hidden="true"></i></button>
+                    <div sytle="margin-bottom:15px">
+                        <section id="bo_vc" v-if="comments.length===0">
+                            <p id="bo_vc_empty">등록된 댓글이 없습니다.</p>
+                        </section>
+                        <el-collapse v-model="activeNames" @change="handleChange" v-else>
+                            <el-collapse-item :title="item.realName +'    '+ item.lastUpdateTime" name="1"
+                                              v-for="(item,index) in comments" disabled>
+                                <div>
+                                    {{item.content}}
+                                    <ul class="bo_vc_act">
+                                        <li><a href="#" class="btn_b03">댓글</a></li>
+                                        <li><a href="#" class="btn_b03">수정</a></li>
+                                        <li><a href="#" class="btn_b03">삭제</a></li>
+                                    </ul>
+                                </div>
+                                <!--위 버튼 중 "댓글" 버튼 눌렀을 때 해당 부분이 나오게 해 주세요.-->
+                                <aside id="bo_vc_w" class="bo_vc_w" style="display: none;">
+                                    <textarea style="font-size:13px;" placeholder="댓글내용을 입력해주세요"></textarea>
+                                    <div class="bo_vc_w_wr">
+                                        <div class="btn_confirm">
+                                            <input type="checkbox" id="wr_secret" v-model="priv">
+                                            <input type="button" id="btn_submit" class="btn_submit" style="font-size:13px;" value="댓글등록">
+                                        </div>
+                                    </div>
+                                </aside>
+                                <!--위 버튼 중 "댓글" 버튼 눌렀을 때 해당 부분이 나오게 해 주세요.-->
+                            </el-collapse-item>
+                        </el-collapse>
+                    </div>
+                    <!--댓글의 댓글-->
+                    <div style="margin:0 0 15px 25px;">
+                        <section id="bo_vc" v-if="comments.length===0">
+                            <p id="bo_vc_empty">등록된 댓글이 없습니다.</p>
+                        </section>
+                        <el-collapse v-model="activeNames" @change="handleChange" v-else>
+                            <el-collapse-item :title="item.realName +'    '+ item.lastUpdateTime" name="1"
+                                              v-for="(item,index) in comments" disabled>
+                                <div>
+                                    댓글의 댓글
+                                    <!--최고 관리자 및 작성자, 조합 게시판 관리자만 노출-->
+                                    <ul class="bo_vc_act">
+                                        <li><a href="#" class="btn_b03">댓글</a></li>
+                                        <li><a href="#" class="btn_b03">수정</a></li>
+                                        <li><a href="#" class="btn_b03">삭제</a></li>
+                                    </ul>
+                                </div>
+                            </el-collapse-item>
+                        </el-collapse>
+                    </div>
+                    <!-- } 댓글 끝 -->
+                    <!-- 댓글 쓰기 시작 { -->
+                    <aside id="bo_vc_w" class="bo_vc_w">
+					<textarea v-if="hasPrivilege('sub07_06_list_replay')" id="wr_content" maxlength="10000" required class="required" title="내용"
+                              style="font-size:13px;" placeholder="댓글내용을 입력해주세요"
+                              v-model="commentContent"
+                    ></textarea>
+                        <div class="bo_vc_w_wr" v-if="hasPrivilege('sub07_06_list_replay')">
+                            <div class="btn_confirm">
+                                <input type="checkbox" id="wr_secret" v-model="priv">
+                                <!--label for="wr_secret" class="btn btn_b01" style="font-size:13px;" title="비밀글사용"><i
+                                        class="fa fa-lock" aria-hidden="true"></i> <i class="fa fa-unlock"
+                                                                                      aria-hidden="true"></i></label>-->
+                                <input type="button" id="btn_submit" class="btn_submit" style="font-size:13px;"
+                                       @click="comment"
+                                       value="댓글등록"
+                                >
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="include/footer::footer"></div>
+
+</body>
+
+<script type="text/javascript">
+    new Vue({
+        el: "#sub0706view",
+        data: {
+            moveMode: '',
+            treeData: [],
+            defaultProps: {
+                children: 'subMenus',
+                label: 'name',
+                disabled: 'disabled'
+            },
+            dialogFormVisible: false,
+            activeNames: ['1'],
+            priv: false,
+            commentContent: '',
+            token: '',
+            articleId: '',
+            articleData: {
+                attaches:[]
+            },
+            content: '',
+            privileges: [],
+            comments: []
+        },
+        methods: {
+            moveConfirm() {
+                let keys = this.getCheckedKeys()
+                if (keys.length !== 1) {
+                    alert('메뉴를 선택하세요')
+                    return
+                }
+                console.log('keys', keys)
+                let param = {}
+                param.menuId = keys[0]
+                param.articleIds = this.articleIds
+                param.moveMode = this.moveMode
+                axios.post('/portal/article/move', param, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    window.location.reload()
+                    this.$notify({
+                        title: '알림',
+                        message: '이동 성공',
+                        type: 'success'
+                    });
+                })
+                this.dialogFormVisible = false
+            },
+            downloadFile(id){
+                try {
+                    let elemIF = document.createElement("iframe");
+                    elemIF.src = '/portal/article/attachDownload/'+id
+                    elemIF.style.display = "none";
+                    document.body.appendChild(elemIF);
+                } catch (e) {
+                    alert("다운로드 에러！");
+                }
+            },
+            change(limit){
+                let size = "";
+                if(limit < 0.1 * 1024){                            //小于0.1KB，则转化成B
+                    size = limit.toFixed(2) + "B"
+                }else if(limit < 0.1 * 1024 * 1024){            //小于0.1MB，则转化成KB
+                    size = (limit/1024).toFixed(2) + "KB"
+                }else if(limit < 0.1 * 1024 * 1024 * 1024){        //小于0.1GB，则转化成MB
+                    size = (limit/(1024 * 1024)).toFixed(2) + "MB"
+                }else{                                            //其他转化成GB
+                    size = (limit/(1024 * 1024 * 1024)).toFixed(2) + "GB"
+                }
+
+                let sizeStr = size + "";                        //转成字符串
+                let index = sizeStr.indexOf(".");                    //获取小数点处的索引
+                let dou = sizeStr.substr(index + 1 ,2)            //获取小数点后两位的值
+                if(dou == "00"){                                //判断后两位是否为00，如果是则删除00
+                    return sizeStr.substring(0, index) + sizeStr.substr(index + 3, 2)
+                }
+                return size;
+            },
+            getCheckedKeys() {
+                return this.$refs.tree.getCheckedKeys()
+            },
+            move(mode) {
+                this.moveMode = mode
+                let ids = []
+                ids.push(localStorage.getItem('sub07_06_wview'))
+                this.articleIds = ids
+                if (!ids) {
+                    this.$notify({
+                        title: '알림',
+                        message: '이동 할 글 선택하세요',
+                        type: 'warning'
+                    });
+                    return
+                }
+                axios.get('/menu/menutrees', {
+                    headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    this.treeData = res.data.data
+                    this.dialogFormVisible = true
+                })
+            },
+            handleChange(val) {
+                console.log(val);
+            },
+            comment() {
+                if (!this.commentContent) {
+                    this.$notify({
+                        title: '알림',
+                        message: '댓글 내용이 비우면 안됩니다.',
+                        type: 'warning'
+                    });
+                    return
+                }
+                let comment = {}
+                comment.articleId = this.articleId
+                comment.parentId = 0
+                comment.content = this.commentContent
+                comment.priv = this.priv
+                axios.post('/comment', comment, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    this.$notify({
+                        title: '알림',
+                        message: '댓글 성공',
+                        type: 'success'
+                    });
+                    this.commentContent = ""
+                    this.getComment()
+                })
+            },
+            getPrivileges() {
+                let uri = window.location.pathname
+                let privilegesData = localStorage.getItem("privilegesMap")
+                let allPrivileges = JSON.parse(privilegesData) || []
+                let split = uri.split("_")
+                let newUri = split[0] + "_" + split[1]
+                for (let allPrivilegesKey in allPrivileges) {
+                    if (allPrivilegesKey.indexOf(newUri) !== -1) {
+                        let privileges = allPrivileges[allPrivilegesKey]
+                        privileges.forEach((item, index) => {
+                            this.privileges.push(item.name)
+                        })
+                    }
+                }
+            },
+            hasPrivilege(name) {
+                let privileges = name.split("_")
+                let privilege = privileges[privileges.length - 1]
+                if (this.privileges) {
+                    for (let i = 0; i < this.privileges.length; i++) {
+                        let item = this.privileges[i]
+                        if (item.indexOf(privilege) !== -1) {
+                            return true
+                        }
+                    }
+                }
+                return false
+            },
+            goCreate() {
+                localStorage.removeItem('sub07_06_write')
+                window.location = '/front/portal/sub07_06_write'
+            },
+            goDel() {
+                axios.delete('/portal/article', {
+                    params: {
+                        ids: this.articleId
+                    }, headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    this.$notify({
+                        title: '알림',
+                        message: '삭제 성공',
+                        type: 'success'
+                    });
+                    window.location = "/front/portal/sub07_06_list"
+                })
+            },
+            goEdit() {
+                localStorage.setItem('sub07_06_write', this.articleId)
+                window.location = '/front/portal/sub07_06_write'
+            },
+            getArticle() {
+                axios.get('/portal/article/' + this.articleId, {
+                    headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    this.articleData = res.data.data
+                    this.articleData.attaches = this.articleData.attaches.map(el=>{
+                        el.size = this.change(el.size)
+                        return el
+                    })
+                    this.content = unescape(this.articleData.content)
+                })
+            },
+            getComment() {
+                axios.get('/comment/getByArticle', {
+                    params: {
+                        current: 1,
+                        size: 100,
+                        articleId: this.articleId
+                    },
+                    headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    console.log(res)
+                    let results = res.data.data
+                    this.comments = results.records
+                })
+            }
+        },
+        mounted() {
+            this.articleId = localStorage.getItem('sub07_06_view')
+            this.getPrivileges()
+            this.getArticle()
+            this.getComment()
+        },
+        created() {
+            let loginUserStr = localStorage.getItem('login_user')
+            if (loginUserStr) {
+                let loginUser = JSON.parse(loginUserStr)
+                this.token = loginUser.data.token || ''
+            }
+        },
+        watch: {}
+    })
+</script>

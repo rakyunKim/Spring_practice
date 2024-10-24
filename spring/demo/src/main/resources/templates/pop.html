@@ -1,0 +1,81 @@
+<html>
+<body>
+<div id="pop">
+    <div v-html="content">
+    </div>
+<!--    <br> <br> <br> <br>-->
+    <div id="footer">
+        <!--<el-link @click="notShow" type="primary"><input type="checkbox" name="articleCheckbox">{{pop.refreshTime}}시간 동안 이창을 띄우지 않습니다. </el-link>-->
+        <span><a href="#" onclick="javascript:self.close();">창닫기</a></span>
+    </div>
+</div>
+</body>
+<script src="/front/portal/js/vue.min.js"></script>
+<script src="/front/portal/js/request/axios.min.js"></script>
+<script src="/front/portal/js/element.js"></script>
+<script src="/front/common/element.ko.js"></script>
+<link rel="stylesheet" href="/front/portal/css/element.css">
+<script>
+    new Vue({
+        el: "#pop",
+        data: {
+            id: '',
+            pop: {},
+            content: ''
+        },
+        methods: {
+            notShow() {
+                axios.patch('/syspop/visitorstatus', {id: this.id, status: 0}).then(res => {
+                    window.close()
+                }).catch(err => {
+                });
+            },
+            getById() {
+                axios.get('/syspop/getById', {
+                    params: {
+                        id: this.id
+                    }
+                }).then(res => {
+                    this.pop = res.data.data
+                    this.content = unescape(this.pop.content)
+                })
+            },
+            getQueryString(name) {
+                let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                let r = window.location.search.substr(1).match(reg);
+                if (r != null) {
+                    return unescape(r[2]);
+                }
+                return ''
+            },
+            init() {
+                this.id = this.getQueryString('id')
+                this.getById()
+            }
+        },
+        mounted() {
+            this.init()
+        }, created() {
+        }, watch: {}
+    })
+</script>
+
+<script>
+    $(function() {
+        $("#btn_close").on('click', function() {
+            self.close();
+        });
+    });
+</script>
+
+<style>
+    #footer {
+        width:100%;
+        height:30px;
+        /*position:absolute;*/
+        bottom:0;
+        overflow:hidden;
+    }
+    #footer span{float:right;}
+</style>
+</html>

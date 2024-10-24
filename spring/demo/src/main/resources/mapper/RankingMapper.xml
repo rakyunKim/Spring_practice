@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.ccfc.mapper.RankingMapper">
+  <resultMap id="BaseResultMap" type="kr.ccfc.domain.Ranking">
+    <!--@mbg.generated-->
+    <!--@Table ranking-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="ranks" jdbcType="INTEGER" property="ranks" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="ent_time" jdbcType="TIMESTAMP" property="entTime" />
+    <result column="club_logo_img_url" jdbcType="VARCHAR" property="clubLogoImgUrl" />
+    <result column="club_name" jdbcType="VARCHAR" property="clubName" />
+    <result column="season" jdbcType="VARCHAR" property="season" />
+    <result column="current_competition_times" jdbcType="INTEGER" property="currentCompetitionTimes" />
+    <result column="points" jdbcType="INTEGER" property="points" />
+    <result column="win" jdbcType="INTEGER" property="win" />
+    <result column="draw" jdbcType="INTEGER" property="draw" />
+    <result column="fail" jdbcType="INTEGER" property="fail" />
+    <result column="goal_win" jdbcType="INTEGER" property="goalWin" />
+    <result column="goal_draw" jdbcType="INTEGER" property="goalDraw" />
+    <result column="goal_fail" jdbcType="INTEGER" property="goalFail" />
+    <result column="total_competition_times" jdbcType="INTEGER" property="totalCompetitionTimes" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, ranks, start_time, ent_time, club_logo_img_url, club_name, season, current_competition_times, 
+    points, win, draw, fail, goal_win, goal_draw, goal_fail, total_competition_times, 
+    created, last_update_time
+  </sql>
+</mapper>

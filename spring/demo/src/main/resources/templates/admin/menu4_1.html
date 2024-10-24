@@ -1,0 +1,316 @@
+<div id="wrapper">
+    <div style="height:40px;"></div>
+    <div id="container">
+        <head th:replace="admin/include/header::admin_header"></head>
+        <div id="menu4_1">
+            <div class="container_wr">
+                <h1 id="container_title">
+                    <p style="font-size:14px;color:#333333;"><i class="fa fa-home" aria-hidden="true"></i> > 사회적협동조합</p>
+                    조합원/후원금명단
+                </h1>
+                <form class="local_sch01 local_sch" method="get" @submit.prevent=''>
+                    <select v-model="selectMode">
+                        <option value="0">회원아이디</option>
+                        <option value="1">닉네임</option>
+                        <option value="2">이름</option>
+                        <option value="3">휴대폰번호</option>
+                        <option value="4">가입일시</option>
+                    </select>
+                    <input type="text" value="" required class="required frm_input" v-model="seachUser" @keyup.enter="pageSearch">
+                    <input type="button" class="btn_submit" value="검색" @click="pageSearch">
+                </form>
+                <div class="btn_fixed_top">
+                    <input type="button" @click="delById" value="선택삭제" class="btn btn_02">
+                    <input type="button" value="엑셀 받기" class="btn btn_02" @click="exportExcel">
+                    <!--<input type="submit" value="선택삭제" class="btn btn_02">
+                    <a href="#" class="btn btn_01">회원추가</a>-->
+                </div>
+                <section style="margin-top:40px;">
+
+                    <h2>조합원/후원금 신청목록</h2>
+                    <div class="tbl_head01 tbl_wrap">
+                        <!--<table>
+                            <caption>조합원/후원금 신청목록</caption>
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox"></th>
+                                <th>접속아이디</th>
+                                <th>이름(법인)</th>
+                                <th>주소</th>
+                                <th>핸드폰</th>
+                                <th>이메일</th>
+                                <th>가입형태</th>
+                                <th>월납입액</th>
+                                <th>납입방법</th>
+                                <th>계좌입금</th>
+                                <th>출자금액</th>
+                                <th>후원범위</th>
+                                <th>관리</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(item,index) in aplplyList">
+                                <td><label>
+                                    <input type="checkbox" name="applycheckbox" :value="item.id">
+                                </label></td>
+                                <td>{{item.userName}}</td>
+                                <td>{{item.companyName}}</td>
+                                <td>{{item.address}}</td>
+                                <td>{{item.mobile}}</td>
+                                <td>{{item.email}}</td>
+                                <td class="table_text01">{{item.registerType == 0 ? "개인" : "기업"}}</td>
+                                <td>{{item.monthPay}}</td>
+                                <td>{{item.payType == null ? "직접입금 " : item.payDate}}</td>
+                                <td class="table_text01">{{item.payType == 0 ? "자동이체 " : "직접입금"}}</td>
+                                <td>{{item.payMoney}}</td>
+                                <td>{{item.business}}</td>
+                                <td>
+                                    <a @click="goEdit(item.id)" class="btn btn_03">수정</a>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>-->
+                        <table>
+                            <caption>조합원/후원금 신청목록</caption>
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" id="chkall" @change="triggle"></th>
+                                <th>접속아이디</th>
+                                <th>성명<br>(법인명)</th>
+                                <!--<th>주소</th>-->
+                                <th>주민(사업자)<br>번호</th>
+                                <th>핸드폰</th>
+                                <th>이메일</th>
+                                <th>가입형태</th>
+                                <th>납부형태</th>
+                                <th>출자금액<br>(구좌수)</th>
+                                <th>일시납부<br>금액</th>
+                                <th>월납부<br>금액</th>
+                                <th>납부방법<br>(월납의경우)</th>
+                                <!--<th>납입방법</th>
+                                <th>계좌입금</th>
+                                <th>후원범위</th>-->
+                                <th>관리</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(item,index) in aplplyList">
+                                <td><label>
+                                    <input type="checkbox" name="applycheckbox" :value="item.id">
+                                </label></td>
+                                <td>{{item.userName}}</td>
+                                <td>{{item.companyName}}</td>
+                                <td>{{item.registerNo}}</td>
+                                <td>{{item.mobile}}</td>
+                                <td>{{item.email}}</td>
+                                <td class="table_text01">{{item.service == 0 ? "개인" : "기업"}}</td>
+                                <td class="table_text01">{{item.payType == 0 ? "월납부" : "일시납부"}}</td>
+                                <td>{{item.cooperatorMoney == null ? "-" : (item.cooperatorMoney)}}<br>[{{item.cooperator == null ? "-" : (item.cooperator)}}]</td>
+                                <td>{{item.payMoney == null ? "-" : (Number(item.payMoney).toLocaleString())}}</td>
+                                <td>{{item.monthPay == null ? "-" : (Number(item.monthPay).toLocaleString())}}</td>
+                                <td class="table_text01">{{item.payDate == null ?"-" :(item.payDate)}}</td>
+
+                                <!--<td>{{item.payType == null ? "직접입금 " : item.payDate}}</td>
+                                <td class="table_text01">{{item.payType == 0 ? "자동이체 " : "직접입금"}}</td>
+                                <td>{{item.business}}</td>-->
+                                <td>
+                                    <!--버튼 누르시면 자세히보기 페이지로 연결 됩니다.-->
+                                    <a @click="goEdit(item.id)" class="btn btn_03">수정</a>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+            <div th:replace="admin/include/footer::footer"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    new Vue({
+        el: "#menu4_1",
+        data: {
+            seachUser: '',
+            selectMode: 0,
+            token: '',
+            users: [],
+            roles: [],
+            aplplyList: [],
+            params: {
+                current: 1,
+                size: 100,
+                username: '',
+                nickName: '',
+                realName: '',
+                mobile: '',
+                created: ''
+            }
+        },
+        methods: {
+            exportExcel() {
+                let inputs = document.getElementsByName("applycheckbox");
+                let ids = []
+                for (let i = 0; i < inputs.length; i++) {
+                    if (inputs[i].checked) {
+                        ids.push(inputs[i].value)
+                    }
+                }
+                axios.post("/memberapply/downloadExcel", ids, {
+                    responseType: 'blob'
+                }).then(function (res) {
+                    var blob = res.data;
+                    // FileReader主要用于将文件内容读入内存
+                    var reader = new FileReader();
+                    reader.readAsDataURL(blob);
+                    // onload当读取操作成功完成时调用
+                    reader.onload = function (e) {
+                        var a = document.createElement('a');
+                        // 获取文件名fileName
+                        var fileName = res.headers["content-disposition"].split("=");
+                        fileName = fileName[fileName.length - 1];
+                        fileName = fileName.replace(/"/g, "");
+                        a.download = fileName;
+                        a.href = e.target.result;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    }
+                });
+            },
+            clearParam() {
+                this.params.username = ''
+                this.params.nickName = ''
+                this.params.realName = ''
+                this.params.mobile = ''
+                this.params.created = ''
+            },
+            triggle() {
+                let allcheck = document.getElementById("chkall")
+                let inputs = document.getElementsByName("applycheckbox");
+                for (let i = 0; i < inputs.length; i++) {
+                    inputs[i].checked = allcheck.checked;
+                }
+            },
+            pageSearch() {
+                this.params.current = 1
+                this.params.size = 1000
+                this.search()
+            },
+            search() {
+                switch (this.selectMode) {
+                    case 0:
+                        this.clearParam()
+                        this.params.username = this.seachUser
+                        break
+                    case '1':
+                        this.clearParam()
+                        this.params.nickName = this.seachUser
+                        break;
+                    case '2':
+                        this.clearParam()
+                        this.params.realName = this.seachUser
+                        break;
+                    case '3':
+                        this.clearParam()
+                        this.params.mobile = this.seachUser
+                        break;
+                    case '4':
+                        this.clearParam()
+                        this.params.created = this.seachUser
+                        break;
+                }
+                axios.get('/memberapply/page', {
+                    params: this.params,
+                    headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    console.log(res)
+                    this.totalUser = res.data.data.total
+                    let results = res.data.data
+                    this.aplplyList = results.records
+                    this.users = results.records
+                })
+            },
+            delById() {
+                let inputs = document.getElementsByName("applycheckbox");
+                let ids = []
+                for (let i = 0; i < inputs.length; i++) {
+                    if (inputs[i].checked) {
+                        ids.push(inputs[i].value)
+                    }
+                }
+                let idsJoin = ids.join(",")
+                if (!idsJoin) {
+                    this.$notify({
+                        title: '알림',
+                        message: '삭제할 내용을 선택하세요',
+                        type: 'warning'
+                    });
+                    return
+                }
+                axios.delete('/memberapply', {
+                    params: {
+                        ids: idsJoin
+                    }, headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    this.$notify({
+                        title: '알림',
+                        message: '삭제 성공',
+                        type: 'success'
+                    });
+                    // this.page()
+                    window.location.reload()
+                })
+            },
+            goCreate() {
+                localStorage.removeItem('menu4_1_1')
+                window.location = "/front/admin/menu4_1_1"
+            },
+            goEdit(id) {
+                localStorage.setItem('menu4_1_1', id)
+                window.location = "/front/admin/menu4_1_1"
+            },
+            page() {
+                axios.get('/memberapply/page', {
+                    params: {
+                        current: 1,
+                        size: 100,
+                    },
+                    headers: {
+                        'Authorization': this.token
+                    }
+                }).then(res => {
+                    this.aplplyList = res.data.data.records
+                    console.log(res)
+                })
+            }
+        },
+        mounted() {
+            //this.page()
+            this.pageSearch()
+        }, created() {
+            let loginAdminStr = localStorage.getItem('login_user')
+            if (loginAdminStr) {
+                let loginAdmin = JSON.parse(loginAdminStr)
+                this.token = loginAdmin.data.token || ''
+            } else {
+                window.location = "/front/admin/login"
+            }
+        }, watch: {}
+    })
+</script>
+
+<script>
+    $(".scroll_top").click(function () {
+        $("body,html").animate({scrollTop: 0}, 400);
+    })
+</script>
+</body>
+</html>

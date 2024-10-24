@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.ccfc.mapper.SysUserMapper">
+    <resultMap id="BaseResultMap" type="kr.ccfc.domain.SysUser">
+        <!--@mbg.generated-->
+        <!--@Table sys_user-->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="landline" jdbcType="VARCHAR" property="landline"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="post_code" jdbcType="VARCHAR" property="postCode"/>
+        <result column="base_address" jdbcType="VARCHAR" property="baseAddress"/>
+        <result column="detail_address" jdbcType="VARCHAR" property="detailAddress"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
+        <result column="home_page" jdbcType="VARCHAR" property="homePage"/>
+        <result column="id_card" jdbcType="VARCHAR" property="idCard"/>
+        <result column="logins" jdbcType="INTEGER" property="logins"/>
+        <result column="last_visit_time" jdbcType="TIMESTAMP" property="lastVisitTime"/>
+        <result column="privilege_ranks" jdbcType="INTEGER" property="privilegeRanks"/>
+        <result column="receive_msg" jdbcType="TINYINT" property="receiveMsg"/>
+        <result column="member_apply" jdbcType="TINYINT" property="memberApply"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="praise_grant" jdbcType="VARCHAR" property="praiseGrant"/>
+        <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime"/>
+        <result column="created" jdbcType="TIMESTAMP" property="created"/>
+        <result column="receive_email" jdbcType="TINYINT" property="receiveEmail"/>
+        <result column="stock_fund" jdbcType="VARCHAR" property="stockFund"/>
+        <collection property="roles" columnPrefix="roles_" javaType="ArrayList" ofType="kr.ccfc.domain.SysRole"
+                    autoMapping="true"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, `type`, username, landline, mobile, post_code, base_address, detail_address,
+        `password`, email, real_name, nick_name, home_page, id_card, logins, last_visit_time,
+        privilege_ranks, receive_msg, member_apply, `status`, praise_grant, last_update_time,
+        created, receive_email, stock_fund
+    </sql>
+
+    <select id="pageQuery" resultType="kr.ccfc.domain.SysUser" resultMap="BaseResultMap">
+        select sys_user.*, sys_role.id roles_id, sys_role.name roles_name
+        from sys_user
+                     left join sys_user_role on sys_user.id = sys_user_role.user_id
+                     left join sys_role on sys_user_role.role_id = sys_role.id
+        <where>
+            <include refid="page_query_condition"/>
+        </where>
+        ORDER BY created desc
+    </select>
+
+    <sql id="page_query_condition">
+        <if test="username != '' and username != null">
+            AND sys_user.username = #{username}
+        </if>
+        <if test="nickName != '' and nickName != null">
+            AND sys_user.nick_name like CONCAT('%',#{nickName},'%')
+        </if>
+        <if test="realName != '' and realName != null">
+            AND sys_user.real_name like CONCAT('%',#{realName},'%')
+        </if>
+        <if test="roleId != '' and roleId != null">
+            AND sys_user_role.role_id = #{roleId}
+        </if>
+        <if test="email != '' and email != null">
+            AND sys_user.email = #{email}
+        </if>
+        <if test="mobile != '' and mobile != null">
+            AND sys_user.mobile = #{mobile}
+        </if>
+        <if test="landline != '' and landline != null">
+            AND sys_user.landline = #{landline}
+        </if>
+        <if test="createdStr != '' and createdStr != null">
+            AND DATE_FORMAT(sys_user.created,'%Y-%m-%d') = #{createdStr}
+        </if>
+        <if test="ip != '' and ip != null">
+            AND 1=1
+        </if>
+    </sql>
+</mapper>

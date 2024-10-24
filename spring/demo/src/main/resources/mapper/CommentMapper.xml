@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.ccfc.mapper.CommentMapper">
+    <resultMap id="BaseResultMap" type="kr.ccfc.domain.Comment">
+        <!--@mbg.generated-->
+        <!--@Table `comment`-->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="article_id" jdbcType="BIGINT" property="articleId"/>
+        <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
+        <result column="priv" jdbcType="TINYINT" property="priv"/>
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+        <result column="create_by" jdbcType="BIGINT" property="createBy"/>
+        <result column="created" jdbcType="TIMESTAMP" property="created"/>
+        <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, article_id, parent_id, priv, content, create_by, created, last_update_time
+    </sql>
+
+    <select id="getArticleComments" resultMap="BaseResultMap">
+        select comment.*, sys_user.username, sys_user.real_name
+        from comment
+                     left join sys_user on comment.create_by = sys_user.id
+        where comment.article_id = #{param2}
+    </select>
+</mapper>

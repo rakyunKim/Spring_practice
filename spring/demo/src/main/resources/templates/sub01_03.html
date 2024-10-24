@@ -1,0 +1,108 @@
+<body>
+<div class="wrapper">
+    <!-- :: header s :: -->
+    <head th:replace="include/header :: common_head(~{::title},~{::link},~{})">
+        <title></title>
+    </head>
+</div>
+<section class="container">
+    <div class="sub-top bg1">
+        <div class="sub-top-con">
+            <h2>구단소개</h2>
+        </div>
+    </div>
+    <nav class="breadcrumb">
+        <div class="breadcrumb-container">
+            <ul class="breadcrumb-list">
+                <li class="home"><span class="screen-out">홈</span></li>
+                <li>
+                    <div class="breadcrumb-box js-dropdown">
+                        <button type="button" class="breadcrumb-btn js-dropdown-btn" data-dropdown="breadcrumb-dep1">
+                            <span>구단소개</span>
+                        </button>
+                        <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep1">
+                            <ul class="breadcrumb-cont-list">
+                                <li><a href="/front/portal/sub01_01">구단소개</a></li>
+                                <li><a href="/front/portal/sub02_01_list">구단소식</a></li>
+                                <li><a href="/front/portal/sub03_01">선수단</a></li>
+                                <li><a href="/front/portal/sub04_01">경기정보</a></li>
+                                <li><a href="/front/portal/sub05_01_list">팬</a></li>
+                                <li><a href="/front/portal/sub06_01">유소년</a></li>
+                                <li><a href="/front/portal/sub07_01">사회적협동조합</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="breadcrumb-box js-dropdown">
+                        <button type="button" class="breadcrumb-btn js-dropdown-btn" data-dropdown="breadcrumb-dep2">
+                            <span>구단상징</span>
+                        </button>
+                        <div class="breadcrumb-cont js-dropdown-cont" data-dropdown="breadcrumb-dep2">
+                            <ul class="breadcrumb-cont-list">
+                                <li><a href="/front/portal/sub01_01">인사말</a></li>
+                                <li><a href="/front/portal/sub01_02">연혁</a></li>
+                                <li><a href="/front/portal/sub01_06">조직도</a></li>
+                                <li><a href="/front/portal/sub01_03">구단상징</a></li>
+                                <li><a href="/front/portal/sub01_04">홈경기장</a></li>
+                                <li><a href="/front/portal/sub01_05">스폰서</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</section>
+<div id="sub_contents">
+    <div class="wrap">
+        <div id="contents_area">
+            <h2 class="container_title">구단상징</h2>
+
+            <div id="ctt_con" class="sub01_01">
+                <div class="emblem">
+                    <!--<h4 class="h4-tit">앰블럼</h4>-->
+                    <div class="emblem-box">
+                        <div class="item2">
+                            <p class="image"><img src="/front/portal/img/sub/sub01_03_img01.jpg" alt=""/></p>
+                        </div>
+                    </div>
+                    <div class="emblem-cont">
+                        <p class="emblem_txt01">CHUNCHEON</p>
+                        <p class="emblem_txt02">FOOTBALL CLUB</p>
+                        <p class="emblem_txt03">EMBLEM</p>
+                        <p class="emblem_txt04">춘천시민 축구단의 엠블럼을 소개합니다.</p>
+                        <p class="emblem_txt05">
+                            춘천시민 축구단의 엠블럼은 강인한 호랑이의 정신으로 경기에 임하겠다는 춘천시민 축구단의 의지와 정신을 표현했습니다.<br>
+                            <br>
+                            춘천시 상징인 호랑이와 개나리를 조화롭게 담아내었고,<br>
+                            억센 생명력으로 대표되는 개나리의 투지와 단결, 호랑이의 강인하고 진취적인 기상을 상징합니다.
+                        </p>
+                    </div>
+                    <div class="btn-wrap">
+                        <a href="/front/portal/img/sub/logo.ai" class="btn-basic" download>다운로드</a>
+                    </div>
+
+                    <div class="emblem-box2 mascot">
+                        <div class="item2">
+                            <p class="image">
+                                <img src="/front/portal/img/sub/sub01_03_img03.jpg" alt=""/>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="emblem-cont">
+                        <p class="emblem_txt01">CHUNCHEON</p>
+                        <p class="emblem_txt02">FOOTBALL CLUB</p>
+                        <p class="emblem_txt03">UNIFORM</p>
+                    </div>
+                    <!--<div class="btn-wrap">
+                        <a href="/front/images/sub/emblem.ai" class="btn-basic">다운로드</a>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div th:replace="include/footer::footer"></div>
+
+</body>

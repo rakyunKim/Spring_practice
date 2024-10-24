@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<meta http-equiv="content-type" content="text/html;charset=euc-kr"/>
+<head>
+    <meta charset="euc-kr">
+    <title>반응형 캘린더</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/calendar.css"/>
+
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
+</head>
+<body>
+<div id="top"></div>
+<?
+
+
+/*--------------------
+Title : 초간단 달력
+Author : Cho Sung O
+---------------------*/
+
+
+
+if ($YYYY =="") {
+$YYYY = date("Y");
+}
+IF ($MM =="") {
+
+$MM = date("m");
+
+}
+
+if($MM == 13) {
+
+$MM = 1;
+$YYYY++;
+
+}
+
+if($MM == 0) {
+
+
+$MM = 12;
+$YYYY--;
+
+}
+
+
+$before = $MM - 1;
+$after = $MM + 1;
+
+$firstday_weeknum = date("w", mktime(0, 0, 0, $MM, 1, $YYYY));
+$lastday = date("t", mktime(0, 0, 0, $MM, 1, $YYYY));
+
+
+if($MM == 2) {
+    if(($YYYY % 4) == 0 && ($YYYY % 100) != 0 || ($YYYY % 400) == 0) { $lastday = 29; }
+}
+
+$td1 = "<TD width='100' align='center'><font size='2' align='center'><b>";
+    $td2 = "</b></font></TD>
+<TD width='100' height='100' align='center'><font size='2' align='center'><b>";
+    $td3 = "</b></font></TD>
+\n";
+
+?>
+<div class="wrap">
+    <div class="background-color-darkblack padding-top-80" id="projects-1column">
+        <div class="our-expertise44 expert-tabs" id="projects-3column">
+            <div class="container padding-0">
+                <div id="content">
+                    <div id="my-tab-content" class="tab-content">
+                        <!-- 예정공연안내 //-->
+                        <div class="tab-pane active" id="red">
+                            <div class="col-md-12 ">
+                                <div class="calendar">
+                                    <p>
+                                        <a href="<?=$PHP_SELF?>?MM=<?=$before?>&YYYY=<?=$YYYY?>&sub=<?=$sub?>"><</a>
+                                        <span class="Ym"><?=$YYYY?>. <?=$MM?></span>
+                                        <a href="<?=$PHP_SELF?>?MM=<?=$after?>&YYYY=<?=$YYYY?>&sub=<?=$sub?>">></a>
+                                    </p>
+                                    <ul>
+                                        <li class="cal_header">
+                                            <div class="Sun">SUN</div>
+                                            <div class="Mon">MON</div>
+                                            <div class="Tue">TUE</div>
+                                            <div class="Wed">WED</div>
+                                            <div class="Thu">THU</div>
+                                            <div class="Fri">FRI</div>
+                                            <div class="Sat">SAT</div>
+                                        </li>
+                                        <li>
+                                            <?
+$week = 0;
+for ($i=0; $i < $firstday_weeknum; $i++) { echo("<div>
+                                            <time><span class='Ym'>[2017.01]</span><span class='W'></span></time>
+                                </div>
+                                "); $week++; }
+                                for($d=1; $d <= $lastday; $d++)
+                                {
+
+
+                                if($week == 6) { $temp = "</li>
+                                <li>"; };
+                                    if ($week == 7) { $week = 0; } // 밑에 빈공간을 채우기 위한 변수 초기화
+
+
+                                    //$day = (date("j") == $d && $MM == date("m"))? "<font color='deepink'><b>".$d."</b></font>":$d;
+
+
+                                    // 요일구하기
+                                    $time3 = mktime('' ,'' ,'' , $MM , $d , $YYYY);
+                                    $we = array('Sun', 'Mon', 'Tue', 'Wen', 'Thu', 'Fri', 'Sat');
+                                    $time2 = date("w",$time3);
+                                    $wday = $we[$time2];
+
+
+                                    if(date("j") == $d && $MM == date("m")) {
+
+                                    $cls = "class='".$wday." today'";
+                                    $day = $d;
+
+                                    } else {
+
+                                    $cls = "class='".$wday."'";
+                                    $day = $d;
+                                    }
+
+                                    $check = $YYYY . "-" . $MM . "-" . $d;
+                                    $check2 = $YYYY . "-" . $MM . "-" . $d;
+
+
+                                    ?>
+
+
+                                    <div
+                                    <?=$cls?>>
+                                    <time><span class="Ym">[2017.01]</span><?=$day?><span class="W">(<?=$wday?>)</span>
+
+                                    </time>
+                            </div>
+                            <?=$temp?>
+
+                            <?
+
+
+
+    $week++;
+	// 초기화
+	$temp="";
+
+}
+
+
+for ($i=$week; $i < 7; $i++) { echo("<div>
+                            <time><span class='Ym'>[2017.01]</span><span class='W'></span></time>
+                        </div>
+                        "); }
+                        ?>
+
+                        </li>
+                        </ul>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
